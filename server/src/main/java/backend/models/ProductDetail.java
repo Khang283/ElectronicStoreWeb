@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity
+@Entity(name = "product_detail")
 public class ProductDetail {
     @Column(name = "product_id")
     private Long productId;

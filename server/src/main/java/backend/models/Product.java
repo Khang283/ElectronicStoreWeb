@@ -5,9 +5,8 @@ import org.hibernate.annotations.Columns;
 
 import java.util.Date;
 
-@Entity
+@Entity(name = "product")
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="product_id")
