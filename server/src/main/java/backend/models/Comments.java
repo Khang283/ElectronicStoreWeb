@@ -16,109 +16,111 @@ public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
-    private Long comment_id;
+    private Long commentId;
     @Column(name="user_id")
-    private Long user_id;
+    private Long userId;
     @Column(name = "comment_description")
-    private String comment_description;
+    private String commentDescription;
     @Column(name="product_id")
-    private Long product_id;
+    private Long productId;
     @Column(name = "created_at")
-    private Date created_at;
+    private Date createdAt;
     @Column (name = "modified_at")
-    private Date modified_at;
+    private Date modifiedAt;
     @Column (name = "deleted")
     private boolean deleted;
     @Column(name = "likes")
     private Long likes;
     @Column(name = "reply_to")
-    private String reply_to;
-
-    public Comments(Long comment_id, Long user_id, String comment_description, Long product_id, Date created_at, Date modified_at, boolean deleted, Long likes, String reply_to) {
-        this.comment_id = comment_id;
-        this.user_id = user_id;
-        this.comment_description = comment_description;
-        this.product_id = product_id;
-        this.created_at = created_at;
-        this.modified_at = modified_at;
-        this.deleted = deleted;
-        this.likes = likes;
-        this.reply_to = reply_to;
-    }
+    private String replyYo;
 
     public Comments() {
     }
 
-    public Long getComment_id() {
-        return comment_id;
+    public Comments(Long commentId, Long userId, String commentDescription, Long productId, Date createdAt, Date modifiedAt, boolean deleted, Long likes, String replyYo) {
+        this.commentId = commentId;
+        this.userId = userId;
+        this.commentDescription = commentDescription;
+        this.productId = productId;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.deleted = deleted;
+        this.likes = likes;
+        this.replyYo = replyYo;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getCommentId() {
+        return commentId;
     }
 
-    public String getComment_description() {
-        return comment_description;
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Date getModified_at() {
-        return modified_at;
+    public String getCommentDescription() {
+        return commentDescription;
+    }
+
+    public void setCommentDescription(String commentDescription) {
+        this.commentDescription = commentDescription;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(Date modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public boolean isDeleted() {
         return deleted;
     }
 
-    public Long getLikes() {
-        return likes;
-    }
-
-    public String getReply_to() {
-        return reply_to;
-    }
-
-    public void setComment_id(Long comment_id) {
-        this.comment_id = comment_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
-
-    public void setComment_description(String comment_description) {
-        this.comment_description = comment_description;
-    }
-
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
-    }
-
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
-    }
-
-    public void setModified_at(Date modified_at) {
-        this.modified_at = modified_at;
-    }
-
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Long getLikes() {
+        return likes;
     }
 
     public void setLikes(Long likes) {
         this.likes = likes;
     }
 
-    public void setReply_to(String reply_to) {
-        this.reply_to = reply_to;
+    public String getReplyYo() {
+        return replyYo;
     }
+
+    public void setReplyYo(String replyYo) {
+        this.replyYo = replyYo;
+    }
+
+   
     
 }

@@ -15,21 +15,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long user_id;
+    private Long userId;
     @Column(name="loggin_name")
-    private String loggin_name;
+    private String logginName;
     @Column(name="pass_word")
-    private String pass_word;
+    private String password;
     @Column(name="user_address")
-    private String user_address;
+    private String userAddress;
     @Column(name="user_email")
-    private String user_email;
+    private String userEmail;
     @Column(name="user_phone")
-    private String user_phone;
+    private String userPhone;
     @Column(name = "created_at")
-    private Date created_at;
+    private Date createdAt;
     @Column (name = "modified_at")
-    private Date modified_at;
+    private Date modifiedAt;
     @Column (name = "deleted")
     private boolean deleted;
     @Column (name = "avatar")
@@ -41,87 +41,68 @@ public class User {
     @Column (name = "role")
     private String role;
 
-    public User(Long user_id, String loggin_name, String pass_word, String user_address, String user_email, String user_phone, Date created_at, Date modified_at, boolean deleted, String avatar, String gender, Date dob, String role) {
-        this.user_id = user_id;
-        this.loggin_name = loggin_name;
-        this.pass_word = pass_word;
-        this.user_address = user_address;
-        this.user_email = user_email;
-        this.user_phone = user_phone;
-        this.created_at = created_at;
-        this.modified_at = modified_at;
-        this.deleted = deleted;
-        this.avatar = avatar;
-        this.gender = gender;
-        this.dob = dob;
-        this.role = role;
+    public Long getUserId() {
+        return userId;
     }
 
-    public User() {
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public String getLogginName() {
+        return logginName;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setLogginName(String logginName) {
+        this.logginName = logginName;
     }
 
-    public String getLoggin_name() {
-        return loggin_name;
+    public String getPassword() {
+        return password;
     }
 
-    public void setLoggin_name(String loggin_name) {
-        this.loggin_name = loggin_name;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getPass_word() {
-        return pass_word;
+    public String getUserAddress() {
+        return userAddress;
     }
 
-    public void setPass_word(String pass_word) {
-        this.pass_word = pass_word;
+    public void setUserAddress(String userAddress) {
+        this.userAddress = userAddress;
     }
 
-    public String getUser_address() {
-        return user_address;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setUser_address(String user_address) {
-        this.user_address = user_address;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
-    public String getUser_email() {
-        return user_email;
+    public String getUserPhone() {
+        return userPhone;
     }
 
-    public void setUser_email(String user_email) {
-        this.user_email = user_email;
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 
-    public String getUser_phone() {
-        return user_phone;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUser_phone(String user_phone) {
-        this.user_phone = user_phone;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getModifiedAt() {
+        return modifiedAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
-    }
-
-    public Date getModified_at() {
-        return modified_at;
-    }
-
-    public void setModified_at(Date modified_at) {
-        this.modified_at = modified_at;
+    public void setModifiedAt(Date modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public boolean isDeleted() {
@@ -163,6 +144,28 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+
+    public User() {
+    }
+
+    public User(Long userId, String logginName, String password, String userAddress, String userEmail, String userPhone, Date createdAt, Date modifiedAt, boolean deleted, String avatar, String gender, Date dob, String role) {
+        this.userId = userId;
+        this.logginName = logginName;
+        this.password = password;
+        this.userAddress = userAddress;
+        this.userEmail = userEmail;
+        this.userPhone = userPhone;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.deleted = deleted;
+        this.avatar = avatar;
+        this.gender = gender;
+        this.dob = dob;
+        this.role = role;
+    }
+
+    
+
     
     
 }
