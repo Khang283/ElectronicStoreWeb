@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author DELL
  */
-@Entity
+@Entity(name = "comments")
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -31,6 +31,9 @@ public class CartItem {
         this.deleted = deleted;
     }
 
+    public CartItem() {
+    }
+
     public Long getCartId() {
         return cartId;
     }

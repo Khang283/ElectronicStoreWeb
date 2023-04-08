@@ -32,6 +32,9 @@ public class OrderItem {
         this.deleted = deleted;
     }
 
+    public OrderItem() {
+    }
+
     public Long getOrderId() {
         return orderId;
     }

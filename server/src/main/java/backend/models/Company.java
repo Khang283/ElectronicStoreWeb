@@ -1,12 +1,10 @@
 package backend.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
+@Entity(name = "company")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +25,9 @@ public class Company {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.deleted = deleted;
+    }
+
+    public Company() {
     }
 
     public Long getCompanyId() {

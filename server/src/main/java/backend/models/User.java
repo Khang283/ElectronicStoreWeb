@@ -11,6 +11,7 @@ import java.util.Date;
  *
  * @author DELL
  */
+@Entity(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -164,8 +165,4 @@ public class User {
         this.role = role;
     }
 
-    
-
-    
-    
 }

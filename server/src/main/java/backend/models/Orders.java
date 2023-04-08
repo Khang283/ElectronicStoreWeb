@@ -45,6 +45,9 @@ public class Orders {
         this.deleted = deleted;
     }
 
+    public Orders() {
+    }
+
     public Long getOrderId() {
         return orderId;
     }

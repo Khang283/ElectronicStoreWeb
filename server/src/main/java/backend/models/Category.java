@@ -5,7 +5,7 @@ import org.hibernate.annotations.Columns;
 
 import java.util.Date;
 
-@Entity
+@Entity(name = "category")
 public class Category {
 
     @Id

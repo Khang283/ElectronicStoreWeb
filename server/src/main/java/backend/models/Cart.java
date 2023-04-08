@@ -34,6 +34,9 @@ public class Cart {
         this.deleted = deleted;
     }
 
+    public Cart() {
+    }
+
     public void setCartId(Long cartId) {
         this.cartId = cartId;
     }
