@@ -9,7 +9,7 @@ public class Assets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "asset_id")
-    private Long asset_id;
+    private Long assetId;
     @Column(name = "asset_name")
     private String assetName;
     @Column(name = "asset_path")
@@ -27,7 +27,7 @@ public class Assets {
     }
 
     public Assets(Long asset_id, String assetName, String assetPath, String assetType, Date createdAt, Date modifiedAt, boolean deleted) {
-        this.asset_id = asset_id;
+        this.assetId = asset_id;
         this.assetName = assetName;
         this.assetPath = assetPath;
         this.assetType = assetType;
@@ -36,12 +36,12 @@ public class Assets {
         this.deleted = deleted;
     }
 
-    public Long getAsset_id() {
-        return asset_id;
+    public Long getAssetId() {
+        return assetId;
     }
 
-    public void setAsset_id(Long asset_id) {
-        this.asset_id = asset_id;
+    public void setAssetId(Long assetId) {
+        this.assetId = assetId;
     }
 
     public String getAssetName() {
