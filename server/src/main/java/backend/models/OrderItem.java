@@ -1,16 +1,17 @@
 package backend.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "order_item")
 public class OrderItem {
-    @Column(name="order_id")
-    private Long orderId;
-    @Column(name="product_id")
-    private Long productId;
+    @EmbeddedId
+    private OrderItemId orderItemId;
     @Column(name="price")
     private Double price;
     @Column(name="quantity")
@@ -21,10 +22,42 @@ public class OrderItem {
     private Date modifiedAt;
     @Column(name="deleted")
     private boolean deleted;
+    public static class OrderItemId implements Serializable{
+        @Column(name="order_id")
+        private Long orderId;
+        @Column(name="product_id")
+        private Long productId;
 
-    public OrderItem(Long orderId, Long productId, Double price, Double quantity, Date createdAt, Date modifiedAt, boolean deleted) {
-        this.orderId = orderId;
-        this.productId = productId;
+        public OrderItemId() {
+        }
+
+        public OrderItemId(Long orderId, Long productId) {
+            this.orderId = orderId;
+            this.productId = productId;
+        }
+
+        public Long getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(Long orderId) {
+            this.orderId = orderId;
+        }
+
+        public Long getProductId() {
+            return productId;
+        }
+
+        public void setProductId(Long productId) {
+            this.productId = productId;
+        }
+    }
+
+    public OrderItem() {
+    }
+
+    public OrderItem(OrderItemId orderItemId, Double price, Double quantity, Date createdAt, Date modifiedAt, boolean deleted) {
+        this.orderItemId = orderItemId;
         this.price = price;
         this.quantity = quantity;
         this.createdAt = createdAt;
@@ -32,23 +65,12 @@ public class OrderItem {
         this.deleted = deleted;
     }
 
-    public OrderItem() {
+    public OrderItemId getOrderItemId() {
+        return orderItemId;
     }
 
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setOrderItemId(OrderItemId orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
     public Double getPrice() {

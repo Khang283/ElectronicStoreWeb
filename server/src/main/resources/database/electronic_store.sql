@@ -1,4 +1,4 @@
-
+DROP DATABASE IF EXISTS electronic_store;
 CREATE DATABASE IF NOT EXISTS electronic_store;
 USE electronic_store;
  
@@ -10,14 +10,17 @@ CREATE TABLE IF NOT EXISTS product(
     company_id BIGINT,
     product_version VARCHAR(100),
     product_stock BIGINT ,
-    product_rating BIGINT,
+    product_rating BIGINT DEFAULT 0,
     product_price DECIMAL(10,2),
-    product_sold BIGINT,
-    product_status VARCHAR(20),
+    product_sold BIGINT DEFAULT 0,
+    product_sales INT DEFAULT 0,
+    product_status VARCHAR(20) DEFAULT 'available',
     created_at DATETIME,
     modified_at DATETIME,
     deleted boolean DEFAULT 0
 );
+ALTER TABLE product ADD CONSTRAINT UNQ_product_product_name_version UNIQUE (product_name,product_version);
+ALTER TABLE product ADD CONSTRAINT CK_product_product_status CHECK (product_status='available' OR product_status='sales' OR product_status='out of stock' OR product_status='unavailable');
 CREATE TABLE IF NOT EXISTS  product_detail(
 	product_id BIGINT NOT NULL,
 	spec_id BIGINT NOT NULL ,
@@ -46,13 +49,14 @@ CREATE TABLE IF NOT EXISTS spec_group(
 CREATE TABLE IF NOT EXISTS assets (
 	asset_id BIGINT PRIMARY KEY AUTO_INCREMENT ,
 	asset_name VARCHAR(100) NOT NULL ,
-	asset_path VARCHAR(100) NOT NULL,
+	asset_path VARCHAR(1000) NOT NULL,
 	asset_type VARCHAR(50) NOT NULL ,
 	created_at DATETIME DEFAULT NOW(),
 	modified_at DATETIME ,
 	deleted BOOLEAN DEFAULT FALSE 
 );
 CREATE TABLE IF NOT EXISTS product_asset(
+	product_asset_id BIGINT PRIMARY KEY AUTO_INCREMENT ,
 	product_id BIGINT NOT NULL,
 	asset_id BIGINT NOT NULL ,
 	asset_role VARCHAR(50) NOT NULL ,
@@ -60,7 +64,6 @@ CREATE TABLE IF NOT EXISTS product_asset(
 	modified_at DATETIME ,
 	deleted BOOLEAN DEFAULT FALSE 
 );
-ALTER TABLE product_asset ADD CONSTRAINT PK_product_asset PRIMARY KEY (product_id,asset_id);
 CREATE TABLE IF NOT EXISTS reviews (
 	review_id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT ,
 	review_content LONGTEXT NOT NULL ,
@@ -396,21 +399,40 @@ END $$
 delimiter;
 
 -- CATEGORY
+delimiter $$
 CREATE TRIGGER TRG_category_modified_at
 BEFORE UPDATE ON category
-FOR EACH ROW SET modified_at = NOW();
+FOR EACH ROW 
+BEGIN 
+	SET NEW.modified_at = NOW();
+END $$
+delimiter ;
 
+delimiter $$
 CREATE TRIGGER TRG_category_created_at
 BEFORE INSERT ON category
-FOR EACH ROW SET created_at = NOW();
+FOR EACH ROW 
+BEGIN 
+	SET NEW.created_at = NOW();
+END $$
+delimiter ;
 
 -- Post
 delimiter $$
-CREATE TRIGGER TRG_product_description_modified_at
+CREATE TRIGGER TRG_post_modified_at
 BEFORE UPDATE ON post
 FOR EACH ROW 
 BEGIN 
 	SET NEW.modified_at = NOW();
+END $$
+delimiter ;
+
+delimiter $$
+CREATE TRIGGER TRG_post_created_at
+BEFORE INSERT ON post
+FOR EACH ROW 
+BEGIN 
+	SET NEW.created_at = NOW();
 END $$
 delimiter ;
 
@@ -424,7 +446,7 @@ BEGIN
 END $$
 delimiter ;
 
---PRODUCT_ASSET
+-- PRODUCT_ASSET
 delimiter $$
 CREATE TRIGGER TRG_product_asset_modified_at
 BEFORE UPDATE ON product_asset
@@ -433,3 +455,63 @@ BEGIN
 	SET NEW.modified_at = NOW();
 END $$
 delimiter ;
+
+-- INSERT DATA 
+-- Category
+INSERT INTO category (category_name) VALUES ("phone");
+INSERT INTO category (category_name) VALUES ("laptop");
+INSERT INTO category (category_name) VALUES ("tablet");
+INSERT INTO category (category_name) VALUES ("accessories");
+-- Company
+INSERT INTO company (company_name) VALUES ("Apple");  -- 1
+INSERT INTO company (company_name) VALUES ("Samsung"); -- 2
+INSERT INTO company (company_name) VALUES ("Dell"); -- 3
+INSERT INTO company (company_name) VALUES ("Asus"); -- 4
+INSERT INTO company (company_name) VALUES ("MSI"); -- 5
+INSERT INTO company (company_name) VALUES ("Sony"); -- 6
+INSERT INTO company (company_name) VALUES ("Lenovo"); -- 7
+INSERT INTO company (company_name) VALUES ("Acer"); -- 8
+INSERT INTO company (company_name) VALUES ("Xiaomi"); -- 9
+INSERT INTO company (company_name) VALUES ("Oppo"); -- 10
+INSERT INTO company (company_name) VALUES ("Vivo"); -- 11
+INSERT INTO company (company_name) VALUES ("Realmi"); -- 12
+INSERT INTO company (company_name) VALUES ("HP"); -- 13
+INSERT INTO company (company_name) VALUES ("Gigabyte"); -- 14
+INSERT INTO company (company_name) VALUES ("Microsoft"); -- 15
+-- Product
+INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','128GB',27190000,1,1);
+INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','256GB',30190000,1,1);
+INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','512GB',35990000,1,1);
+INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','1TB',41990000,1,1);
+INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('Samsung Galaxy S22 5G','128GB',14990000,1,2);
+INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('Xiaomi Redmi Note 11 Pro','8GB - 128GB',5990000,1,9);
+-- Asset 
+INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 1','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2022/11/30/638054217303176240_ip-14-pro-max-bac-1.jpg','image');
+INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 2','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/9/638139587930405930_iphone-14pro-trang-6.jpg','image');
+INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 3','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/9/638139587931205518_iphone-14pro-trang-4.jpg','image');
+-- Product_Asset
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'icon');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'slide');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,2,'slide');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,3,'slide');
+-- Spec_Group
+INSERT INTO spec_group (group_name) VALUES ('info');
+INSERT INTO spec_group (group_name) VALUES ('design and weight');
+INSERT INTO spec_group (group_name) VALUES ('processor');
+INSERT INTO spec_group (group_name) VALUES ('ram');
+INSERT INTO spec_group (group_name) VALUES ('screen');
+INSERT INTO spec_group (group_name) VALUES ('storage');
+INSERT INTO spec_group (group_name) VALUES ('security');
+INSERT INTO spec_group (group_name) VALUES ('os');
+INSERT INTO spec_group (group_name) VALUES ('battery');
+INSERT INTO spec_group (group_name) VALUES ('sound');
+INSERT INTO spec_group (group_name) VALUES ('others');
+-- Spec
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lượng ram','8gb',4);
+
+SELECT product_name, product_price, asset_path AS icon 
+FROM product, assets, product_asset
+WHERE product.product_id=product_asset.product_id AND assets.asset_id = product_asset.asset_id AND asset_role = 'icon'
+
+SELECT assets.asset_id,asset_name,asset_path,asset_type,assets.created_at,assets.modified_at,assets.deleted FROM assets,product,product_asset
+WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= 1 AND product_asset.asset_role='icon'

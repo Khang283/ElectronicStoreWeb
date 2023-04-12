@@ -1,5 +1,6 @@
 package backend.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -16,10 +17,13 @@ public class Assets {
     private String assetPath;
     @Column(name = "asset_type")
     private String assetType;
+    @Nullable
     @Column(name = "created_at")
     private Date createdAt;
+    @Nullable
     @Column(name = "modified_at")
     private Date modifiedAt;
+    @Nullable
     @Column(name = "deleted")
     private boolean deleted;
 

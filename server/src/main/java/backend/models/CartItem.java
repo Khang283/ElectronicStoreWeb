@@ -2,14 +2,14 @@ package backend.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity (name = "cart_item")
 public class CartItem {
-    @Column(name="cart_id")
-    private Long cartId;
-    @Column(name="product_id")
-    private Long productId;
+    @EmbeddedId
+    private CartItemId cartItemId;
     @Column(name="price")
     private Double price;
     @Column(name="quantity")
@@ -21,9 +21,42 @@ public class CartItem {
     @Column(name="deleted")
     private boolean deleted;
 
-    public CartItem(Long cartId, Long productId, Double price, Double quantity, Date createdAt, Date modifiedAt, boolean deleted) {
-        this.cartId = cartId;
-        this.productId = productId;
+    private static class CartItemId implements Serializable {
+        @Column(name="cart_id")
+        private Long cartId;
+        @Column(name="product_id")
+        private Long productId;
+
+        public Long getCartId() {
+            return cartId;
+        }
+
+        public void setCartId(Long cartId) {
+            this.cartId = cartId;
+        }
+
+        public Long getProductId() {
+            return productId;
+        }
+
+        public void setProductId(Long productId) {
+            this.productId = productId;
+        }
+
+        public CartItemId(Long cartId, Long productId) {
+            this.cartId = cartId;
+            this.productId = productId;
+        }
+
+        public CartItemId() {
+        }
+    }
+
+    public CartItem() {
+    }
+
+    public CartItem(CartItemId cartItemId, Double price, Double quantity, Date createdAt, Date modifiedAt, boolean deleted) {
+        this.cartItemId = cartItemId;
         this.price = price;
         this.quantity = quantity;
         this.createdAt = createdAt;
@@ -31,23 +64,8 @@ public class CartItem {
         this.deleted = deleted;
     }
 
-    public CartItem() {
-    }
-
-    public Long getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setCartItemId(CartItemId cartItemId) {
+        this.cartItemId = cartItemId;
     }
 
     public Double getPrice() {
@@ -89,4 +107,5 @@ public class CartItem {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
 }

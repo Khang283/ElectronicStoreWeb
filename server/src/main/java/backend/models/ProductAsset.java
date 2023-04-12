@@ -7,6 +7,9 @@ import java.util.Date;
 
 @Entity(name = "product_asset")
 public class ProductAsset {
+    @Id
+    @Column(name = "product_asset_id")
+    private Long productAssetId;
     @Column(name = "product_id")
     private Long productId;
     @Column(name = "asset_id")

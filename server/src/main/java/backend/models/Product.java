@@ -3,6 +3,8 @@ package backend.models;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Columns;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Date;
 
 @Entity(name = "product")
@@ -24,7 +26,7 @@ public class Product {
     @Column(name="product_rating")
     private Long productRating;
     @Column(name="product_price")
-    private Double productPrice;
+    private BigDecimal productPrice;
     @Column(name="product_sold")
     private Long productSold;
     @Column(name="product_status")
@@ -36,7 +38,7 @@ public class Product {
     @Column(name="deleted")
     private boolean deleted;
 
-    public Product(Long productId, String productName, Long categoryId, Long companyId, String productVersion, Long productStock, Long productRating, Double productPrice, Long productSold, String productStatus, Date createdAt, Date modifiedAt, boolean deleted) {
+    public Product(Long productId, String productName, Long categoryId, Long companyId, String productVersion, Long productStock, Long productRating, BigDecimal productPrice, Long productSold, String productStatus, Date createdAt, Date modifiedAt, boolean deleted) {
         this.productId = productId;
         this.productName = productName;
         this.categoryId = categoryId;
@@ -111,11 +113,11 @@ public class Product {
         this.productRating = productRating;
     }
 
-    public Double getProductPrice() {
+    public BigDecimal getProductPrice() {
         return productPrice;
     }
 
-    public void setProductPrice(Double productPrice) {
+    public void setProductPrice(BigDecimal productPrice) {
         this.productPrice = productPrice;
     }
 

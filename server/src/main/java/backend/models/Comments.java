@@ -4,7 +4,6 @@
  */
 package backend.models;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Columns;
 
 import java.util.Date;
 /**
@@ -32,7 +31,7 @@ public class Comments {
     @Column(name = "likes")
     private Long likes;
     @Column(name = "reply_to")
-    private String replyYo;
+    private String replyTo;
 
     public Comments() {
     }
@@ -46,7 +45,7 @@ public class Comments {
         this.modifiedAt = modifiedAt;
         this.deleted = deleted;
         this.likes = likes;
-        this.replyYo = replyYo;
+        this.replyTo = replyYo;
     }
 
     public Long getCommentId() {
@@ -113,12 +112,12 @@ public class Comments {
         this.likes = likes;
     }
 
-    public String getReplyYo() {
-        return replyYo;
+    public String getReplyTo() {
+        return replyTo;
     }
 
-    public void setReplyYo(String replyYo) {
-        this.replyYo = replyYo;
+    public void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
     }
 
    
