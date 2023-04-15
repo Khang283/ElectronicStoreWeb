@@ -4,21 +4,34 @@
  */
 package backend.models;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Columns;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
 /**
  *
  * @author DELL
  */
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-    @Column(name="loggin_name")
-    private String logginName;
+    @Column(name = "username")
+    private String username;
     @Column(name="pass_word")
     private String password;
     @Column(name="user_address")
@@ -40,7 +53,42 @@ public class User {
     @Column (name = "dob")
     private Date dob;
     @Column (name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     public Long getUserId() {
         return userId;
@@ -48,18 +96,6 @@ public class User {
 
     public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getLogginName() {
-        return logginName;
-    }
-
-    public void setLogginName(String logginName) {
-        this.logginName = logginName;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
@@ -138,31 +174,16 @@ public class User {
         this.dob = dob;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
-    public User() {
-    }
-
-    public User(Long userId, String logginName, String password, String userAddress, String userEmail, String userPhone, Date createdAt, Date modifiedAt, boolean deleted, String avatar, String gender, Date dob, String role) {
-        this.userId = userId;
-        this.logginName = logginName;
-        this.password = password;
-        this.userAddress = userAddress;
-        this.userEmail = userEmail;
-        this.userPhone = userPhone;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.deleted = deleted;
-        this.avatar = avatar;
-        this.gender = gender;
-        this.dob = dob;
-        this.role = role;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
 }

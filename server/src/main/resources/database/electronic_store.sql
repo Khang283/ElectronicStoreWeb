@@ -125,9 +125,8 @@ CREATE TABLE IF NOT EXISTS order_item
 
 create table if not exists users(
 	user_id bigint primary KEY AUTO_INCREMENT,
-	loggin_name varchar(50) unique,
-	pass_word varchar(20) not null,
-	username varchar(50) not null,
+	username varchar(50) NOT NULL UNIQUE ,
+	pass_word varchar(20) NOT NULL,
 	user_address varchar(500),
 	user_email varchar(100),
 	user_phone varchar(11),
@@ -137,7 +136,7 @@ create table if not exists users(
 	avatar varchar(500),
 	gender varchar(6),
 	dob datetime,
-	role varchar(10) DEFAULT 'user' 
+	role varchar(10) DEFAULT 'USER' 
 );
 
 create table if not exists comments(
