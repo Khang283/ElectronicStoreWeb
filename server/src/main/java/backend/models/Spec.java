@@ -14,6 +14,8 @@ public class Spec {
     private String specName;
     @Column(name = "spec_detail")
     private String specDetail;
+    @Column(name = "spec_value")
+    private String specValue;
     @Column(name = "group_id")
     private Long groupId;
     @Column(name = "created_at")
@@ -23,10 +25,11 @@ public class Spec {
     @Column(name = "deleted")
     private boolean deleted;
 
-    public Spec(Long specId, String specName, String specDetail, Long groupId, Date createdAt, Date modifiedAt, boolean deleted) {
+    public Spec(Long specId, String specName, String specDetail, String specValue, Long groupId, Date createdAt, Date modifiedAt, boolean deleted) {
         this.specId = specId;
         this.specName = specName;
         this.specDetail = specDetail;
+        this.specValue = specValue;
         this.groupId = groupId;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
@@ -34,6 +37,14 @@ public class Spec {
     }
 
     public Spec() {
+    }
+
+    public String getSpecValue() {
+        return specValue;
+    }
+
+    public void setSpecValue(String specValue) {
+        this.specValue = specValue;
     }
 
     public Long getSpecId() {

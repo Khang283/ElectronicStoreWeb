@@ -1,11 +1,9 @@
 package backend.dao;
 
-import backend.dto.LoginResponseDTO;
 import backend.dto.SignUpRequestDTO;
 import backend.models.Role;
 import backend.models.User;
 import backend.service.JwtService;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -20,21 +18,17 @@ public class UserDAO {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwtService jwtService;
-
-    public Optional<User> createUser(SignUpRequestDTO newUser){
-        Optional<User> user = _user.findByUsername(newUser.getUsername());
-        if(user.isEmpty()){
-            _user.createUser(newUser.getUsername(),newUser.getPassword());
-            Optional<User> createdUser = _user.findByUsername(newUser.getUsername());
-            return createdUser;
-        }
-        return null;
-    }
-    public User saveUser(SignUpRequestDTO user){
+    public User createUser(SignUpRequestDTO user,String role){
+        Role role1 = role=="USER"?Role.USER:Role.ADMIN;
         var newUser = User.builder()
                 .username(user.getUsername())
-                .password(passwordEncoder.encode(user.getPassword())) //mã hóa mật khẩu trước khi đưa xuống db
-                .role(Role.USER)
+                .password(passwordEncoder.encode(user.getPassword()))
+                .userEmail(user.getUserEmail())//mã hóa mật khẩu trước khi đưa xuống db
+                .userAddress(user.getUserAddress())
+                .userPhone(user.getUserPhone())
+                .dob(user.getDob())
+                .gender(user.getGender())
+                .role(role1)
                 .build();
         _user.save(newUser); //lưu user mới (mật khẩu được lưu là mật khẩu đã được mã hóa ở trên)
         return newUser;

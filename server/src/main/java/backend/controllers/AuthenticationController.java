@@ -3,18 +3,14 @@ package backend.controllers;
 import backend.dto.LoginRequestDTO;
 import backend.dto.LoginResponseDTO;
 import backend.dto.SignUpRequestDTO;
-import backend.models.Role;
 import backend.service.JwtService;
 import backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.processing.RoundEnvironment;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -38,7 +34,7 @@ public class AuthenticationController {
     }
     @PostMapping("/signup")
     public ResponseEntity<LoginResponseDTO> register(@RequestBody SignUpRequestDTO user) {
-        LoginResponseDTO loginResponseDTO = userService.saveUser(user);
+        LoginResponseDTO loginResponseDTO = userService.createUser(user);
         if(loginResponseDTO==null){
             return ResponseEntity.badRequest().build();
         }

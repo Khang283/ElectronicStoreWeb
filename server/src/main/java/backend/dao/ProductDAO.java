@@ -21,13 +21,15 @@ public class ProductDAO {
     private ICategory _category;
     @Autowired
     private ICompany _company;
-    public List<ProductListDTO>getProductList(){
-        List<Product>products=_product.findAllProduct();
+    public List<ProductListDTO>getProductList(int limit, int offset){
+        List<Product>products=_product.findAll().stream().skip(offset).limit(limit).toList();
         List<ProductListDTO>productListDTOS = new ArrayList<>();
+
         for(Product product : products){
             ProductListDTO productDTo = productToProductListDTO(product);
             productListDTOS.add(productDTo);
         }
+
         return productListDTOS;
     }
     public ProductListDTO productToProductListDTO(Product product){
@@ -40,7 +42,7 @@ public class ProductDAO {
         productDTo.setProductVersion(product.getProductVersion());
         productDTo.setCategory(findProductCategory(product));
         productDTo.setCompany(findProductCompany(product));
-        Assets asset = _asset.findAssetByProductId(product.getProductId());
+        Assets asset = _asset.findAssetIconByProductId(product.getProductId());
         if(asset!=null){
             productDTo.setProductIcon(asset.getAssetPath());
         }
@@ -63,5 +65,24 @@ public class ProductDAO {
             }
         }
         return null;
+    }
+
+    public boolean deleteProductById(long productId){
+        try{
+            _product.setDelete(productId,true);
+        }
+        catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+        return true;
+    }
+    public boolean restoreProductById(long productId){
+        try{
+            _product.setDelete(productId,false);
+        }
+        catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+        return true;
     }
 }

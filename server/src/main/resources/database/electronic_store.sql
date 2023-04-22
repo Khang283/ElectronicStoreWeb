@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS order_item
 create table if not exists users(
 	user_id bigint primary KEY AUTO_INCREMENT,
 	username varchar(50) NOT NULL UNIQUE ,
-	pass_word varchar(20) NOT NULL,
+	pass_word VARCHAR(100) NOT NULL,
 	user_address varchar(500),
 	user_email varchar(100),
 	user_phone varchar(11),
@@ -154,7 +154,7 @@ ALTER TABLE order_item ADD CONSTRAINT PK_order_item PRIMARY KEY(order_id, produc
 
 CREATE TABLE IF NOT EXISTS company(
 	company_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-	company_name VARCHAR(100),
+	company_name VARCHAR(100) UNIQUE ,
 	created_at DATETIME DEFAULT NOW(),
 	modified_at DATETIME,
 	deleted BOOLEAN DEFAULT FALSE
@@ -488,11 +488,15 @@ INSERT INTO product(product_name,product_version,product_price,category_id,compa
 INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 1','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2022/11/30/638054217303176240_ip-14-pro-max-bac-1.jpg','image');
 INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 2','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/9/638139587930405930_iphone-14pro-trang-6.jpg','image');
 INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 3','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/9/638139587931205518_iphone-14pro-trang-4.jpg','image');
+INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('Samsung Galaxy S22 Ultra','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/2/2/638108933021851432_samsung-galaxy-s23-ultra-xanh-1.jpg','image');
+
 -- Product_Asset
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'icon');
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'slide');
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,2,'slide');
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,3,'slide');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (5,4,'slide');
+
 -- Spec_Group
 INSERT INTO spec_group (group_name) VALUES ('info');
 INSERT INTO spec_group (group_name) VALUES ('design and weight');
@@ -506,11 +510,41 @@ INSERT INTO spec_group (group_name) VALUES ('battery');
 INSERT INTO spec_group (group_name) VALUES ('sound');
 INSERT INTO spec_group (group_name) VALUES ('others');
 -- Spec
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lượng ram','8gb',4);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng ram','8gb',4);
 
-SELECT product_name, product_price, asset_path AS icon 
-FROM product, assets, product_asset
-WHERE product.product_id=product_asset.product_id AND assets.asset_id = product_asset.asset_id AND asset_role = 'icon'
+-- SELECT product_name, product_price, asset_path AS icon 
+-- FROM product, assets, product_asset
+-- WHERE product.product_id=product_asset.product_id AND assets.asset_id = product_asset.asset_id AND asset_role = 'icon'
+-- -- 
+-- SELECT assets.* 
+-- FROM assets,product,product_asset
+-- WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= 1
+-- -- 
+-- DELETE product_asset,product
+-- FROM product_asset
+-- INNER JOIN product
+-- ON product_asset.product_id = product.product_id
+-- WHERE product.product_id=5;
+-- 
+-- SELECT product.*
+-- FROM product
+-- INNER JOIN product_asset
+-- ON product.product_id = product_asset.product_asset_id
+-- INNER JOIN assets
+-- ON assets.asset_id = product_asset.asset_id
 
-SELECT assets.asset_id,asset_name,asset_path,asset_type,assets.created_at,assets.modified_at,assets.deleted FROM assets,product,product_asset
-WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= 1 AND product_asset.asset_role='icon'
+SELECT *
+FROM product
+
+SELECT product_name AS productName, product_price AS productPrice, asset_path AS productIcon, product_version AS productVersion,product_rating AS productRating,product_sold AS productSold,product_status AS productStatus,company_name AS company,category_name AS category 
+FROM product, assets, product_asset,company,category
+WHERE product.product_id=product_asset.product_id AND assets.asset_id = product_asset.asset_id AND product.category_id=category.category_id AND product.company_id = company.company_id
+AND asset_role = 'icon'
+LIMIT 10
+OFFSET 0
+
+UPDATE product_asset
+INNER JOIN product
+ON product_asset.product_id = product.product_id
+SET product_asset.deleted = FALSE , product.deleted=FALSE  
+WHERE product.product_id = 1

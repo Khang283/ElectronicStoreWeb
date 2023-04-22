@@ -14,5 +14,5 @@ public interface IAsset extends JpaRepository<Assets,Long> {
                     "FROM assets,product,product_asset\n" +
                     "WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= :productId AND product_asset.asset_role='icon'"
             ,nativeQuery = true)
-    Assets findAssetByProductId(@Param("productId")Long productId);
+    Assets findAssetIconByProductId(@Param("productId")Long productId);
 }

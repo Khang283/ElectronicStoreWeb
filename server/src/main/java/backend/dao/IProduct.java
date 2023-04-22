@@ -11,16 +11,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface IProduct extends JpaRepository<Product,Long> {
-    @Query(value="SELECT * FROM product", nativeQuery = true)
+    @Query(value =  "SELECT *\n" +
+                    "FROM product\n" +
+                    "WHERE product.product_id = FALSE"
+                    , nativeQuery = true)
     List<Product>findAllProduct();
-    @Query(value = "SELECT product_name, product_price, asset_path AS icon \n" +
-                    "FROM product, assets, product_asset\n" +
-                    "WHERE product.product_id=product_asset.product_id AND assets.asset_id = product_asset.asset_id AND asset_role = 'icon'",
-                    nativeQuery = true)
-    List<ProductListDTO>getProductList();
-
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO product (product_name,product_price) VALUES (:productName,:productPrice)",nativeQuery = true)
     void insertProduct(@Param("productName") String productName, @Param("productPrice") double productPrice);
+
+    @Modifying
+    @Transactional
+    @Query(value =  "UPDATE product_asset\n" +
+                    "INNER JOIN product\n" +
+                    "ON product_asset.product_id = product.product_id\n" +
+                    "SET product_asset.deleted = :deleted , product.deleted=:deleted  \n" +
+                    "WHERE product.product_id = :productId", nativeQuery = true)
+    void setDelete(@Param("productId")long productId, @Param("deleted")boolean deleted);
 }

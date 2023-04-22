@@ -2,13 +2,9 @@ package backend.service;
 
 import backend.dao.*;
 import backend.dto.ProductListDTO;
-import backend.models.*;
-import org.hibernate.annotations.NaturalId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 @Service
 public class ProductService {
@@ -22,15 +18,23 @@ public class ProductService {
     private ICompany _company;
     @Autowired
     private ProductDAO productDAO;
-    public List<ProductListDTO> getProductList(){
-        List<ProductListDTO>productListDTOS = productDAO.getProductList();
-        if(productListDTOS == null){
+    public List<ProductListDTO> getProductList(int page){
+        if(page<1) return null;
+        int limit = 10;
+        int offset = page*limit - limit;
+        List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset);
+        if(productListDTOS == null || productListDTOS.isEmpty()){
             return null;
         }
         return productListDTOS;
     }
-    public List<Product>getAllProduct(){
-        List<Product>products = _product.findAllProduct();
-        return products;
+
+    public boolean deleteProductById(long productId){
+        return productDAO.deleteProductById(productId);
     }
+
+    public boolean restoreProductById(long productId){
+        return productDAO.restoreProductById(productId);
+    }
+
 }
