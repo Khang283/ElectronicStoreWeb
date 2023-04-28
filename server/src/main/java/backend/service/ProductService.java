@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.dao.*;
+import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,10 @@ public class ProductService {
 
     public boolean restoreProductById(long productId){
         return productDAO.restoreProductById(productId);
+    }
+
+    public boolean insertProduct(InsertProductDTO insertProductDTO) {
+        return productDAO.insertProduct(insertProductDTO);
     }
 
 }

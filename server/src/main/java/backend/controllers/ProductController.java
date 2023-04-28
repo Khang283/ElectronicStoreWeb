@@ -1,6 +1,7 @@
 package backend.controllers;
 
 import backend.dto.DeleteProductDTO;
+import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,14 @@ public class ProductController {
     public ResponseEntity<String>restoreProductById(@RequestBody DeleteProductDTO deleteProductDTO){
         if(productService.restoreProductById(deleteProductDTO.getProductId())){
             return ResponseEntity.ok("Đã khôi phục sản phẩm");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/v1/product/insert")
+    public ResponseEntity<String>insertProduct(@RequestBody InsertProductDTO insertProductDTO){
+        if (productService.insertProduct(insertProductDTO)) {
+            return ResponseEntity.ok("Đã thêm thành công");
         }
         return ResponseEntity.badRequest().build();
     }

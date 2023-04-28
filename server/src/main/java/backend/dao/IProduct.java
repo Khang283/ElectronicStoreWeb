@@ -16,10 +16,11 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "WHERE product.product_id = FALSE"
                     , nativeQuery = true)
     List<Product>findAllProduct();
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO product (product_name,product_price) VALUES (:productName,:productPrice)",nativeQuery = true)
-    void insertProduct(@Param("productName") String productName, @Param("productPrice") double productPrice);
+//    @Modifying
+//    @Transactional
+//    @Query(value = "INSERT INTO product (product_name,product_price) " +
+//            "VALUES (:productName,:productPrice)",nativeQuery = true)
+//    void insertProduct(@Param("productName") String productName, @Param("productPrice") double productPrice);
 
     @Modifying
     @Transactional
@@ -29,4 +30,16 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "SET product_asset.deleted = :deleted , product.deleted=:deleted  \n" +
                     "WHERE product.product_id = :productId", nativeQuery = true)
     void setDelete(@Param("productId")long productId, @Param("deleted")boolean deleted);
+
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO product (product_name, category_id, product_version, product_stock, product_price)\n" +
+                    "VALUES (:productName, :categoryId, :companyId, :productVersion, :productStock, :productPrice)", nativeQuery = true)
+    void insertProduct(@Param("productName") String productName, @Param("categoryId") int categoryId,
+                       @Param("companyId") int companyId, @Param("productVersion") String productVersion,
+                       @Param("productStock") int productStock, @Param("productPrice") double productPrice);
+
+    @Query(value = "SELECT COUNT(*) FROM product")
+    int countProduct();
 }

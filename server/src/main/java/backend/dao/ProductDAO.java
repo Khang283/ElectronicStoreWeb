@@ -1,6 +1,9 @@
 package backend.dao;
 
+import backend.dto.InsertAssetDTO;
+import backend.dto.InsertSpecDTO;
 import backend.dto.ProductListDTO;
+import backend.dto.InsertProductDTO;
 import backend.models.Assets;
 import backend.models.Category;
 import backend.models.Company;
@@ -21,6 +24,12 @@ public class ProductDAO {
     private ICategory _category;
     @Autowired
     private ICompany _company;
+    @Autowired
+    private IProductAsset _productAsset;
+    @Autowired
+    private ISpec _spec;
+    @Autowired
+    private IProductDetail _productDetail;
     public List<ProductListDTO>getProductList(int limit, int offset){
         List<Product>products=_product.findAll().stream().skip(offset).limit(limit).toList();
         List<ProductListDTO>productListDTOS = new ArrayList<>();
@@ -85,4 +94,29 @@ public class ProductDAO {
         }
         return true;
     }
+
+    public boolean insertProduct (InsertProductDTO product) {
+        try {
+            _product.insertProduct(product.getProductName(), product.getCategoryId(),
+                                    product.getCompanyId(), product.getProductVersion(),
+                                    product.getProductStock(),product.getProductPrice());
+            int idAsset = _asset.countAsset();
+            for (InsertAssetDTO lst: product.getLstAsset()) {
+                idAsset++;
+                _asset.insertAsset(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
+                _productAsset.insertProductAsset(_product.countProduct()+1, idAsset, lst.getAssetRole());
+            }
+            int idSpec = _spec.countSpec();
+            for (InsertSpecDTO lst: product.getLstSpec()) {
+                idSpec++;
+                _spec.insertSpec(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
+                _productDetail.insertProductDetail(_product.countProduct()+1, idSpec);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+        return true;
+    }
+
 }
