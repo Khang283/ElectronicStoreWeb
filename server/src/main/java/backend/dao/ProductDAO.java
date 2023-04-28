@@ -100,17 +100,20 @@ public class ProductDAO {
             _product.insertProduct(product.getProductName(), product.getCategoryId(),
                                     product.getCompanyId(), product.getProductVersion(),
                                     product.getProductStock(),product.getProductPrice());
-            int idAsset = _asset.countAsset();
+
+            int idProduct= _product.getIdProduct(product.getProductName(), product.getCategoryId(), product.getCompanyId(), product.getProductVersion());
+
+            int idAsset = 0;
             for (InsertAssetDTO lst: product.getLstAsset()) {
-                idAsset++;
                 _asset.insertAsset(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
-                _productAsset.insertProductAsset(_product.countProduct()+1, idAsset, lst.getAssetRole());
+                idAsset = _asset.getIdAsset(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
+                _productAsset.insertProductAsset(idProduct, idAsset, lst.getAssetRole());
             }
-            int idSpec = _spec.countSpec();
+            int idSpec = 0;
             for (InsertSpecDTO lst: product.getLstSpec()) {
-                idSpec++;
                 _spec.insertSpec(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
-                _productDetail.insertProductDetail(_product.countProduct()+1, idSpec);
+                idSpec = _spec.getIdSpec(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
+                _productDetail.insertProductDetail(idProduct, idSpec);
             }
         }
         catch(Exception e){

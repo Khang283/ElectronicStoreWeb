@@ -24,6 +24,10 @@ public interface IAsset extends JpaRepository<Assets,Long> {
             "VALUES (:assetName, :assetPath, :assetType)", nativeQuery = true)
     void insertAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
 
-    @Query(value = "SELECT COUNT(*) FROM assets")
-    int countAsset();
+    @Query(value = "SELECT asset_id \n" +
+            "FROM assets\n" +
+            "WHERE asset_name= :assetName\n" +
+            "AND asset_path= :assetPath\n" +
+            "AND asset_type= :assetType", nativeQuery = true)
+    int getIdAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
 }

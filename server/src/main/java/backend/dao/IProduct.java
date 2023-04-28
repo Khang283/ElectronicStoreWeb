@@ -34,12 +34,18 @@ public interface IProduct extends JpaRepository<Product,Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO product (product_name, category_id, product_version, product_stock, product_price)\n" +
+    @Query(value = "INSERT INTO product (product_name, category_id, company_id, product_version, product_stock, product_price)\n" +
                     "VALUES (:productName, :categoryId, :companyId, :productVersion, :productStock, :productPrice)", nativeQuery = true)
     void insertProduct(@Param("productName") String productName, @Param("categoryId") int categoryId,
                        @Param("companyId") int companyId, @Param("productVersion") String productVersion,
                        @Param("productStock") int productStock, @Param("productPrice") double productPrice);
 
-    @Query(value = "SELECT COUNT(*) FROM product")
-    int countProduct();
+    @Query(value = "SELECT product_id \n" +
+            "FROM product\n" +
+            "WHERE product_name= :productName\n" +
+            "AND category_id= :categoryId\n" +
+            "AND company_id= :companyId\n" +
+            "AND product_version= :productVersion", nativeQuery = true)
+    Integer getIdProduct(@Param("productName") String productName, @Param("categoryId") int categoryId,
+                  @Param("companyId") int companyId, @Param("productVersion") String productVersion);
 }

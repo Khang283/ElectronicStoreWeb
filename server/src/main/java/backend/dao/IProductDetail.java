@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface IProductDetail extends JpaRepository<ProductDetail, Long> {
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO product_asset (product_id, spec_id)\n" +
+    @Query(value = "INSERT INTO product_detail (product_id, spec_id)\n" +
             "VALUES (:productId, :specId)", nativeQuery = true)
     void insertProductDetail(@Param("productId") int productId, @Param("specId") int specId);
 }
