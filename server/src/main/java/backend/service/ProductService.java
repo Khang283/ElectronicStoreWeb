@@ -1,6 +1,7 @@
 package backend.service;
 
 import backend.dao.*;
+import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import backend.models.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,4 +48,8 @@ public class ProductService {
         int offset = page*limit - limit;
         return productDAO.findProductByKeyWord(keyword,limit,offset);
     }
+    public boolean insertProduct(InsertProductDTO insertProductDTO) {
+        return productDAO.insertProduct(insertProductDTO);
+    }
+
 }

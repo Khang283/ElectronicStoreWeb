@@ -2,8 +2,10 @@ package backend.dao;
 
 import backend.models.Assets;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,4 +17,17 @@ public interface IAsset extends JpaRepository<Assets,Long> {
                     "WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= :productId AND product_asset.asset_role='icon'"
             ,nativeQuery = true)
     Assets findAssetIconByProductId(@Param("productId")Long productId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO assets (asset_name, asset_path, asset_type)\n" +
+            "VALUES (:assetName, :assetPath, :assetType)", nativeQuery = true)
+    void insertAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
+
+    @Query(value = "SELECT asset_id \n" +
+            "FROM assets\n" +
+            "WHERE asset_name= :assetName\n" +
+            "AND asset_path= :assetPath\n" +
+            "AND asset_type= :assetType", nativeQuery = true)
+    int getIdAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
 }

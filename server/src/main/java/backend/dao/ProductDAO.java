@@ -1,7 +1,14 @@
 package backend.dao;
 
+import backend.dto.InsertAssetDTO;
+import backend.dto.InsertSpecDTO;
 import backend.dto.ProductListDTO;
 import backend.models.*;
+import backend.dto.InsertProductDTO;
+import backend.models.Assets;
+import backend.models.Category;
+import backend.models.Company;
+import backend.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +26,10 @@ public class ProductDAO {
     @Autowired
     private ICompany _company;
     @Autowired IProductDetail _productDetail;
+    @Autowired
+    private IProductAsset _productAsset;
+    @Autowired
+    private ISpec _spec;
     public List<ProductListDTO>getProductList(int limit, int offset,String type){
         List<Product>products=_product.findAll().stream().skip(offset).limit(limit).toList();
         List<ProductListDTO>productListDTOS = new ArrayList<>();
@@ -103,4 +114,30 @@ public class ProductDAO {
         }
         return productListDTOS;
     }
+
+    public boolean insertProduct (InsertProductDTO product) {
+        try {
+            _product.insertProduct(product.getProductName(), product.getCategoryId(),
+                                    product.getCompanyId(), product.getProductVersion(),
+                                    product.getProductStock(),product.getProductPrice());
+
+            int productId= _product.findProductId(product.getProductName(), product.getCategoryId(), product.getCompanyId(), product.getProductVersion());
+
+            for (InsertAssetDTO lst: product.getAssets()) {
+                _asset.insertAsset(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
+                int assetId = _asset.getIdAsset(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
+                _productAsset.insertProductAsset(productId, assetId, lst.getAssetRole());
+            }
+            for (InsertSpecDTO lst: product.getSpecs()) {
+                _spec.insertSpec(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
+                int specId = _spec.getIdSpec(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
+                _productDetail.insertProductDetail(productId, specId);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+        return true;
+    }
+
 }

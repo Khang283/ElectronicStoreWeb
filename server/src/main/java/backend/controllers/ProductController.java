@@ -1,6 +1,7 @@
 package backend.controllers;
 
 import backend.dto.DeleteProductDTO;
+import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,12 @@ public class ProductController {
         }
         return ResponseEntity.badRequest().build();
     }
-    
+
+    @PostMapping("/admin/product/add")
+    public ResponseEntity<String>insertProduct(@RequestBody InsertProductDTO insertProductDTO){
+        if (productService.insertProduct(insertProductDTO)) {
+            return ResponseEntity.ok("Đã thêm thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

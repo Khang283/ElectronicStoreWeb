@@ -1,6 +1,5 @@
 package backend.dao;
 
-import backend.dto.ProductListDTO;
 import backend.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -16,10 +15,11 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "WHERE product.product_id = FALSE"
                     , nativeQuery = true)
     List<Product>findAllProduct();
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO product (product_name,product_price) VALUES (:productName,:productPrice)",nativeQuery = true)
-    void insertProduct(@Param("productName") String productName, @Param("productPrice") double productPrice);
+//    @Modifying
+//    @Transactional
+//    @Query(value = "INSERT INTO product (product_name,product_price) " +
+//            "VALUES (:productName,:productPrice)",nativeQuery = true)
+//    void insertProduct(@Param("productName") String productName, @Param("productPrice") double productPrice);
 
     @Modifying
     @Transactional
@@ -56,4 +56,21 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "ON spec.group_id = spec_group.group_id\n" +
                     "WHERE (spec_value LIKE :keyword OR spec_detail LIKE :keyword OR spec_name LIKE :keyword )",nativeQuery = true)
     List<Product>findProductByKeyWord(@Param("keyword") String keyword);
+
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO product (product_name, category_id, company_id, product_version, product_stock, product_price)\n" +
+                    "VALUES (:productName, :categoryId, :companyId, :productVersion, :productStock, :productPrice)", nativeQuery = true)
+    void insertProduct(@Param("productName") String productName, @Param("categoryId") int categoryId,
+                       @Param("companyId") int companyId, @Param("productVersion") String productVersion,
+                       @Param("productStock") int productStock, @Param("productPrice") double productPrice);
+
+    @Query(value = "SELECT product_id \n" +
+            "FROM product\n" +
+            "WHERE product_name= :productName\n" +
+            "AND category_id= :categoryId\n" +
+            "AND company_id= :companyId\n" +
+            "AND product_version= :productVersion", nativeQuery = true)
+    Integer findProductId(@Param("productName") String productName, @Param("categoryId") int categoryId,
+                          @Param("companyId") int companyId, @Param("productVersion") String productVersion);
 }
