@@ -2,6 +2,7 @@ package backend.service;
 
 import backend.dao.*;
 import backend.dto.ProductListDTO;
+import backend.models.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,11 @@ public class ProductService {
     private ICompany _company;
     @Autowired
     private ProductDAO productDAO;
-    public List<ProductListDTO> getProductList(int page){
+    public List<ProductListDTO> getProductList(int page,String type){
         if(page<1) return null;
         int limit = 10;
         int offset = page*limit - limit;
-        List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset);
+        List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset,type);
         if(productListDTOS == null || productListDTOS.isEmpty()){
             return null;
         }
@@ -36,5 +37,14 @@ public class ProductService {
     public boolean restoreProductById(long productId){
         return productDAO.restoreProductById(productId);
     }
+    public List<ProductDetail>getAllProductDetail(){
+        return productDAO.getAllProductDetail();
+    }
 
+    public List<ProductListDTO>findProductByKeyWord(String keyword,int page){
+        if(page<1) return null;
+        int limit = 10;
+        int offset = page*limit - limit;
+        return productDAO.findProductByKeyWord(keyword,limit,offset);
+    }
 }

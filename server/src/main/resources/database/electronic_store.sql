@@ -492,10 +492,18 @@ INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('Samsung Galaxy S2
 
 -- Product_Asset
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'icon');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (2,1,'icon');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (3,1,'icon');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (4,1,'icon');
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'slide');
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,2,'slide');
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,3,'slide');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (2,2,'slide');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (3,2,'slide');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (4,2,'slide');
 INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (5,4,'slide');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (5,4,'icon');
+INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (6,4,'icon');
 
 -- Spec_Group
 INSERT INTO spec_group (group_name) VALUES ('info');
@@ -510,7 +518,24 @@ INSERT INTO spec_group (group_name) VALUES ('battery');
 INSERT INTO spec_group (group_name) VALUES ('sound');
 INSERT INTO spec_group (group_name) VALUES ('others');
 -- Spec
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng ram','8gb',4);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃ†Â°Ã¡Â»Â£ng ram','8gb',4);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu','PhiÃƒÂªn bÃ¡ÂºÂ£n CPU','Snapdragon 8 Gen 1',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu type','LoÃ¡ÂºÂ¡i CPU','Octa-Core',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu core','SÃ¡Â»â€˜ nhÃƒÂ¢n','8',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu speed','TÃ¡Â»â€˜c Ã„â€˜Ã¡Â»â„¢ tÃ¡Â»â€˜i Ã„â€˜a','2.20 GHz',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu bit','64 Bits','KhÃƒÂ´ng',3);
+-- Product detail
+INSERT INTO product_detail (product_id,spec_id) VALUES (1,1);
+INSERT INTO product_detail (product_id,spec_id) VALUES (2,1);
+INSERT INTO product_detail (product_id,spec_id) VALUES (3,1);
+INSERT INTO product_detail (product_id,spec_id) VALUES (4,1);
+INSERT INTO product_detail (product_id,spec_id) VALUES (5,1);
+INSERT INTO product_detail (product_id,spec_id) VALUES (5,2);
+INSERT INTO product_detail (product_id,spec_id) VALUES (5,3);
+INSERT INTO product_detail (product_id,spec_id) VALUES (5,4);
+INSERT INTO product_detail (product_id,spec_id) VALUES (5,5);
+INSERT INTO product_detail (product_id,spec_id) VALUES (5,6);
+INSERT INTO product_detail (product_id,spec_id) VALUES (6,1);
 
 -- SELECT product_name, product_price, asset_path AS icon 
 -- FROM product, assets, product_asset
@@ -548,3 +573,52 @@ INNER JOIN product
 ON product_asset.product_id = product.product_id
 SET product_asset.deleted = FALSE , product.deleted=FALSE  
 WHERE product.product_id = 1
+
+SELECT spec_group.group_name, spec.*, product.*
+FROM product,spec,spec_group,product_detail
+WHERE product.product_id = product_detail.product_id AND product_detail.spec_id = spec.spec_id AND spec.group_id = spec_group.group_id AND product_name LIKE 'iphone%'
+
+SELECT DISTINCT product.*
+FROM product
+INNER JOIN ( SELECT company_id,company_name 
+				 FROM company
+				 WHERE company_name LIKE '%%') AS a
+ON a.company_id = product.company_id
+INNER JOIN ( SELECT category_id,category_name 
+				 FROM category
+				 WHERE category_name LIKE '%%') AS b
+ON b.category_id = product.category_id
+INNER JOIN ( SELECT DISTINCT spec.spec_id,product_id,spec_detail,spec_value
+				 FROM product_detail
+				 INNER JOIN spec
+				 ON spec.spec_id = product_detail.spec_id
+				 WHERE spec_detail LIKE '%%') AS c
+ON c.product_id = product.product_id
+WHERE (product.product_price BETWEEN 0 AND 100000000) AND product.product_rating >=0 AND product.product_sales = FALSE  
+
+
+SELECT DISTINCT product.*
+FROM product
+WHERE product_name LIKE '%iphone%'
+UNION 
+SELECT DISTINCT product.*
+FROM product
+INNER JOIN company
+ON company.company_id = product.company_id 
+WHERE company_name LIKE '%iphone%'
+UNION 
+SELECT DISTINCT product.*
+FROM product
+INNER JOIN category
+ON category.category_id = product.category_id 
+WHERE category_name LIKE '%iphone%'
+UNION
+SELECT DISTINCT product.*
+FROM product
+INNER JOIN product_detail
+ON product_detail.product_id = product.product_id 
+INNER JOIN spec 
+ON spec.spec_id = product_detail.spec_id 
+INNER JOIN spec_group
+ON spec.group_id = spec_group.group_id
+WHERE  (spec_value LIKE '%iphone%' OR spec_detail LIKE'%iphone%')

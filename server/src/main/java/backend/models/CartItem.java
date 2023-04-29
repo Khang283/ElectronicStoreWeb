@@ -21,7 +21,7 @@ public class CartItem {
     @Column(name="deleted")
     private boolean deleted;
 
-    private static class CartItemId implements Serializable {
+    public static class CartItemId implements Serializable {
         @Column(name="cart_id")
         private Long cartId;
         @Column(name="product_id")

@@ -1,10 +1,7 @@
 package backend.dao;
 
 import backend.dto.ProductListDTO;
-import backend.models.Assets;
-import backend.models.Category;
-import backend.models.Company;
-import backend.models.Product;
+import backend.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,13 +18,16 @@ public class ProductDAO {
     private ICategory _category;
     @Autowired
     private ICompany _company;
-    public List<ProductListDTO>getProductList(int limit, int offset){
+    @Autowired IProductDetail _productDetail;
+    public List<ProductListDTO>getProductList(int limit, int offset,String type){
         List<Product>products=_product.findAll().stream().skip(offset).limit(limit).toList();
         List<ProductListDTO>productListDTOS = new ArrayList<>();
 
         for(Product product : products){
-            ProductListDTO productDTo = productToProductListDTO(product);
-            productListDTOS.add(productDTo);
+            ProductListDTO productDTO = productToProductListDTO(product);
+            if(productDTO.getCategory().equals(type)){
+                productListDTOS.add(productDTO);
+            }
         }
 
         return productListDTOS;
@@ -60,7 +60,7 @@ public class ProductDAO {
     public String findProductCategory(Product product){
         List<Category>categories = _category.findAllCategory();
         for(Category category : categories){
-            if(product.getCompanyId() == category.getCategoryId()){
+            if(product.getCategoryId() == category.getCategoryId()){
                 return category.getCategoryName();
             }
         }
@@ -84,5 +84,23 @@ public class ProductDAO {
             System.out.println("Error: "+e);
         }
         return true;
+    }
+    public List<ProductDetail> getAllProductDetail(){
+        return _productDetail.findAll();
+    }
+
+    public List<ProductListDTO>findProductByKeyWord(String keyword,int limit, int offset){
+        List<ProductListDTO> productListDTOS  = new ArrayList<>();
+        if(keyword != null){
+            keyword = "%"+keyword+"%" ;
+            List<Product>products = _product.findProductByKeyWord(keyword).stream().limit(limit).skip(offset).toList();
+            if(!products.isEmpty() && products != null){
+                for(Product product : products){
+                    ProductListDTO productDTo = productToProductListDTO(product);
+                    productListDTOS.add(productDTo);
+                }
+            }
+        }
+        return productListDTOS;
     }
 }
