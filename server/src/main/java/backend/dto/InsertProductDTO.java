@@ -12,8 +12,8 @@ public class InsertProductDTO {
     private int productStock;
     private BigDecimal productPrice;
 
-    private List<InsertAssetDTO> lstAsset = new ArrayList<>();
-    private List<InsertSpecDTO> lstSpec= new ArrayList<>();
+    private List<InsertAssetDTO> assets = new ArrayList<>();
+    private List<InsertSpecDTO> specs = new ArrayList<>();
 
     public InsertProductDTO() {
     }
@@ -25,8 +25,8 @@ public class InsertProductDTO {
         this.productVersion = productVersion;
         this.productStock = productStock;
         this.productPrice = productPrice;
-        this.lstAsset = lstAsset;
-        this.lstSpec = lstSpec;
+        this.assets = lstAsset;
+        this.specs = lstSpec;
     }
 
     public String getProductName() {
@@ -77,20 +77,20 @@ public class InsertProductDTO {
         this.productPrice = productPrice;
     }
 
-    public List<InsertAssetDTO> getLstAsset() {
-        return lstAsset;
+    public List<InsertAssetDTO> getAssets() {
+        return assets;
     }
 
-    public void setLstAsset(List<InsertAssetDTO> lstAsset) {
-        this.lstAsset = lstAsset;
+    public void setAssets(List<InsertAssetDTO> assets) {
+        this.assets = assets;
     }
 
-    public List<InsertSpecDTO> getLstSpec() {
-        return lstSpec;
+    public List<InsertSpecDTO> getSpecs() {
+        return specs;
     }
 
-    public void setLstSpec(List<InsertSpecDTO> lstSpec) {
-        this.lstSpec = lstSpec;
+    public void setSpecs(List<InsertSpecDTO> specs) {
+        this.specs = specs;
     }
 }
 

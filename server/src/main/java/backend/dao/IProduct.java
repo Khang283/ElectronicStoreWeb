@@ -1,6 +1,5 @@
 package backend.dao;
 
-import backend.dto.ProductListDTO;
 import backend.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -46,6 +45,6 @@ public interface IProduct extends JpaRepository<Product,Long> {
             "AND category_id= :categoryId\n" +
             "AND company_id= :companyId\n" +
             "AND product_version= :productVersion", nativeQuery = true)
-    Integer getIdProduct(@Param("productName") String productName, @Param("categoryId") int categoryId,
-                  @Param("companyId") int companyId, @Param("productVersion") String productVersion);
+    Integer findProductId(@Param("productName") String productName, @Param("categoryId") int categoryId,
+                          @Param("companyId") int companyId, @Param("productVersion") String productVersion);
 }

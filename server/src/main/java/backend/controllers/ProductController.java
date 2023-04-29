@@ -39,7 +39,7 @@ public class ProductController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PutMapping("/v1/product/insert")
+    @PostMapping("/v1/product/insert")
     public ResponseEntity<String>insertProduct(@RequestBody InsertProductDTO insertProductDTO){
         if (productService.insertProduct(insertProductDTO)) {
             return ResponseEntity.ok("Đã thêm thành công");
