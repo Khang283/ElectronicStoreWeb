@@ -3,154 +3,154 @@ package backend.models;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Columns;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.Date;
 
-@Entity
+@Entity(name = "product")
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="product_id")
-    private Long product_id;
-
+    private Long productId;
     @Column(name="product_name")
-    private String product_name;
+    private String productName;
     @Column(name="category_id")
-    private Long category_id;
+    private Long categoryId;
     @Column(name="company_id")
-    private Long company_id;
+    private Long companyId;
     @Column(name="product_version")
-    private String product_version;
+    private String productVersion;
     @Column(name="product_stock")
-    private Long product_stock;
+    private Long productStock;
     @Column(name="product_rating")
-    private Long product_rating;
+    private Long productRating;
     @Column(name="product_price")
-    private Double product_price;
+    private BigDecimal productPrice;
     @Column(name="product_sold")
-    private Long product_sold;
+    private Long productSold;
     @Column(name="product_status")
-    private String product_status;
+    private String productStatus;
     @Column(name="created_at")
-    private Date created_at;
+    private Date createdAt;
     @Column(name="modified_at")
-    private Date modified_at;
+    private Date modifiedAt;
     @Column(name="deleted")
     private boolean deleted;
 
-    public Product(Long product_id, String product_name, Long category_id, Long company_id, String product_version, Long product_stock, Long product_rating, Double product_price, Long product_sold, String product_status, Date created_at, Date modified_at, boolean deleted) {
-        this.product_id = product_id;
-        this.product_name = product_name;
-        this.category_id = category_id;
-        this.company_id = company_id;
-        this.product_version = product_version;
-        this.product_stock = product_stock;
-        this.product_rating = product_rating;
-        this.product_price = product_price;
-        this.product_sold = product_sold;
-        this.product_status = product_status;
-        this.created_at = created_at;
-        this.modified_at = modified_at;
+    public Product(Long productId, String productName, Long categoryId, Long companyId, String productVersion, Long productStock, Long productRating, BigDecimal productPrice, Long productSold, String productStatus, Date createdAt, Date modifiedAt, boolean deleted) {
+        this.productId = productId;
+        this.productName = productName;
+        this.categoryId = categoryId;
+        this.companyId = companyId;
+        this.productVersion = productVersion;
+        this.productStock = productStock;
+        this.productRating = productRating;
+        this.productPrice = productPrice;
+        this.productSold = productSold;
+        this.productStatus = productStatus;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
         this.deleted = deleted;
     }
 
     public Product() {
     }
 
-    public Long getProduct_id() {
-        return product_id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
-    public String getProduct_name() {
-        return product_name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct_name(String product_name) {
-        this.product_name = product_name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public Long getCategory_id() {
-        return category_id;
+    public Long getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory_id(Long category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public Long getCompany_id() {
-        return company_id;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany_id(Long company_id) {
-        this.company_id = company_id;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
-    public String getProduct_version() {
-        return product_version;
+    public String getProductVersion() {
+        return productVersion;
     }
 
-    public void setProduct_version(String product_version) {
-        this.product_version = product_version;
+    public void setProductVersion(String productVersion) {
+        this.productVersion = productVersion;
     }
 
-    public Long getProduct_stock() {
-        return product_stock;
+    public Long getProductStock() {
+        return productStock;
     }
 
-    public void setProduct_stock(Long product_stock) {
-        this.product_stock = product_stock;
+    public void setProductStock(Long productStock) {
+        this.productStock = productStock;
     }
 
-    public Long getProduct_rating() {
-        return product_rating;
+    public Long getProductRating() {
+        return productRating;
     }
 
-    public void setProduct_rating(Long product_rating) {
-        this.product_rating = product_rating;
+    public void setProductRating(Long productRating) {
+        this.productRating = productRating;
     }
 
-    public Double getProduct_price() {
-        return product_price;
+    public BigDecimal getProductPrice() {
+        return productPrice;
     }
 
-    public void setProduct_price(Double product_price) {
-        this.product_price = product_price;
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public Long getProduct_sold() {
-        return product_sold;
+    public Long getProductSold() {
+        return productSold;
     }
 
-    public void setProduct_sold(Long product_sold) {
-        this.product_sold = product_sold;
+    public void setProductSold(Long productSold) {
+        this.productSold = productSold;
     }
 
-    public String getProduct_status() {
-        return product_status;
+    public String getProductStatus() {
+        return productStatus;
     }
 
-    public void setProduct_status(String product_status) {
-        this.product_status = product_status;
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public Date getModified_at() {
-        return modified_at;
+    public Date getModifiedAt() {
+        return modifiedAt;
     }
 
-    public void setModified_at(Date modified_at) {
-        this.modified_at = modified_at;
+    public void setModifiedAt(Date modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public boolean isDeleted() {
