@@ -100,14 +100,22 @@ public class ProductDAO {
             _product.setModify(modProd.getProductId(),modProd.getProductName(),modProd.getProductVersion() ,modProd.getCompanyId() , modProd.getProductStock(),modProd.getProductPrice(), modProd.getProductRating(), modProd.getCategoryId());
             Long productId = _product.getProductId(modProd.getProductName(), modProd.getCategoryId(), modProd.getCompanyId(), modProd.getProductVersion());
             for(ModifyAssetDTO lst : modProd.getProductAsset()){
-                _asset.modifyAsset(lst.getAssetId(), lst.getAssetName(), lst.getAssetPath(), lst.getAssetType(), lst.getAssetRole());
-                Long assetId = _asset.getAssetId(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType(), lst.getAssetRole());
-                _productAsset.modifyProductAsset(productId,assetId, lst.getAssetRole());
+                if(lst.isDeleted() == false){
+                _asset.modifyAsset(lst.getAssetId(), lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
+                Long assetId = _asset.getAssetId(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
+                _productAsset.modifyProductAsset(productId,assetId,lst.getAssetRole());}
+                else if(lst.isDeleted() == true){
+                    _productAsset.setDeleteAsset(productId, lst.getAssetId(),lst.getAssetRole(), true);
+                }
             }
             for(ModifySpecDTO lst : modProd.getProductDetail()){
+                if(lst.isDeleted() == false){
                 _spec.modifySpec(lst.getSpecId(),lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
                 Long specId = _spec.getSpecId(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
-                _productDetail.modifyProductDetail(productId, specId);
+                _productDetail.modifyProductDetail(productId, specId);}
+                else if(lst.isDeleted() == true){
+                    _productDetail.setDeleteDetail(productId, lst.getSpecId(), true);
+                }
             }
         }
         catch(Exception e){

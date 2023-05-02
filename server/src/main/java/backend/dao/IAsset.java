@@ -19,12 +19,17 @@ public interface IAsset extends JpaRepository<Assets,Long> {
     Assets findAssetIconByProductId(@Param("productId")Long productId);
     @Modifying
     @Transactional
-    @Query(value="UPDATE asset\n " +
+    @Query(value="UPDATE assets\n " +
             "WHERE asset_id = :assetId\n"+
-            "SET asset_name = :assetName, asset_path = :assetPath, asset_type = :assetType, asset_role = :assetRole", nativeQuery = true)
-           void modifyAsset(@Param("assetId") Long assetId, @Param("assetName") String assetName, @Param ("assetPath") String assetPath, @Param("assetType") String assetType, @Param("assetRole") String assetRole);
-    @Query(value = "SELECT assed_id\n" +
-            "FROM asset\n" +
-            "WHERE asset_name = :assetName, asset_path = :assetPath AND asset_type = :assetType AND asset_role = :assetRole", nativeQuery = true)
-    Long getAssetId(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType, @Param("assetRole") String assetRole);
+            "SET asset_name = :assetName, asset_path = :assetPath, asset_type = :assetType", nativeQuery = true)
+           void modifyAsset(@Param("assetId") Long assetId, @Param("assetName") String assetName, @Param ("assetPath") String assetPath, @Param("assetType") String assetType);
+    @Query(value = "SELECT asset_id\n" +
+            "FROM assets\n" +
+            "WHERE asset_name = :assetName, asset_path = :assetPath AND asset_type = :assetType", nativeQuery = true)
+    Long getAssetId(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO assets (asset_name, asset_path, asset_type)\n" +
+            "VALUES (:assetName, :assetPath, :assetType)", nativeQuery = true)
+    void insertAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
 }

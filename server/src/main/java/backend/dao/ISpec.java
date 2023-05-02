@@ -29,4 +29,10 @@ public interface ISpec extends JpaRepository<Spec,Long> {
                 "AND spec_value= :specValue", nativeQuery = true)
     Long getSpecId(@Param("specName") String specName, @Param("groupId") Long groupId,
                   @Param("specDetail") String specDetail, @Param("specValue") String specValue);
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO spec (spec_name, group_id, spec_detail, spec_value)\n" +
+            "VALUES (:specName, :groupId, :specDetail, :specValue)", nativeQuery = true)
+    void insertSpec(@Param("specName") String specName, @Param("groupId") int groupId,
+                       @Param("specDetail") String specDetail, @Param("specValue") String specValue);
 }

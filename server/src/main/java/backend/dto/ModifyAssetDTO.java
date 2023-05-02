@@ -15,18 +15,20 @@ public class ModifyAssetDTO {
     private String assetPath;
     private String assetType;
     private String assetRole;
-
+    private boolean deleted;
     public ModifyAssetDTO() {
     }
 
-    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole) {
+    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole, boolean deleted) {
         this.assetId = assetId;
         this.assetName = assetName;
         this.assetPath = assetPath;
         this.assetType = assetType;
         this.assetRole = assetRole;
+        this.deleted = deleted;
     }
 
+  
     public Long getAssetId() {
         return assetId;
     }
@@ -65,6 +67,14 @@ public class ModifyAssetDTO {
 
     public void setAssetRole(String assetRole) {
         this.assetRole = assetRole;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
     
 }

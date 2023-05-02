@@ -22,4 +22,21 @@ public interface IProductAsset extends JpaRepository<ProductAsset,Long> {
             "WHERE product.product_id = product_asset.product_id" +
             "SET product_asset.product_id = :productId, product_asset.asset_id = :assetId , product_asset.asset_role = :assetRole", nativeQuery = true)
     void modifyProductAsset(@Param("productId") Long productId , @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
+    @Modifying
+    @Transactional
+    @Query(value =  "UPDATE product_asset\n" +
+                    "SET product_asset.deleted = :deleted \n" +
+                    "WHERE product_id = :productId AND asset_id = :assetId AND asset_role = :assetRole", nativeQuery = true)
+    void setDeleteAsset(@Param("productId")long productId,@Param("assetId") Long assetId, @Param("assetRole") String assetRole, @Param("deleted")boolean deleted);
+    @Query(value = "SELECT product_asset_id\n" +
+            "FROM product_asset\n" +
+            "WHERE product_id = :productId\n" +
+            "AND asset_role = :assetRole\n" +
+            "AND asset_id = :assetId", nativeQuery = true)
+    Long getProductAssetId(@Param("productId") Long productId, @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
+    @Modifying
+    @Transactional
+    @Query(value = "INSERT INTO assets (asset_name, asset_path, asset_type)\n" +
+            "VALUES (:assetName, :assetPath, :assetType)", nativeQuery = true)
+    void insertAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
 }

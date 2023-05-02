@@ -31,7 +31,7 @@ public interface IProduct extends JpaRepository<Product,Long> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE product\n"+
-                    "SET product.product_name = :productName, product.product_version = :productVersion, product.category_id = :categoryId, product.company_id = :companyId, product.product_stock = :productStock, product.product_price = :productPrice, product,product_rating = :productRating, product\n"+
+                    "SET product_name = :productName, product_version = :productVersion, category_id = :categoryId, company_id = :companyId, product_stock = :productStock, product_price = :productPrice,product_rating = :productRating\n"+
             "WHERE product.product_id = :productId", nativeQuery = true)
     void setModify(@Param("productId") Long productId , @Param("productName") String productName, @Param("productVersion") String productVersion, @Param("companyId") Long companyId, @Param("productStock") Long productStock, @Param("productPrice") BigDecimal productPrice ,@Param("productRating") Long productRating, @Param("categoryId") Long categoryId);
     @Query(value = "SELECT product_id\n" +
