@@ -516,14 +516,15 @@ INSERT INTO spec_group (group_name) VALUES ('security');
 INSERT INTO spec_group (group_name) VALUES ('os');
 INSERT INTO spec_group (group_name) VALUES ('battery');
 INSERT INTO spec_group (group_name) VALUES ('sound');
+INSERT INTO spec_group (group_name) VALUES ('camera');
 INSERT INTO spec_group (group_name) VALUES ('others');
 -- Spec
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃ†Â°Ã¡Â»Â£ng ram','8gb',4);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu','PhiÃƒÂªn bÃ¡ÂºÂ£n CPU','Snapdragon 8 Gen 1',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu type','LoÃ¡ÂºÂ¡i CPU','Octa-Core',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu core','SÃ¡Â»â€˜ nhÃƒÂ¢n','8',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu speed','TÃ¡Â»â€˜c Ã„â€˜Ã¡Â»â„¢ tÃ¡Â»â€˜i Ã„â€˜a','2.20 GHz',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu bit','64 Bits','KhÃƒÂ´ng',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng ram','8gb',4);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu','PhiÃƒÆ’Ã‚Âªn bÃƒÂ¡Ã‚ÂºÃ‚Â£n CPU','Snapdragon 8 Gen 1',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu type','LoÃƒÂ¡Ã‚ÂºÃ‚Â¡i CPU','Octa-Core',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu core','SÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ nhÃƒÆ’Ã‚Â¢n','8',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu speed','TÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Ãƒâ€žÃ¢â‚¬Ëœa','2.20 GHz',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu bit','64 Bits','KhÃƒÆ’Ã‚Â´ng',3);
 -- Product detail
 INSERT INTO product_detail (product_id,spec_id) VALUES (1,1);
 INSERT INTO product_detail (product_id,spec_id) VALUES (2,1);
@@ -588,13 +589,44 @@ INNER JOIN ( SELECT category_id,category_name
 				 FROM category
 				 WHERE category_name LIKE '%%') AS b
 ON b.category_id = product.category_id
-INNER JOIN ( SELECT DISTINCT spec.spec_id,product_id,spec_detail,spec_value
+INNER JOIN ( SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
 				 FROM product_detail
 				 INNER JOIN spec
 				 ON spec.spec_id = product_detail.spec_id
-				 WHERE spec_detail LIKE '%%') AS c
+				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
+				 FROM product_detail
+				 INNER JOIN spec
+				 ON spec.spec_id = product_detail.spec_id
+				 INNER JOIN spec_group
+				 ON spec.group_id = spec_group.group_id
+				 WHERE spec_group.group_name LIKE 'screen' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%')) AS battery
+				 ON battery.spec_id = spec.spec_id
+				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
+				 FROM product_detail
+				 INNER JOIN spec
+				 ON spec.spec_id = product_detail.spec_id
+				 INNER JOIN spec_group
+				 ON spec.group_id = spec_group.group_id
+				 WHERE spec_group.group_name LIKE 'screen' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%')) AS screen
+				 ON screen.spec_id = battery.spec_id
+				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
+				 FROM product_detail
+				 INNER JOIN spec
+				 ON spec.spec_id = product_detail.spec_id
+				 INNER JOIN spec_group
+				 ON spec.group_id = spec_group.group_id
+				 WHERE spec_group.group_name LIKE '%%' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%') ) AS camera
+				 ON camera.spec_id = screen.spec_id
+				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
+				 FROM product_detail
+				 INNER JOIN spec
+				 ON spec.spec_id = product_detail.spec_id
+				 INNER JOIN spec_group
+				 ON spec.group_id = spec_group.group_id
+				 WHERE spec_group.group_name LIKE '%%' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%')) AS other
+				 ON other.spec_id = camera.spec_id ) AS c
 ON c.product_id = product.product_id
-WHERE (product.product_price BETWEEN 0 AND 100000000) AND product.product_rating >=0 AND product.product_sales = FALSE  
+WHERE (product.product_price BETWEEN 0 AND 100000000) AND product.product_rating >=0 AND product.product_sales = FALSE
 
 
 SELECT DISTINCT product.*
