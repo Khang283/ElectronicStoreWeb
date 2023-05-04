@@ -20,12 +20,12 @@ public interface IAsset extends JpaRepository<Assets,Long> {
     @Modifying
     @Transactional
     @Query(value="UPDATE assets\n " +
-            "WHERE asset_id = :assetId\n"+
-            "SET asset_name = :assetName, asset_path = :assetPath, asset_type = :assetType", nativeQuery = true)
+            "SET asset_name = :assetName, asset_path = :assetPath, asset_type = :assetType\n" +
+            "WHERE asset_id = :assetId\n", nativeQuery = true)
            void modifyAsset(@Param("assetId") Long assetId, @Param("assetName") String assetName, @Param ("assetPath") String assetPath, @Param("assetType") String assetType);
     @Query(value = "SELECT asset_id\n" +
             "FROM assets\n" +
-            "WHERE asset_name = :assetName, asset_path = :assetPath AND asset_type = :assetType", nativeQuery = true)
+            "WHERE asset_name = :assetName AND asset_path = :assetPath AND asset_type = :assetType", nativeQuery = true)
     Long getAssetId(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
     @Modifying
     @Transactional

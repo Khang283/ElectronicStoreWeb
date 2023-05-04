@@ -15,15 +15,19 @@ public class ModifySpecDTO {
     private Long groupId;
     private Long specId;
     private boolean deleted;
+    private boolean insert;
 
-    public ModifySpecDTO(String specName, String specDetail, String specValue, Long groupId, Long specId, boolean deleted) {
+    public ModifySpecDTO(String specName, String specDetail, String specValue, Long groupId, Long specId, boolean deleted, boolean insert) {
         this.specName = specName;
         this.specDetail = specDetail;
         this.specValue = specValue;
         this.groupId = groupId;
         this.specId = specId;
         this.deleted = deleted;
+        this.insert = insert;
     }
+
+    
     public ModifySpecDTO() {
     }
 
@@ -75,6 +79,14 @@ public class ModifySpecDTO {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
     }
     
 }

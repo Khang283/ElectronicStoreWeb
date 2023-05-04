@@ -18,9 +18,8 @@ public interface IProductAsset extends JpaRepository<ProductAsset,Long> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE product_asset \n" + 
-            "INNER JOIN product\n" +
-            "WHERE product.product_id = product_asset.product_id" +
-            "SET product_asset.product_id = :productId, product_asset.asset_id = :assetId , product_asset.asset_role = :assetRole", nativeQuery = true)
+            "SET asset_role = :assetRole\n" +
+            "WHERE product_id = :productId AND asset_id = :assetId", nativeQuery = true)
     void modifyProductAsset(@Param("productId") Long productId , @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
     @Modifying
     @Transactional
@@ -36,7 +35,8 @@ public interface IProductAsset extends JpaRepository<ProductAsset,Long> {
     Long getProductAssetId(@Param("productId") Long productId, @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO assets (asset_name, asset_path, asset_type)\n" +
-            "VALUES (:assetName, :assetPath, :assetType)", nativeQuery = true)
-    void insertAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
+    @Query(value = "INSERT INTO product_asset (product_id, asset_id, asset_role)\n" +
+            "VALUES (:productId, :assetId, :assetRole)", nativeQuery = true)
+    void insertProductAsset(@Param("productId") Long productId, @Param("assetId") Long assetId,
+                    @Param("assetRole") String assetRole);
 }

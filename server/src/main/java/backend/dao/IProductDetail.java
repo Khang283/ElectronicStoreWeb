@@ -30,5 +30,5 @@ public interface IProductDetail extends JpaRepository<ProductDetail,Long> {
     @Transactional
     @Query(value = "INSERT INTO product_detail (product_id, spec_id)\n" +
             "VALUES (:productId, :specId)", nativeQuery = true)
-    void insertProductDetail(@Param("productId") int productId, @Param("specId") int specId);
+    void insertProductDetail(@Param("productId") Long productId, @Param("specId") Long specId);
 }

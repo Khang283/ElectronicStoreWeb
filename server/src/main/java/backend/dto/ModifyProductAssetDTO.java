@@ -12,12 +12,16 @@ public class ModifyProductAssetDTO {
     private Long productId;
     private Long assetId;
     private String role;
+    private Long productAssetId;
 
-    public ModifyProductAssetDTO(Long productId, Long assetId, String role) {
+    public ModifyProductAssetDTO(Long productId, Long assetId, String role, Long productAssetId) {
         this.productId = productId;
         this.assetId = assetId;
         this.role = role;
+        this.productAssetId = productAssetId;
     }
+
+   
 
     public ModifyProductAssetDTO() {
     }
@@ -44,6 +48,14 @@ public class ModifyProductAssetDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Long getProductAssetId() {
+        return productAssetId;
+    }
+
+    public void setProductAssetId(Long productAssetId) {
+        this.productAssetId = productAssetId;
     }
     
     

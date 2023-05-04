@@ -15,18 +15,25 @@ public class ModifyAssetDTO {
     private String assetPath;
     private String assetType;
     private String assetRole;
-    private boolean deleted;
+    private boolean deleted = false;
+    private Long productId;
+    private boolean insert = false;
     public ModifyAssetDTO() {
     }
 
-    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole, boolean deleted) {
+    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole, boolean deleted, Long productId, boolean insert) {
         this.assetId = assetId;
         this.assetName = assetName;
         this.assetPath = assetPath;
         this.assetType = assetType;
         this.assetRole = assetRole;
         this.deleted = deleted;
+        this.productId = productId;
+        this.insert = insert;
     }
+
+    
+   
 
   
     public Long getAssetId() {
@@ -76,5 +83,22 @@ public class ModifyAssetDTO {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public boolean isInsert() {
+        return insert;
+    }
+
+    public void setInsert(boolean insert) {
+        this.insert = insert;
+    }
+    
     
 }
