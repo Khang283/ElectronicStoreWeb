@@ -19,8 +19,8 @@ public interface IProductAsset extends JpaRepository<ProductAsset,Long> {
     @Transactional
     @Query(value = "UPDATE product_asset \n" + 
             "SET asset_role = :assetRole\n" +
-            "WHERE product_id = :productId AND asset_id = :assetId", nativeQuery = true)
-    void modifyProductAsset(@Param("productId") Long productId , @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
+            "WHERE product_id = :productId AND asset_id = :assetId AND product_asset_id = :productAssetId", nativeQuery = true)
+    void modifyProductAsset(@Param("productAssetId") Long productAssetId,@Param("productId") Long productId , @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
     @Modifying
     @Transactional
     @Query(value =  "UPDATE product_asset\n" +

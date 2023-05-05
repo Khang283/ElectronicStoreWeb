@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package backend.dto;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
  * @author DELL
@@ -16,6 +17,7 @@ public class ModifySpecDTO {
     private Long specId;
     private boolean deleted;
     private boolean insert;
+    private List<ModifyProductDetailDTO> productDtl = new ArrayList<>();
 
     public ModifySpecDTO(String specName, String specDetail, String specValue, Long groupId, Long specId, boolean deleted, boolean insert) {
         this.specName = specName;
@@ -26,6 +28,7 @@ public class ModifySpecDTO {
         this.deleted = deleted;
         this.insert = insert;
     }
+   
 
     
     public ModifySpecDTO() {
@@ -87,6 +90,14 @@ public class ModifySpecDTO {
 
     public void setInsert(boolean insert) {
         this.insert = insert;
+    }
+
+    public List<ModifyProductDetailDTO> getProductDtl() {
+        return productDtl;
+    }
+
+    public void setProductDtl(List<ModifyProductDetailDTO> productDtl) {
+        this.productDtl = productDtl;
     }
     
 }

@@ -14,6 +14,8 @@ import java.util.List;
 import backend.dto.ModifyAssetDTO;
 import backend.dto.ModifySpecDTO;
 import java.lang.Long;
+import backend.dto.ModifyProductAssetDTO;
+import backend.dto.ModifyProductDetailDTO;
 
 @Repository
 public class ProductDAO {
@@ -106,12 +108,16 @@ public class ProductDAO {
                 if (checkAssetId == null || ObjectUtils.isEmpty(checkAssetId)){
                 _asset.insertAsset(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
                 Long assetId = _asset.getAssetId(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
+                for(ModifyProductAssetDTO lstt : lst.getProductAsst() ){
                 _productAsset.insertProductAsset(modProd.getProductId(), assetId, lst.getAssetRole());
+                }
                 }
                 }else{
                 _asset.modifyAsset(lst.getAssetId(), lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
                 //Long assetId = _asset.getAssetId(lst.getAssetName(), lst.getAssetPath(), lst.getAssetType());
-                _productAsset.modifyProductAsset(modProd.getProductId(),lst.getAssetId(),lst.getAssetRole());}}
+                for(ModifyProductAssetDTO lstt: lst.getProductAsst()){
+                _productAsset.modifyProductAsset(lstt.getProductAssetId(),modProd.getProductId(),lst.getAssetId(),lst.getAssetRole());}}
+               }
                 else if(lst.isDeleted() == true){
                     _productAsset.setDeleteAsset(modProd.getProductId(), lst.getAssetId(),lst.getAssetRole(), true);
                 }
@@ -123,11 +129,16 @@ public class ProductDAO {
                  if(checkSpecId == null || ObjectUtils.isEmpty(checkSpecId)){
                      _spec.insertSpec(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
                      Long specId = _spec.getSpecId(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
-                     _productDetail.modifyProductDetail(modProd.getProductId(), specId);}
+                     for(ModifyProductDetailDTO lstt : lst.getProductDtl())
+                     {
+                     _productDetail.insertProductDetail(modProd.getProductId(), specId);}
+                 }
                  }else{
                 _spec.modifySpec(lst.getSpecId(),lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
-                Long specId = _spec.getSpecId(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
-                _productDetail.modifyProductDetail(modProd.getProductId(), specId);}
+                //Long specId = _spec.getSpecId(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
+                for(ModifyProductDetailDTO lstt : lst.getProductDtl()){
+                _productDetail.modifyProductDetail(modProd.getProductId(), lst.getSpecId());}
+                    }
                 }
                 else if(lst.isDeleted() == true){
                     _productDetail.setDeleteDetail(modProd.getProductId(), lst.getSpecId(), true);

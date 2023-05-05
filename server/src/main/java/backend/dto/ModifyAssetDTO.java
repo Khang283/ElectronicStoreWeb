@@ -4,6 +4,9 @@
  */
 package backend.dto;
 import java.lang.Long;
+import java.util.List;
+import java.util.ArrayList;
+import backend.dto.ModifyProductAssetDTO;
 
 /**
  *
@@ -18,24 +21,19 @@ public class ModifyAssetDTO {
     private boolean deleted = false;
     private Long productId;
     private boolean insert = false;
+    private List<ModifyProductAssetDTO> productAsst = new ArrayList<>();; 
     public ModifyAssetDTO() {
     }
 
-    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole, boolean deleted, Long productId, boolean insert) {
+    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole, Long productId, List<ModifyProductAssetDTO> productAsst) {
         this.assetId = assetId;
         this.assetName = assetName;
         this.assetPath = assetPath;
         this.assetType = assetType;
         this.assetRole = assetRole;
-        this.deleted = deleted;
         this.productId = productId;
-        this.insert = insert;
+        this.productAsst = productAsst;
     }
-
-    
-   
-
-  
     public Long getAssetId() {
         return assetId;
     }
@@ -98,6 +96,14 @@ public class ModifyAssetDTO {
 
     public void setInsert(boolean insert) {
         this.insert = insert;
+    }
+
+    public List<ModifyProductAssetDTO> getProductAsst() {
+        return productAsst;
+    }
+
+    public void setProductAsst(List<ModifyProductAssetDTO> productAsst) {
+        this.productAsst = productAsst;
     }
     
     

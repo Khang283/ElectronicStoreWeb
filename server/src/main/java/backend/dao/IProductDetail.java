@@ -16,9 +16,7 @@ public interface IProductDetail extends JpaRepository<ProductDetail,Long> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE product_detail \n" + 
-            "INNER JOIN product\n" +
-            "WHERE product.product_id = product_detail.product_id" +
-            "SET product_detail.product_id = :productId, product_detail.spec_id = :specId ", nativeQuery = true)
+             "SET product_detail.spec_id = :specId \n" + "WHERE product_id = :productId" , nativeQuery = true)
     void modifyProductDetail(@Param("productId") Long productId , @Param("specId") Long specId);
     @Modifying
     @Transactional
