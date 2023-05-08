@@ -50,14 +50,14 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-   /* @Bean
+    @Bean
     public WebMvcConfigurer configurer(){
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api").allowedOrigins("http://localhost:8080");
+                registry.addMapping("/api").allowedOrigins("http://localhost:3000");
             }
         };
-    }*/
+    }
 
 }

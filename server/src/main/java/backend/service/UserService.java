@@ -4,9 +4,11 @@ import backend.dao.UserDAO;
 import backend.dto.LoginResponseDTO;
 import backend.dto.SignUpRequestDTO;
 import backend.models.User;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 @Service
