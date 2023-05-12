@@ -12,8 +12,10 @@ import backend.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductDAO {
@@ -45,6 +47,7 @@ public class ProductDAO {
     }
     public ProductListDTO productToProductListDTO(Product product){
         ProductListDTO productDTo = new ProductListDTO();
+        productDTo.setProductId(product.getProductId());
         productDTo.setProductName(product.getProductName());
         productDTo.setProductPrice(product.getProductPrice());
         productDTo.setProductRating(product.getProductRating());
@@ -138,6 +141,10 @@ public class ProductDAO {
             System.out.println("Error: "+e);
         }
         return true;
+    }
+
+    public Optional<Product>findProductById(long productId){
+        return _product.findById(productId);
     }
 
 }

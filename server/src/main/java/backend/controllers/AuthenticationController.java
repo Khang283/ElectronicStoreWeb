@@ -29,8 +29,10 @@ public class AuthenticationController {
         var userLogin = userService.findUserByUsername(user.getUsername()).orElseThrow();
         var token = jwtService.generateToken(userLogin);
         return ResponseEntity.ok(LoginResponseDTO.builder()
-                .token(token)
-                .build());
+                        .token(token)
+                        .token_type("Beare")
+                        .expire_in(jwtService.extractExpiration(token))
+                        .build());
     }
     @PostMapping("/signup")
     public ResponseEntity<LoginResponseDTO> register(@RequestBody SignUpRequestDTO user) {

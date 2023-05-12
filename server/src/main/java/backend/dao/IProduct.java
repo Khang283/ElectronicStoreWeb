@@ -73,4 +73,5 @@ public interface IProduct extends JpaRepository<Product,Long> {
             "AND product_version= :productVersion", nativeQuery = true)
     Integer findProductId(@Param("productName") String productName, @Param("categoryId") int categoryId,
                           @Param("companyId") int companyId, @Param("productVersion") String productVersion);
+
 }

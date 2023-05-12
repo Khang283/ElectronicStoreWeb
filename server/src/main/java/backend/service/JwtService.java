@@ -22,7 +22,7 @@ public class JwtService {
     private IUser _user;
     //Secret key 256bit hex, có thể dùng bất kỳ string nào khác
     private final String SECRET_KEY = "4D635166546A576E5A7234743777217A25432A462D4A614E645267556B587032";
-    private final long JWT_EXPIRATION = 1000 * 60 * 24 ; // 1000 milisecond * 60m * 24h = 24h + 1000milisecond
+    private final long JWT_EXPIRATION = 1000 * 60 * 60 * 24 ; // 1000 milisecond * 60s * 60m * 24h = 24h + 1000milisecond
     public String extractUsername(String jwt){
         return extractClaim(jwt, Claims::getSubject);
     }
