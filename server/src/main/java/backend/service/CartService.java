@@ -1,16 +1,12 @@
 package backend.service;
 
 import backend.dao.*;
-import backend.dto.AddProductToCartDTO;
 import backend.models.Cart;
 import backend.models.CartItem;
-import backend.models.Product;
 import backend.models.User;
-import org.hibernate.annotations.NaturalId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
@@ -28,11 +24,7 @@ public class CartService {
     @Autowired
     private UserDAO userDAO;
 
-    public boolean addProductToCart(AddProductToCartDTO addProductToCartDTO){
-        String token = addProductToCartDTO.getToken();
-        Long productId = addProductToCartDTO.getProductId();
-        if(jwtService.isValidateToken(token)==false) return false;
-        String username = jwtService.extractUsername(token);
+    public boolean addProductToCart(String username, long productId){
         Optional<User> user = userDAO.findUserByUsername(username);
         if(!user.isPresent()) return false;
         Cart cart = cartDAO.findCartByUserId(user.get().getUserId());
@@ -45,7 +37,7 @@ public class CartService {
                     .totalMoney(money)
                     .createdAt(new Date())
                     .build();
-            Cart cart1 = _cart.save(newCart);
+            _cart.save(newCart);
             Cart cart2 = cartDAO.findCartByUserId(user.get().getUserId());
             boolean isInserted = cartDAO.addProductToCart(productId, cart2.getCartId());
             if(isInserted) return true;
@@ -61,5 +53,25 @@ public class CartService {
             if(isInserted) return true;
             return false;
         }
+    }
+
+    public boolean changeQuantity(String username, long productId,long amount){
+        Optional<User> user = userDAO.findUserByUsername(username);
+        if(!user.isPresent()) return false;
+        Cart cart = cartDAO.findCartByUserId(user.get().getUserId());
+        if(cart==null || cart.isDeleted()) return false;
+        Optional<CartItem>cartItem = cartDAO.findCartItemById(cart.getCartId(),productId);
+        if(!cartItem.isPresent()) return false;
+        if(amount < 1) return false;
+        cartDAO.changeQuantity(cart.getCartId(),productId,amount);
+        return true;
+    }
+
+    public boolean removeCartItem(String username, long productId){
+        Optional<User> user = userDAO.findUserByUsername(username);
+        if(!user.isPresent()) return false;
+        Cart cart = cartDAO.findCartByUserId(user.get().getUserId());
+        if(cartDAO.removeCartItem(cart.getCartId(),productId)) return true;
+        return false;
     }
 }

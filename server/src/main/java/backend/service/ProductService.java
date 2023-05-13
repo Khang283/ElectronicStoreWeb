@@ -1,7 +1,6 @@
 package backend.service;
 
 import backend.dao.*;
-import backend.dto.AddProductToCartDTO;
 import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import backend.models.ProductDetail;

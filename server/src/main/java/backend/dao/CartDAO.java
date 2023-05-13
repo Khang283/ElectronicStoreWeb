@@ -55,4 +55,16 @@ public class CartDAO {
         if(_cartItem.checkProductExist(cartId,productId).isPresent()) return true;
         return false;
     }
+
+    public boolean removeCartItem(long cartId,long productId){
+        Optional<Product> product = _product.findById(productId);
+        Cart cart = _cart.findCartByCartId(cartId);
+        Optional<CartItem> cartItem = _cartItem.findCartItemByCartIdAndProductId(cartId,productId);
+        if(cart==null || cart.isDeleted() || !cartItem.isPresent() || !product.isPresent()) return false;
+        long changeAmount = cartItem.get().getQuantity();
+        BigDecimal money = cartItem.get().getPrice().multiply(new BigDecimal(cartItem.get().getQuantity()));
+        _cart.updateCart(cartId,-changeAmount,money.negate());
+        _cartItem.deleteById(new CartItem.CartItemId(cartId,productId));
+        return true;
+    }
 }

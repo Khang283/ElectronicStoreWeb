@@ -12,5 +12,5 @@ import java.util.Date;
 public class LoginResponseDTO {
     private String token;
     private String token_type;
-    private Date expire_in;
+    private Date expire_in; //time in utc
 }
