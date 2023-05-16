@@ -15,7 +15,11 @@ public class ProductDetail {
     private Date modifiedAt;
     @Column(name = "deleted")
     private boolean deleted;
+<<<<<<< HEAD
     private static class ProductDetailId implements Serializable{
+=======
+    public static class ProductDetailId implements Serializable{
+>>>>>>> 9ff0f161a96f30eff9c73eac7963078aafff149f
         @Column(name = "product_id")
         private Long productId;
         @Column(name = "spec_id")

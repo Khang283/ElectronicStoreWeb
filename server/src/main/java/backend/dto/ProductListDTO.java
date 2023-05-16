@@ -1,7 +1,11 @@
 package backend.dto;
 
 import java.math.BigDecimal;
+<<<<<<< HEAD
 import java.lang.Long;
+=======
+
+>>>>>>> 9ff0f161a96f30eff9c73eac7963078aafff149f
 public class ProductListDTO {
     private String productName;
     private BigDecimal productPrice;
