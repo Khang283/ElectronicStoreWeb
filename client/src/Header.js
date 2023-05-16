@@ -60,7 +60,7 @@ function Header(){
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Bàn phím</NavDropdown.Item>
              
             </NavDropdown>
-          <Form style = {{width:400, height:40, marginLeft:10, marginRight:10}} className = "d-flex input-lg form-inline"> <Form.Control type="search" placeholder="Nhập tên sản phẩm mà bạn muốn tìm..." className = "me-2" aria-label="Search"/></Form>
+          <Form style = {{width:400, height:40, marginLeft:20, marginRight:20}} className = "d-flex input-lg form-inline"> <Form.Control type="search" placeholder="Nhập tên sản phẩm mà bạn muốn tìm..." className = "me-2" aria-label="Search"/></Form>
            <img src="../searchButton.png" width={40} height={40} bg="white" alt="search" border={0}/>
            <Nav>
           <NavDropdown  marginLeft={20} marginRight={20} href="#account" className="dropdown position-absolute top-60 end-5" renderMenuOnMount={true} title="Tài khoản" id="collasible-nav-dropdown">
