@@ -29,7 +29,7 @@ public interface IAsset extends JpaRepository<Assets,Long> {
 
     @Query(value = "SELECT assets.asset_id,asset_name,asset_path,asset_type,assets.created_at,assets.modified_at,assets.deleted\n" +
                     "FROM assets,product,product_asset\n" +
-                    "WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= :productId AND product_asset.asset_role=''"
+                    "WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= :productId AND product_asset.asset_role='slide'"
             ,nativeQuery = true)
     List<String> findAssetPathByProductID(@Param("productId")Long productId);
     @Modifying

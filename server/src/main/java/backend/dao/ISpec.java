@@ -15,7 +15,7 @@ public interface ISpec extends JpaRepository<Spec, Long> {
     void insertSpec(@Param("specName") String specName, @Param("groupId") int groupId,
                        @Param("specDetail") String specDetail, @Param("specValue") String specValue);
 
-    @Query(value = "SELECT spec.spec_name,spec.spec_value,spec.spec_detail,spec.created_at,spec.modified_at,assets.deleted\n" +
+    @Query(value = "SELECT spec.spec_id,spec.spec_name,spec.spec_value,spec.spec_detail,spec.created_at,spec.modified_at,spec.deleted\n" +
                     "FROM spec,product,product_detail\n" +
                     "WHERE spec.spec_id=product_detail.spec_id AND product.product_id= product_detail.product_id AND product.product_id= :productId"
             ,nativeQuery = true)
