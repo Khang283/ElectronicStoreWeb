@@ -59,4 +59,13 @@ public class ProductDAO extends JdbcDaoSupport{
         DetailDTO.setImagePath(Image);
         return DetailDTO;
 }
+        public String findProductCompany(Product product){
+            List<Company>companies = _company.findAllCompany();
+            for(Company company : companies){
+                if(product.getCompanyId() == company.getCompanyId()){
+                    return company.getCompanyName();
+                }
+            }
+            return null;
+    }
 }
