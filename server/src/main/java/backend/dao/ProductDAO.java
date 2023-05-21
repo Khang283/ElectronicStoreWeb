@@ -6,16 +6,10 @@ import backend.dto.ProductDetailDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import backend.dto.ProductListDTO;
 import backend.models.Assets;
 import backend.models.Category;
-import backend.models.Company;
-import backend.models.Product;
 import backend.models.ProductDetail;
 import backend.models.Spec;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 
