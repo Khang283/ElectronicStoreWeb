@@ -1,7 +1,6 @@
 package backend.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Columns;
 
 import java.util.Date;
 

@@ -15,6 +15,7 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "WHERE product.product_id = FALSE"
                     , nativeQuery = true)
     List<Product>findAllProduct();
+<<<<<<< HEAD
 //    @Modifying
 //    @Transactional
 //    @Query(value = "INSERT INTO product (product_name,product_price) " +
@@ -65,6 +66,11 @@ public interface IProduct extends JpaRepository<Product,Long> {
                        @Param("companyId") int companyId, @Param("productVersion") String productVersion,
                        @Param("productStock") int productStock, @Param("productPrice") double productPrice);
 
+=======
+    @Modifying
+    @Transactional
+   
+>>>>>>> 4a1f7dc8f36597c9808936e8c20069c06465542f
     @Query(value = "SELECT product_id \n" +
             "FROM product\n" +
             "WHERE product_name= :productName\n" +
@@ -73,5 +79,15 @@ public interface IProduct extends JpaRepository<Product,Long> {
             "AND product_version= :productVersion", nativeQuery = true)
     Integer findProductId(@Param("productName") String productName, @Param("categoryId") int categoryId,
                           @Param("companyId") int companyId, @Param("productVersion") String productVersion);
+<<<<<<< HEAD
 
+=======
+     @Modifying
+     @Transactional
+
+     @Query(value ="SELECT * \n" +
+                "FROM product \n" + 
+                "WHERE product_id = :productId", nativeQuery = true)
+     List<Product> getProductByID(@Param("productid") String ProductID);
+>>>>>>> 4a1f7dc8f36597c9808936e8c20069c06465542f
 }

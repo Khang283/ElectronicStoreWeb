@@ -1,9 +1,14 @@
 package backend.dto;
 
 import java.math.BigDecimal;
+<<<<<<< HEAD
 
 public class ProductListDTO {
     private Long productId;
+=======
+import java.lang.Long;
+public class ProductListDTO {
+>>>>>>> 4a1f7dc8f36597c9808936e8c20069c06465542f
     private String productName;
     private BigDecimal productPrice;
     private String productIcon;
@@ -17,8 +22,12 @@ public class ProductListDTO {
     public ProductListDTO() {
     }
 
+<<<<<<< HEAD
     public ProductListDTO(Long productId, String productName, BigDecimal productPrice, String productIcon, String productVersion, Long productRating, Long productSold, String productStatus, String company, String category) {
         this.productId = productId;
+=======
+    public ProductListDTO(String productName, BigDecimal productPrice, String productIcon, String productVersion, Long productRating, Long productSold, String productStatus, String company, String category) {
+>>>>>>> 4a1f7dc8f36597c9808936e8c20069c06465542f
         this.productName = productName;
         this.productPrice = productPrice;
         this.productIcon = productIcon;
@@ -30,6 +39,7 @@ public class ProductListDTO {
         this.category = category;
     }
 
+<<<<<<< HEAD
     public Long getProductId() {
         return productId;
     }
@@ -38,6 +48,8 @@ public class ProductListDTO {
         this.productId = productId;
     }
 
+=======
+>>>>>>> 4a1f7dc8f36597c9808936e8c20069c06465542f
     public String getProductName() {
         return productName;
     }
