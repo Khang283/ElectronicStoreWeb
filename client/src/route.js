@@ -4,6 +4,7 @@ import ErrorPage from "./components/Error/Error";
 import Login from "./components/Login/Login";
 import Register from './components/Register/Register';
 
+
 const router = createBrowserRouter([
     {
         path: '/',

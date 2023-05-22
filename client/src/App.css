@@ -28,6 +28,33 @@
   color: #61dafb;
 }
 
+.div-home {
+  border-radius: 0.5rem;
+  background-color: #fff;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+
+.home-btn {
+  text-align: center;
+}
+
+.cate-item {
+  border-bottom: 0.3em solid transparent;
+  border-right: 0.3em solid transparent;
+  text-align: center;
+  padding: 15px;
+}
+
+.cate-img {
+  margin-bottom: 10px;
+}
+
+.cate-item-name {
+  text-decoration: none;
+  color: black;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
