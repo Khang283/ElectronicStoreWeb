@@ -76,7 +76,7 @@
     Nav.nav-links:hover {
       color: #555;
     }
-   .dropdown:hover .dropdown-menu {
+   .dropdown .dropdown-menu:hover {
       display: block;
       color: #91640F;
   }

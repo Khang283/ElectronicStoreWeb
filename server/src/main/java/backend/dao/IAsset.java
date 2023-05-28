@@ -2,15 +2,9 @@ package backend.dao;
 
 import backend.models.Assets;
 import org.springframework.data.jpa.repository.JpaRepository;
-<<<<<<< HEAD
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.data.jpa.repository.Modifying;
-=======
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
->>>>>>> 9ff0f161a96f30eff9c73eac7963078aafff149f
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
