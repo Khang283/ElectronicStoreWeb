@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProductDAO {
@@ -31,7 +32,7 @@ public class ProductDAO {
     @Autowired
     private ISpec _spec;
     public List<ProductListDTO>getProductList(int limit, int offset,String type){
-        List<Product>products=_product.findAll().stream().skip(offset).limit(limit).toList();
+        List<Product> products=_product.findAll().stream().skip(offset).limit(limit).collect(Collectors.toList());
         List<ProductListDTO>productListDTOS = new ArrayList<>();
 
         for(Product product : products){

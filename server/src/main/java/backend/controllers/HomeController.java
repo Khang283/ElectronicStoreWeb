@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class HomeController {
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<String>getDefault(){
         return ResponseEntity.status(200).body("Hello");
     }
