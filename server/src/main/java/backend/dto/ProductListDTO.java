@@ -1,6 +1,7 @@
 package backend.dto;
 
 import java.math.BigDecimal;
+import java.lang.Long;
 
 public class ProductListDTO {
     private Long productId;

@@ -12,11 +12,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class ProductController {
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/v1/test")
+    public ResponseEntity<String>getDefault(){
+        return ResponseEntity.status(200).body("Hello");
+    }
+
     @GetMapping("/v1/product/{type}")
     public ResponseEntity<List<ProductListDTO>> getAllPhone(@PathVariable("type")String type,
                                                             @RequestParam(name = "page", required = false,defaultValue = "1")int page,

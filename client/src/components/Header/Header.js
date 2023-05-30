@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import '../Header/Header.css';
+import { Link } from "react-router-dom";
 {/*const UserMenu = (
   <img
     src={'../user.png'}
@@ -18,7 +19,7 @@ function Header(){
     return(
         <Navbar collapseOnSelect bg="danger" expand="lg" className="row">
             <Container>
-                <Navbar.Brand className="col-lg-2 text-light" href="#home">Electronic Store</Navbar.Brand>
+                <Navbar.Brand className="col-lg-2 text-light">Electronic Store</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="reponsive-navbar-nav">
           {/*<Nav className="me-auto" style={{marginLeft:20, marginRight:20}}>
@@ -80,9 +81,15 @@ function Header(){
         </Navbar.Collapse >
         <Navbar.Collapse id="reponsive-navbar-nav">
            <NavDropdown marginLeft={20} marginRight={20} href="#account" className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">Tài khoản <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
-              <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Đăng kí</NavDropdown.Item>
-              <NavDropdown.Item href="#login">Đăng nhập</NavDropdown.Item>
-              <NavDropdown.Item href="#cart">Giỏ hàng</NavDropdown.Item>
+              <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">
+                <Link to={'/login'}>Đăng nhập</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#login">
+                <Link to={'/registry'} >Đăng ký</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#cart">
+                <Link to={'/cart'}>Giỏ hàng</Link>
+              </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#logout">
                 Đăng xuất
