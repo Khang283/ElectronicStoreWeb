@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import ProductServices from "../../services/Product"
 import { Link } from "react-router-dom";
-import '../Home/Home.css';
+
 import Carousel from 'react-bootstrap/Carousel';
 import Image from 'react-bootstrap/Image';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../Home/Home.css';
 
 const Home = props => {
     const [productPhone, setproductPhone] = useState([]);
@@ -200,7 +203,7 @@ const Home = props => {
 
                         </div>
 
-                        <Row xs={1} md={4} sm={2} className="g-4">
+                        <Row xs={1} md={4} sm={2} className="g-4 ">
                             {productPhone?.map((product) => {
                                 return (
                                     console.log(product.productName),
