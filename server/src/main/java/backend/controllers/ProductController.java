@@ -1,6 +1,7 @@
 package backend.controllers;
 
 import backend.dto.DeleteProductDTO;
+import backend.dto.GetProductByIdDTO;
 import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import backend.service.ProductService;
@@ -41,6 +42,18 @@ public class ProductController {
         }
         if(company == null || company.isEmpty() || company.isBlank()) return ResponseEntity.ok(productListDTOS);
         return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).toList());
+    }
+
+    @GetMapping("/v1/productbyid/{productId}")
+    public ResponseEntity<GetProductByIdDTO> getProductById(@PathVariable("productId")int productId) {
+        GetProductByIdDTO product = new GetProductByIdDTO();
+        product = productService.getProductById(productId);
+
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(product);
     }
 
     @DeleteMapping("/admin/product/delete")

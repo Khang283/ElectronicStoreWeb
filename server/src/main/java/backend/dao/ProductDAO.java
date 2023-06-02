@@ -1,10 +1,7 @@
 package backend.dao;
 
-import backend.dto.InsertAssetDTO;
-import backend.dto.InsertSpecDTO;
-import backend.dto.ProductListDTO;
+import backend.dto.*;
 import backend.models.*;
-import backend.dto.InsertProductDTO;
 import backend.models.Assets;
 import backend.models.Category;
 import backend.models.Company;
@@ -47,6 +44,7 @@ public class ProductDAO {
         return productListDTOS;
     }
     public ProductListDTO productToProductListDTO(Product product){
+
         ProductListDTO productDTo = new ProductListDTO();
         productDTo.setProductId(product.getProductId());
         productDTo.setProductName(product.getProductName());
@@ -63,6 +61,40 @@ public class ProductDAO {
         }
         return productDTo;
     }
+
+    public GetProductByIdDTO getProductById(int productId) {
+        List<Product> products=_product.findAll().stream().collect(Collectors.toList());
+        GetProductByIdDTO productDTo = new GetProductByIdDTO();
+
+        for(Product product : products){
+//            ProductListDTO productDTO = productToProductListDTO(product);
+
+            if(product.getProductId() == productId){
+                productDTo.setProductName(product.getProductName());
+                productDTo.setProductPrice(product.getProductPrice());
+                productDTo.setProductRating(product.getProductRating());
+                productDTo.setProductSold(product.getProductSold());
+                productDTo.setProductStatus(product.getProductStatus());
+                productDTo.setProductVersion(product.getProductVersion());
+                productDTo.setCategory(findProductCategory(product));
+                productDTo.setCompany(findProductCompany(product));
+                Assets asset = _asset.findAssetIconByProductId(product.getProductId());
+                if(asset!=null){
+                    productDTo.setProductIcon(asset.getAssetPath());
+                }
+
+                List<Assets> listAsset = _asset.getListAssetByProductId(Math.toIntExact(product.getProductId()));
+                List<String> assetPath = new ArrayList<>();
+                for (Assets lst : listAsset) {
+                    assetPath.add(lst.getAssetPath());
+                }
+                productDTo.setAssets(assetPath);
+            }
+        }
+
+        return productDTo;
+    }
+
     public String findProductCompany(Product product){
         List<Company>companies = _company.findAllCompany();
         for(Company company : companies){
