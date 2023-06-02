@@ -7,10 +7,12 @@ import backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import backend.dto.ModifyProductDTO;
+import backend.dto.ModifyProductDetailDTO;
+import backend.dto.ModifyProductAssetDTO;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.lang.Long;
 @CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
@@ -59,6 +61,14 @@ public class ProductController {
     public ResponseEntity<String>insertProduct(@RequestBody InsertProductDTO insertProductDTO){
         if (productService.insertProduct(insertProductDTO)) {
             return ResponseEntity.ok("Đã thêm thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    
+    @PostMapping("v1/admin/product/modify")
+    public ResponseEntity<String>modifyProduct(@RequestBody ModifyProductDTO modProdDTO){
+        if(productService.modifyProductByID(modProdDTO)){
+            return ResponseEntity.ok("Sửa sản phẩm thành công");
         }
         return ResponseEntity.badRequest().build();
     }
