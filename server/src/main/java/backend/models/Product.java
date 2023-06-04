@@ -1,10 +1,8 @@
 package backend.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Columns;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Date;
 
 @Entity(name = "product")

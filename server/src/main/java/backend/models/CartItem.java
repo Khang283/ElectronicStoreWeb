@@ -1,19 +1,21 @@
 package backend.models;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
-
+@Builder
 @Entity (name = "cart_item")
 public class CartItem {
     @EmbeddedId
     private CartItemId cartItemId;
     @Column(name="price")
-    private Double price;
+    private BigDecimal price;
     @Column(name="quantity")
-    private Double quantity;
+    private Long quantity;
     @Column(name="created_at")
     private Date createdAt;
     @Column(name="modified_at")
@@ -55,7 +57,7 @@ public class CartItem {
     public CartItem() {
     }
 
-    public CartItem(CartItemId cartItemId, Double price, Double quantity, Date createdAt, Date modifiedAt, boolean deleted) {
+    public CartItem(CartItemId cartItemId, BigDecimal price, Long quantity, Date createdAt, Date modifiedAt, boolean deleted) {
         this.cartItemId = cartItemId;
         this.price = price;
         this.quantity = quantity;
@@ -64,23 +66,27 @@ public class CartItem {
         this.deleted = deleted;
     }
 
+    public CartItemId getCartItemId() {
+        return cartItemId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public void setCartItemId(CartItemId cartItemId) {
         this.cartItemId = cartItemId;
     }
 
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Double getQuantity() {
+    public Long getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Double quantity) {
+    public void setQuantity(Long quantity) {
         this.quantity = quantity;
     }
 

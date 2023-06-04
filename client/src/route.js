@@ -3,8 +3,9 @@ import App from "./App";
 import ErrorPage from "./components/Error/Error";
 import Login from "./components/Login/Login";
 import Register from './components/Register/Register';
-
-
+import Cart from './components/Cart/Cart.js';
+import Home from './components/Home/Home.js';
+import MyAccount from "./components/MyAccount/MyAccount";
 const router = createBrowserRouter([
     {
         path: '/',
@@ -12,12 +13,24 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
+                path: '/',
+                element: <Home />
+            },
+            {
                 path: '/login',
                 element: <Login />
             },
             {
                 path: '/registry',
                 element: <Register />
+            },
+            {
+                path: '/cart',
+                element: <Cart />
+            },
+            {
+                path: '/logout',
+                element: <MyAccount />
             }
         ]
     }

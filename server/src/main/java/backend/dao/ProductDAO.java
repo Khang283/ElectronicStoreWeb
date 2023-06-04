@@ -11,14 +11,20 @@ import backend.models.Company;
 import backend.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+<<<<<<< HEAD
 import backend.dto.ModifyProductDTO;
 import backend.dto.ModifyAssetDTO;
 import backend.dto.ModifySpecDTO;
 import java.lang.Long;
 import backend.dto.ModifyProductAssetDTO;
 import backend.dto.ModifyProductDetailDTO;
+=======
+
+import javax.swing.text.html.Option;
+>>>>>>> a2e569ac229438bff8bc9ce1b838584036b27203
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -51,6 +57,7 @@ public class ProductDAO {
     }
     public ProductListDTO productToProductListDTO(Product product){
         ProductListDTO productDTo = new ProductListDTO();
+        productDTo.setProductId(product.getProductId());
         productDTo.setProductName(product.getProductName());
         productDTo.setProductPrice(product.getProductPrice());
         productDTo.setProductRating(product.getProductRating());
@@ -197,6 +204,10 @@ public class ProductDAO {
             System.out.println("Error: " + e);
         }
         return true;
+    }
+
+    public Optional<Product>findProductById(long productId){
+        return _product.findById(productId);
     }
 
 }

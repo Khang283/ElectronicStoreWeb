@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS cart
 (
 	cart_id BIGINT PRIMARY KEY AUTO_INCREMENT ,
 	user_id BIGINT,
-	total_money DECIMAL(10,2) DEFAULT 0,
+	total_money DECIMAL(19,2) DEFAULT 0,
 	total_quantity BIGINT DEFAULT 0,
 	created_at DATETIME DEFAULT NOW(),
 	modified_at DATETIME ,
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS cart_item
 (
 	cart_id BIGINT,
 	product_id BIGINT,
-	price DECIMAL(10,2) DEFAULT 0,
+	price DECIMAL(19,2) DEFAULT 0,
 	quantity BIGINT DEFAULT 0,
 	created_at DATETIME DEFAULT NOW(),
 	modified_at DATETIME ,
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS orders
 (
 	order_id BIGINT PRIMARY KEY AUTO_INCREMENT ,
 	user_id BIGINT NOT NULL,
-	total_price DECIMAL(10,2) DEFAULT 0,
+	total_price DECIMAL(19,2) DEFAULT 0,
 	total_quantity BIGINT DEFAULT 0,
 	receiver varchar(50) NOT NULL ,
 	delivery_message varchar(50),
@@ -111,18 +111,16 @@ CREATE TABLE IF NOT EXISTS orders
 	modified_at DATETIME ,
 	deleted BOOLEAN DEFAULT FALSE
 );
-
 CREATE TABLE IF NOT EXISTS order_item
 (
 	order_id BIGINT,
 	product_id BIGINT,
-	price DECIMAL(10,2) DEFAULT 0,
+	price DECIMAL(19,2) DEFAULT 0,
 	quantity BIGINT DEFAULT 0,
 	created_at DATETIME DEFAULT NOW(),
 	modified_at DATETIME ,
 	deleted BOOLEAN DEFAULT FALSE
 );
-
 create table if not exists users(
 	user_id bigint primary KEY AUTO_INCREMENT,
 	username varchar(50) NOT NULL UNIQUE ,
@@ -296,27 +294,13 @@ END $$
 DELIMITER ;
 
 -- CART_ITEM
--- insert
-DELIMITER $$
-create TRIGGER TRG_cart_item_insert
-BEFORE INSERT
-ON cart_item FOR EACH ROW
-BEGIN
-	 UPDATE cart
-	 SET total_money = total_money + NEW.price, total_quantity = total_quantity + NEW.quantity, modified_at= NOW()
-	 WHERE cart_id = NEW.cart_id;
-END $$
-DELIMITER ;
-
 -- update
 DELIMITER $$
-create TRIGGER TRG_cart_item_update
+create TRIGGER TRG_cart_item_modified_at
 BEFORE UPDATE
 ON cart_item FOR EACH ROW
 BEGIN
-	 UPDATE cart
-	 SET total_money = total_money + NEW.price - OLD.price, total_quantity =total_quantity + NEW.quantity - OLD.quantity, modified_at= NOW()
-	 WHERE cart_id = NEW.cart_id;
+	 SET NEW.modified_at = NOW();
 END $$
 DELIMITER ;
 
@@ -519,12 +503,12 @@ INSERT INTO spec_group (group_name) VALUES ('sound');
 INSERT INTO spec_group (group_name) VALUES ('camera');
 INSERT INTO spec_group (group_name) VALUES ('others');
 -- Spec
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng ram','8gb',4);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu','PhiÃƒÆ’Ã‚Âªn bÃƒÂ¡Ã‚ÂºÃ‚Â£n CPU','Snapdragon 8 Gen 1',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu type','LoÃƒÂ¡Ã‚ÂºÃ‚Â¡i CPU','Octa-Core',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu core','SÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ nhÃƒÆ’Ã‚Â¢n','8',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu speed','TÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Ãƒâ€žÃ¢â‚¬Ëœa','2.20 GHz',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu bit','64 Bits','KhÃƒÆ’Ã‚Â´ng',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£ng ram','8gb',4);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu','PhiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªn bÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£n CPU','Snapdragon 8 Gen 1',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu type','LoÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡i CPU','Octa-Core',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu core','SÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“ nhÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢n','8',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu speed','TÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“c ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ tÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“i ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“a','2.20 GHz',3);
+INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu bit','64 Bits','KhÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ng',3);
 -- Product detail
 INSERT INTO product_detail (product_id,spec_id) VALUES (1,1);
 INSERT INTO product_detail (product_id,spec_id) VALUES (2,1);
@@ -545,12 +529,6 @@ INSERT INTO product_detail (product_id,spec_id) VALUES (6,1);
 -- SELECT assets.* 
 -- FROM assets,product,product_asset
 -- WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= 1
--- -- 
--- DELETE product_asset,product
--- FROM product_asset
--- INNER JOIN product
--- ON product_asset.product_id = product.product_id
--- WHERE product.product_id=5;
 -- 
 -- SELECT product.*
 -- FROM product
@@ -654,3 +632,45 @@ ON spec.spec_id = product_detail.spec_id
 INNER JOIN spec_group
 ON spec.group_id = spec_group.group_id
 WHERE  (spec_value LIKE '%iphone%' OR spec_detail LIKE'%iphone%')
+
+SELECT * 
+FROM cart 
+WHERE user_id = 1 AND deleted = FALSE 
+
+INSERT INTO cart_item(cart_id,product_id,price,quantity) VALUES (:cart_id,:product_id,:price,:quanity);
+
+SELECT * 
+FROM cart_item
+WHERE cart_id = :cart_id AND product_id=:product_id
+
+UPDATE cart_item
+SET quantity = quantity - 1
+WHERE cart_id = 1 AND product_id = 1
+
+UPDATE cart
+SET total_quantity = total_quantity + 1, total_money = total_money + 1
+WHERE cart_id = 3
+
+SELECT * 
+FROM cart_item
+WHERE cart_id = :cartId AND product_id=:productId
+
+UPDATE cart_item
+SET quantity = 2
+WHERE cart_id = 1 AND product_id = 1
+
+UPDATE cart
+SET tota_money = total_money + 1, total_money = total_money + 
+WHERE cart_id = 
+
+DELETE cart_item,cart
+FROM cart_item
+INNER JOIN cart
+ON cart_item.cart_id = cart.cart_id
+WHERE cart.cart_id = 5
+
+DELETE product_asset,product
+FROM product_asset
+INNER JOIN product
+ON product_asset.product_id = product.product_id
+WHERE product.product_id=5;
