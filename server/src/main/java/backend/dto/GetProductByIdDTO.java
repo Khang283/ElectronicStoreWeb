@@ -17,12 +17,13 @@ public class GetProductByIdDTO {
     private String productStatus;
     private String company;
     private String category;
-    private List<String> assets = new ArrayList<>();
+    private List<GetAssetDTO> assets = new ArrayList<>();
+    private List<GetSpecDTO> specs= new ArrayList<>();
 
     public GetProductByIdDTO() {
     }
 
-    public GetProductByIdDTO(String productName, BigDecimal productPrice, int productSale, String productIcon, String productVersion, Long productRating, Long productSold, String productStatus, String company, String category, List<String> assets) {
+    public GetProductByIdDTO(String productName, BigDecimal productPrice, int productSale, String productIcon, String productVersion, Long productRating, Long productSold, String productStatus, String company, String category, List<GetAssetDTO> assets, List<GetSpecDTO> specs) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productSale = productSale;
@@ -34,6 +35,7 @@ public class GetProductByIdDTO {
         this.company = company;
         this.category = category;
         this.assets = assets;
+        this.specs = specs;
     }
 
     public String getProductName() {
@@ -116,11 +118,19 @@ public class GetProductByIdDTO {
         this.category = category;
     }
 
-    public List<String> getAssets() {
+    public List<GetAssetDTO> getAssets() {
         return assets;
     }
 
-    public void setAssets(List<String> assets) {
+    public void setAssets(List<GetAssetDTO> assets) {
         this.assets = assets;
+    }
+
+    public List<GetSpecDTO> getSpecs() {
+        return specs;
+    }
+
+    public void setSpecs(List<GetSpecDTO> specs) {
+        this.specs = specs;
     }
 }

@@ -36,6 +36,10 @@
   padding: 10px;
 }
 
+.card a{
+  text-decoration: none;
+  color: black;
+}
 .cate-item-name {
   text-decoration: none;
   color: black;

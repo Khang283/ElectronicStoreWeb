@@ -30,6 +30,8 @@ public class ProductDAO {
     private IProductAsset _productAsset;
     @Autowired
     private ISpec _spec;
+    @Autowired
+    private ISpecGroup _specGroup;
     public List<ProductListDTO>getProductList(int limit, int offset,String type){
         List<Product> products=_product.findAll().stream().skip(offset).limit(limit).collect(Collectors.toList());
         List<ProductListDTO>productListDTOS = new ArrayList<>();
@@ -67,7 +69,6 @@ public class ProductDAO {
         GetProductByIdDTO productDTo = new GetProductByIdDTO();
 
         for(Product product : products){
-//            ProductListDTO productDTO = productToProductListDTO(product);
 
             if(product.getProductId() == productId){
                 productDTo.setProductName(product.getProductName());
@@ -78,21 +79,56 @@ public class ProductDAO {
                 productDTo.setProductVersion(product.getProductVersion());
                 productDTo.setCategory(findProductCategory(product));
                 productDTo.setCompany(findProductCompany(product));
-                Assets asset = _asset.findAssetIconByProductId(product.getProductId());
-                if(asset!=null){
-                    productDTo.setProductIcon(asset.getAssetPath());
+                Assets assetIcon = _asset.findAssetIconByProductId(product.getProductId());
+                if(assetIcon!=null){
+                    productDTo.setProductIcon(assetIcon.getAssetPath());
                 }
 
-                List<Assets> listAsset = _asset.getListAssetByProductId(Math.toIntExact(product.getProductId()));
-                List<String> assetPath = new ArrayList<>();
-                for (Assets lst : listAsset) {
-                    assetPath.add(lst.getAssetPath());
-                }
-                productDTo.setAssets(assetPath);
+                productDTo.setAssets(getListAsset(Math.toIntExact(product.getProductId())));
+                productDTo.setSpecs(getListSpec(Math.toIntExact(product.getProductId())));
             }
         }
 
         return productDTo;
+    }
+
+    public List<GetAssetDTO> getListAsset(int productId) {
+        List<GetAssetDTO> listAsset = new ArrayList<>();
+        List<ProductAsset> listProductAsset = _productAsset.getListAssetByProductId(productId);
+        GetAssetDTO assetDTO;
+
+        for (ProductAsset lst: listProductAsset) {
+            assetDTO = new GetAssetDTO();
+            assetDTO.setAssetId(lst.getAssetId());
+            assetDTO.setAssetRole(lst.getAssetRole());
+
+            Assets asset = _asset.getAssetByAssetId(Math.toIntExact(lst.getAssetId()));
+            assetDTO.setAssetName(asset.getAssetName());
+            assetDTO.setAssetPath(asset.getAssetPath());
+            assetDTO.setAssetType(asset.getAssetType());
+
+            listAsset.add(assetDTO);
+        }
+        return  listAsset;
+    }
+
+    public List<GetSpecDTO> getListSpec(int productId) {
+        List<GetSpecDTO> listSpecDTO = new ArrayList<>();
+        List<Spec> listSpec =_spec.getListSpec(productId);
+        GetSpecDTO specDTO;
+
+        for (Spec lst: listSpec) {
+            specDTO= new GetSpecDTO();
+            specDTO.setSpecId(lst.getSpecId());
+            specDTO.setSpecName(lst.getSpecName());
+            specDTO.setSpecDetail(lst.getSpecDetail());
+            specDTO.setSpecValue(lst.getSpecValue());
+            specDTO.setGroupName(_specGroup.getGroupName(Math.toIntExact(lst.getGroupId())));
+
+            listSpecDTO.add(specDTO);
+        }
+
+        return listSpecDTO;
     }
 
     public String findProductCompany(Product product){
@@ -179,5 +215,7 @@ public class ProductDAO {
     public Optional<Product>findProductById(long productId){
         return _product.findById(productId);
     }
+
+
 
 }

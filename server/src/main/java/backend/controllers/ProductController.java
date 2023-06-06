@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 @RestController
@@ -41,11 +42,11 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         if(company == null || company.isEmpty() || company.isBlank()) return ResponseEntity.ok(productListDTOS);
-        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).toList());
+        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).collect(Collectors.toList()));
     }
 
-    @GetMapping("/v1/productbyid/{productId}")
-    public ResponseEntity<GetProductByIdDTO> getProductById(@PathVariable("productId")int productId) {
+    @GetMapping("/v1/product")
+    public ResponseEntity<GetProductByIdDTO> getProductById(@RequestParam(name= "productId", required = false,defaultValue = "1" )int productId) {
         GetProductByIdDTO product = new GetProductByIdDTO();
         product = productService.getProductById(productId);
 

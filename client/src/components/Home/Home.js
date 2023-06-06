@@ -18,11 +18,16 @@ const Home = props => {
     const [productAccessories, setproductAccessories] = useState([]);
     const [productTablet, setproductTablet] = useState([]);
 
+    const moneyFormat = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    })
+
     useEffect(() => {
         getProductPhone();
-        // getProductLaptop();
-        // getProductAccessories();
-        // getProductTablet();
+        getProductLaptop();
+        getProductAccessories();
+        getProductTablet();
     }, []);
 
     const getProductPhone = () => {
@@ -30,6 +35,39 @@ const Home = props => {
             .then(response => {
                 console.log(response.data);
                 setproductPhone(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    const getProductLaptop = () => {
+        ProductServices.getType("laptop")
+            .then(response => {
+                console.log(response.data);
+                setproductLaptop(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    const getProductAccessories = () => {
+        ProductServices.getType("accessories")
+            .then(response => {
+                console.log(response.data);
+                setproductAccessories(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    const getProductTablet = () => {
+        ProductServices.getType("tablet")
+            .then(response => {
+                console.log(response.data);
+                setproductTablet(response.data);
             })
             .catch(e => {
                 console.log(e);
@@ -45,7 +83,6 @@ const Home = props => {
                             <img
                                 className="d-block w-100"
                                 src="https://images.fpt.shop/unsafe/fit-in/800x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/5/11/638193959218106497_F-H1_800x300.png"
-                                // src="holder.js/800x400?text=First slide&bg=373940"
                                 alt="First slide"
                             />
                             {/* <Carousel.Caption>
@@ -195,7 +232,7 @@ const Home = props => {
 
                     <br /> */}
 
-                    
+
 
                     <div className="container div-list">
                         <div >
@@ -209,11 +246,14 @@ const Home = props => {
                                     console.log(product.productName),
                                     <Col >
                                         <Card className='card'>
-                                            <Card.Img className='card-img' variant="top" src={product.productIcon} />
+                                            <a href={"/" + product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
                                             <Card.Body>
-                                                <Card.Title>{product.productName}</Card.Title>
+                                                <a href={"/" + product.productId}>
+                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+
                                                 <Card.Text className='fontPrice'>
-                                                    {product.productPrice}  ₫
+                                                    {moneyFormat.format(product.productPrice)}
                                                 </Card.Text>
 
                                                 <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
@@ -222,12 +262,10 @@ const Home = props => {
                                                     <span ><i className='bi icon-screen-size'></i> spec</span>
                                                 </div>
                                                 <div className='card-btn'>
-                                                    <Button variant="danger" size="lg"><strong>Mua Ngay</strong></Button>{' '}
+                                                    <Button variant="danger" size="lg" href={"/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
                                                 </div>
 
-
-                                                {/* <i class="bi bi-display"></i> */}
-                                                <link to={""}></link>
+                                                {/* <Link to={"/1"}>View Reviews</Link> */}
                                             </Card.Body>
                                         </Card>
                                     </Col>
@@ -276,21 +314,36 @@ const Home = props => {
                         </div>
 
                         <Row xs={1} md={4} sm={2} className="g-4">
-                            {Array.from({ length: 8 }).map((_, idx) => (
-                                <Col key={idx}>
-                                    <Card>
-                                        <Card.Img variant="top" src="https://images.fpt.shop/unsafe/fit-in/300x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/4/10/638167465484591506_samsung-galaxy-z-flip4-xanh-dd.jpg" />
-                                        <Card.Body>
-                                            <Card.Title>Card title</Card.Title>
-                                            <Card.Text>
-                                                This is a longer card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit
-                                                longer.
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))}
+                            {productLaptop?.map((product) => {
+                                return (
+                                    console.log(product.productName),
+                                    <Col >
+                                        <Card className='card'>
+                                            <a href={"/" + product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
+                                            <Card.Body>
+                                                <a href={"/" + product.productId}>
+                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+
+                                                <Card.Text className='fontPrice'>
+                                                    {moneyFormat.format(product.productPrice)}
+                                                </Card.Text>
+
+                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+
+                                                <div className='div-spec'>
+                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                </div>
+                                                <div className='card-btn'>
+                                                    <Button variant="danger" size="lg" href={"/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
+                                                </div>
+
+                                                {/* <Link to={"/1"}>View Reviews</Link> */}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                );
+                            })}
                         </Row>
                         <br />
 
@@ -317,21 +370,85 @@ const Home = props => {
                         </div>
 
                         <Row xs={1} md={4} sm={2} className="g-4">
-                            {Array.from({ length: 4 }).map((_, idx) => (
-                                <Col key={idx}>
-                                    <Card>
-                                        <Card.Img variant="top" src="https://images.fpt.shop/unsafe/fit-in/300x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/4/10/638167465484591506_samsung-galaxy-z-flip4-xanh-dd.jpg" />
-                                        <Card.Body>
-                                            <Card.Title>Card title</Card.Title>
-                                            <Card.Text>
-                                                This is a longer card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit
-                                                longer.
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))}
+                            {productTablet?.map((product) => {
+                                return (
+                                    console.log(product.productName),
+                                    <Col >
+                                        <Card className='card'>
+                                            <a href={"/" + product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
+                                            <Card.Body>
+                                                <a href={"/" + product.productId}>
+                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+
+                                                <Card.Text className='fontPrice'>
+                                                    {moneyFormat.format(product.productPrice)}
+                                                </Card.Text>
+
+                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+
+                                                <div className='div-spec'>
+                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                </div>
+                                                <div className='card-btn'>
+                                                    <Button variant="danger" size="lg" href={"/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
+                                                </div>
+
+                                                {/* <Link to={"/1"}>View Reviews</Link> */}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                );
+                            })}
+                        </Row>
+                        <br />
+
+                        <div className="home-btn">
+                            <Button variant="outline-secondary" size="sm" href="#">Xem tất cả </Button>{' '}
+                        </div>
+
+
+                    </div>
+
+                    <br />
+
+                    <div className="container div-list">
+                        <div >
+                            <h2>PHỤ KIỆN NỔI BẬT</h2>
+
+                        </div>
+
+                        <Row xs={1} md={4} sm={2} className="g-4">
+                            {productAccessories?.map((product) => {
+                                return (
+                                    console.log(product.productName),
+                                    <Col >
+                                        <Card className='card'>
+                                            <a href={"/" + product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
+                                            <Card.Body>
+                                                <a href={"/" + product.productId}>
+                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+
+                                                <Card.Text className='fontPrice'>
+                                                    {moneyFormat.format(product.productPrice)}
+                                                </Card.Text>
+
+                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+
+                                                <div className='div-spec'>
+                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                </div>
+                                                <div className='card-btn'>
+                                                    <Button variant="danger" size="lg" href={"/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
+                                                </div>
+
+                                                {/* <Link to={"/1"}>View Reviews</Link> */}
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                );
+                            })}
                         </Row>
                         <br />
 
