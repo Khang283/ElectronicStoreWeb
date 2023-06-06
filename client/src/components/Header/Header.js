@@ -6,6 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import '../Header/Header.css';
 import { Link } from "react-router-dom";
+import  Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 /*const UserMenu = (
   <img
@@ -21,7 +22,7 @@ function Header() {
   const userId = userState.userId;
   const username = userState.username;
   return (
-    <Navbar collapseOnSelect bg="danger" expand="lg" className="row">
+    <Navbar collapseOnSelect bg="danger" expand="lg" className="row bg-radient">
       <Container>
         <Navbar.Brand className="col-lg-2 text-light">Electronic Store</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -62,9 +63,9 @@ function Header() {
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Bàn phím</NavDropdown.Item>
 
             </NavDropdown>
-
-            <Form style={{ width: 200, height: 20, marginRight: 20 }} className="d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" /></Form>
-            <img src="../searchButton.png" width={38} height={38} onClick={SearchClicked} className="ml-2 mr-auto" alt="search" border={0} />
+ 
+            <Form style = {{ width:200, height:20 ,  marginRight:20}} className = "d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className = "me-2" aria-label="Search"/></Form>
+            <Button className="bg-danger border-0" onClick={SearchClicked}><img src="../searchButton.png" width={30} height={30} className="ml-2 mr-auto" alt="search" border={0}/></Button>
           </Nav>
 
 

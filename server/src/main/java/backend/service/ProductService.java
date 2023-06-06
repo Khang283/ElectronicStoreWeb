@@ -10,7 +10,7 @@ import backend.dto.ProductListDTO;
 import backend.models.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import backend.dto.ModifyProductDTO;
 import java.util.List;
 @Service
 public class ProductService {
@@ -65,6 +65,9 @@ public class ProductService {
     }
     public boolean insertProduct(InsertProductDTO insertProductDTO) {
         return productDAO.insertProduct(insertProductDTO);
+    }
+    public boolean modifyProductByID(ModifyProductDTO modProd){
+        return productDAO.modifyProductById(modProd);
     }
 
     public List<ProductListDTO>getAdminProduct(){

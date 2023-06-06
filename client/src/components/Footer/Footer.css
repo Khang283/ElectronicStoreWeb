@@ -1,0 +1,16 @@
+.my-footer{
+    background-color: #dc3545;
+}
+a:link{
+    text-decoration: none;
+}
+img{
+    border-radius: 15%;
+}
+.footer-elec{
+    position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  height: 20px;
+}
