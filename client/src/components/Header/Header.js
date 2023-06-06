@@ -6,7 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import '../Header/Header.css';
 import { Link } from "react-router-dom";
-import  Button from "react-bootstrap/Button";
+import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
 /*const UserMenu = (
   <img
@@ -21,10 +21,15 @@ function Header() {
   const userState = useSelector((state) => state.user);
   const userId = userState.userId;
   const username = userState.username;
+  const role = userState.role;
   return (
     <Navbar collapseOnSelect bg="danger" expand="lg" className="row bg-radient">
       <Container>
-        <Navbar.Brand className="col-lg-2 text-light">Electronic Store</Navbar.Brand>
+        <Navbar.Brand className="col-lg-2 text-light">
+          <Link to={'/'} className="nav-link">
+            Electronic Store
+          </Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="reponsive-navbar-nav">
           {/*<Nav className="me-auto" style={{marginLeft:20, marginRight:20}}>
@@ -63,9 +68,9 @@ function Header() {
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Bàn phím</NavDropdown.Item>
 
             </NavDropdown>
- 
-            <Form style = {{ width:200, height:20 ,  marginRight:20}} className = "d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className = "me-2" aria-label="Search"/></Form>
-            <Button className="bg-danger border-0" onClick={SearchClicked}><img src="../searchButton.png" width={30} height={30} className="ml-2 mr-auto" alt="search" border={0}/></Button>
+
+            <Form style={{ width: 200, height: 20, marginRight: 20 }} className="d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" /></Form>
+            <Button className="bg-danger border-0" onClick={SearchClicked}><img src="../searchButton.png" width={30} height={30} className="ml-2 mr-auto" alt="search" border={0} /></Button>
           </Nav>
 
 
@@ -96,6 +101,13 @@ function Header() {
             </NavDropdown>
             :
             <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
+              {role == 'ADMIN' ?
+                <NavDropdown.Item>
+                  <Link to={'/admin/product'}>Admin</Link>
+                </NavDropdown.Item>
+                :
+                null
+              }
               <NavDropdown.Item>
                 <Link to={'/cart'}>Giỏ hàng</Link>
               </NavDropdown.Item>

@@ -83,3 +83,8 @@
   .dropdown-toggle::after {
     display: none !important; 
   }
+
+  .link {
+    text-decoration: none;
+    color: white;
+  }

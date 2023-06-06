@@ -31,6 +31,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(LoginResponseDTO.builder()
                         .userId(userLogin.getUserId())
                         .username(userLogin.getUsername())
+                        .role(userLogin.getRole())
                         .token(token)
                         .token_type("Bearer")
                         .expire_in(jwtService.extractExpiration(token))

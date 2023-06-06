@@ -1,7 +1,9 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { setUser } from '../../reducer/userReducer';
 
 function RegistrationForm() {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ function RegistrationForm() {
   const [address,setAddress] = useState('');
   const [gender,setGender] = useState('');
   const [dob,setDob] = useState('');
+  const dispatch = useDispatch();
   
   function validUserEmail(email){
     let validText = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gm ;
@@ -73,8 +76,13 @@ function RegistrationForm() {
     .then(res=>{
       let token = res.data.token;
       if(token){
+        const user = {
+          userId: res.data.userId,
+          username: res.data.username,
+          role: res.data.role
+        }
+        dispatch(setUser(user))
         Cookies.set('authToken',token,{expires: 1});
-        console.log(Cookies.get('authToken'))
         navigate('/');
       }
     })

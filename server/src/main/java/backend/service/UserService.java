@@ -22,6 +22,7 @@ public class UserService {
         return LoginResponseDTO.builder()
                 .userId(newUser.getUserId())
                 .username(newUser.getUsername())
+                .role(newUser.getRole())
                 .token(jwt)
                 .token_type("Bearer")
                 .expire_in(jwtService.extractExpiration(jwt))
@@ -34,7 +35,10 @@ public class UserService {
         return LoginResponseDTO.builder()
                 .userId(newUser.getUserId())
                 .username(newUser.getUsername())
+                .role(newUser.getRole())
                 .token(jwt)
+                .token_type("Bearer")
+                .expire_in(jwtService.extractExpiration(jwt))
                 .build();
     }
     public Optional<User>findUserByUsername(String username){

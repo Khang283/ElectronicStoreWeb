@@ -1,5 +1,6 @@
 package backend.dto;
 
+import backend.models.Role;
 import lombok.*;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
 public class LoginResponseDTO {
     private Long userId;
     private String username;
+    private Role role;
     private String token;
     private String token_type;
     private Date expire_in; //time in utc

@@ -27,10 +27,9 @@ function Login() {
                 const user = {
                     userId: res.data.userId,
                     username: res.data.username,
+                    role: res.data.role,
                 }
                 Cookies.set('authToken',token,{expires: 1});
-                console.log(res.data);
-                console.log(Cookies.get('authToken'));
                 dispatch(setUser(user));
             }
         }).then(()=>{

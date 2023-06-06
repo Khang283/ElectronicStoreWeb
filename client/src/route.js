@@ -8,6 +8,7 @@ import Home from './components/Home/Home.js'
 import Checkout from "./components/Checkout/Checkout.js";
 import ProductsList from "./components/admin/ProductsList";
 import Details from "./components/Details/Details";
+import Account from "./components/Account/Account";
 
 
 const router = createBrowserRouter([

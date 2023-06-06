@@ -4,6 +4,7 @@ const initialState ={
     value: 1,
     userId: -1,
     username: '',
+    role: 'USER',
     isLoad: true,
 }
 
@@ -14,6 +15,7 @@ const userReducer = createSlice({
         setUser: (state,action)=>{
             state.userId = action.payload.userId;
             state.username = action.payload.username;
+            state.role = action.payload.role;
         }
     }
 });
