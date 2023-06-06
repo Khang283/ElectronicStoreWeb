@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface ISpec extends JpaRepository<Spec, Long> {
     @Modifying
     @Transactional
@@ -23,5 +25,11 @@ public interface ISpec extends JpaRepository<Spec, Long> {
                 "AND spec_value= :specValue", nativeQuery = true)
     int getIdSpec(@Param("specName") String specName, @Param("groupId") int groupId,
                   @Param("specDetail") String specDetail, @Param("specValue") String specValue);
+
+    @Query(value = "SELECT spec.spec_id, spec_name, group_id, spec_detail, spec_value, spec.created_at, spec.modified_at, spec.deleted\n" +
+            "FROM spec, product_detail\n" +
+            "WHERE spec.spec_id = product_detail.spec_id\n" +
+            "AND product_id = :productId", nativeQuery = true)
+    List<Spec> getListSpec(@Param("productId") int productId);
 
 }

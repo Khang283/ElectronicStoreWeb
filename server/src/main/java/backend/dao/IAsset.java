@@ -1,5 +1,7 @@
 package backend.dao;
 
+import backend.dto.GetAssetDTO;
+import backend.dto.InsertAssetDTO;
 import backend.models.Assets;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,7 +16,8 @@ public interface IAsset extends JpaRepository<Assets,Long> {
     List<Assets>findAllAsset();
     @Query(value = "SELECT assets.asset_id,asset_name,asset_path,asset_type,assets.created_at,assets.modified_at,assets.deleted\n" +
                     "FROM assets,product,product_asset\n" +
-                    "WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= :productId AND product_asset.asset_role='icon'"
+                    "WHERE assets.asset_id=product_asset.asset_id \n" +
+            "AND product.product_id= product_asset.product_id AND product.product_id= :productId AND product_asset.asset_role='icon'"
             ,nativeQuery = true)
     Assets findAssetIconByProductId(@Param("productId")Long productId);
 
@@ -30,4 +33,12 @@ public interface IAsset extends JpaRepository<Assets,Long> {
             "AND asset_path= :assetPath\n" +
             "AND asset_type= :assetType", nativeQuery = true)
     int getIdAsset(@Param("assetName") String assetName, @Param("assetPath") String assetPath, @Param("assetType") String assetType);
+
+    @Query(value = "SELECT asset_id,asset_name,asset_path,asset_type,assets.created_at,assets.modified_at,assets.deleted\n" +
+                    "FROM assets\n" +
+                    "WHERE asset_id =:assetId",nativeQuery = true)
+    Assets getAssetByAssetId(@Param("assetId") int assetId);
+
+
+
 }

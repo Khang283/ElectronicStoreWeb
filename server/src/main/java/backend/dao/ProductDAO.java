@@ -1,10 +1,7 @@
 package backend.dao;
 
-import backend.dto.InsertAssetDTO;
-import backend.dto.InsertSpecDTO;
-import backend.dto.ProductListDTO;
+import backend.dto.*;
 import backend.models.*;
-import backend.dto.InsertProductDTO;
 import backend.models.Assets;
 import backend.models.Category;
 import backend.models.Company;
@@ -34,6 +31,8 @@ public class ProductDAO {
     private IProductAsset _productAsset;
     @Autowired
     private ISpec _spec;
+    @Autowired
+    private ISpecGroup _specGroup;
     public List<ProductListDTO>getProductList(int limit, int offset,String type){
         List<Product> products=_product.findAll().stream().skip(offset).limit(limit).collect(Collectors.toList());
         List<ProductListDTO>productListDTOS = new ArrayList<>();
@@ -58,6 +57,7 @@ public class ProductDAO {
         return productListDTOS;
     }
     public ProductListDTO productToProductListDTO(Product product){
+
         ProductListDTO productDTo = new ProductListDTO();
         productDTo.setProductId(product.getProductId());
         productDTo.setProductName(product.getProductName());
@@ -75,6 +75,74 @@ public class ProductDAO {
         }
         return productDTo;
     }
+
+    public GetProductByIdDTO getProductById(int productId) {
+        List<Product> products=_product.findAll().stream().collect(Collectors.toList());
+        GetProductByIdDTO productDTo = new GetProductByIdDTO();
+
+        for(Product product : products){
+
+            if(product.getProductId() == productId){
+                productDTo.setProductName(product.getProductName());
+                productDTo.setProductPrice(product.getProductPrice());
+                productDTo.setProductRating(product.getProductRating());
+                productDTo.setProductSold(product.getProductSold());
+                productDTo.setProductStatus(product.getProductStatus());
+                productDTo.setProductVersion(product.getProductVersion());
+                productDTo.setCategory(findProductCategory(product));
+                productDTo.setCompany(findProductCompany(product));
+                Assets assetIcon = _asset.findAssetIconByProductId(product.getProductId());
+                if(assetIcon!=null){
+                    productDTo.setProductIcon(assetIcon.getAssetPath());
+                }
+
+                productDTo.setAssets(getListAsset(Math.toIntExact(product.getProductId())));
+                productDTo.setSpecs(getListSpec(Math.toIntExact(product.getProductId())));
+            }
+        }
+
+        return productDTo;
+    }
+
+    public List<GetAssetDTO> getListAsset(int productId) {
+        List<GetAssetDTO> listAsset = new ArrayList<>();
+        List<ProductAsset> listProductAsset = _productAsset.getListAssetByProductId(productId);
+        GetAssetDTO assetDTO;
+
+        for (ProductAsset lst: listProductAsset) {
+            assetDTO = new GetAssetDTO();
+            assetDTO.setAssetId(lst.getAssetId());
+            assetDTO.setAssetRole(lst.getAssetRole());
+
+            Assets asset = _asset.getAssetByAssetId(Math.toIntExact(lst.getAssetId()));
+            assetDTO.setAssetName(asset.getAssetName());
+            assetDTO.setAssetPath(asset.getAssetPath());
+            assetDTO.setAssetType(asset.getAssetType());
+
+            listAsset.add(assetDTO);
+        }
+        return  listAsset;
+    }
+
+    public List<GetSpecDTO> getListSpec(int productId) {
+        List<GetSpecDTO> listSpecDTO = new ArrayList<>();
+        List<Spec> listSpec =_spec.getListSpec(productId);
+        GetSpecDTO specDTO;
+
+        for (Spec lst: listSpec) {
+            specDTO= new GetSpecDTO();
+            specDTO.setSpecId(lst.getSpecId());
+            specDTO.setSpecName(lst.getSpecName());
+            specDTO.setSpecDetail(lst.getSpecDetail());
+            specDTO.setSpecValue(lst.getSpecValue());
+            specDTO.setGroupName(_specGroup.getGroupName(Math.toIntExact(lst.getGroupId())));
+
+            listSpecDTO.add(specDTO);
+        }
+
+        return listSpecDTO;
+    }
+
     public String findProductCompany(Product product){
         List<Company>companies = _company.findAllCompany();
         for(Company company : companies){
@@ -167,5 +235,7 @@ public class ProductDAO {
         }
         return assets.getAssetPath();
     }
+
+
 
 }

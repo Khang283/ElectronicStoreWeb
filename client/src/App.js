@@ -8,6 +8,7 @@ function App() {
   return (
     <div>
       <Header/>
+      {/* <Details/> */}
       <Outlet />
       <Footer />
     </div>

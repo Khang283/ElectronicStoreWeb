@@ -1,6 +1,7 @@
 package backend.controllers;
 
 import backend.dto.DeleteProductDTO;
+import backend.dto.GetProductByIdDTO;
 import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import backend.service.ProductService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -39,7 +41,19 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         if(company == null || company.isEmpty() || company.isBlank()) return ResponseEntity.ok(productListDTOS);
-        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).toList());
+        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/v1/product")
+    public ResponseEntity<GetProductByIdDTO> getProductById(@RequestParam(name= "productId", required = false,defaultValue = "1" )int productId) {
+        GetProductByIdDTO product = new GetProductByIdDTO();
+        product = productService.getProductById(productId);
+
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(product);
     }
 
     @GetMapping("/admin/product")

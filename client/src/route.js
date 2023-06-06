@@ -7,6 +7,7 @@ import Cart from './components/Cart/Cart.js'
 import Home from './components/Home/Home.js'
 import Checkout from "./components/Checkout/Checkout.js";
 import ProductsList from "./components/admin/ProductsList";
+import Details from "./components/Details/Details";
 
 
 const router = createBrowserRouter([
@@ -41,6 +42,13 @@ const router = createBrowserRouter([
             {
                 path: '/admin/product',
                 element: <ProductsList />
+            },
+            {
+                path: '/:id/',
+                element: <Details/>
+                // element: (props) => <Details {...props}/>
+                // render: (props) =>
+                //     <Details {...props} />
             }
 
         ]

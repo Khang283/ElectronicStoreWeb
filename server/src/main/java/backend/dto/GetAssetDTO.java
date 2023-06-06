@@ -1,24 +1,29 @@
 package backend.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import org.springframework.data.rest.core.config.Projection;
-
-public class InsertAssetDTO {
+public class GetAssetDTO {
+    private Long assetId;
     private String assetName;
     private String assetPath;
     private String assetType;
     private String assetRole;
 
-    public InsertAssetDTO() {
+    public GetAssetDTO() {
     }
 
-    public InsertAssetDTO(String assetName, String assetPath, String assetType, String assetRole) {
+    public GetAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole) {
+        this.assetId = assetId;
         this.assetName = assetName;
         this.assetPath = assetPath;
         this.assetType = assetType;
         this.assetRole = assetRole;
+    }
+
+    public Long getAssetId() {
+        return assetId;
+    }
+
+    public void setAssetId(Long assetId) {
+        this.assetId = assetId;
     }
 
     public String getAssetName() {
