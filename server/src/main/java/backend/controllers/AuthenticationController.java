@@ -29,8 +29,10 @@ public class AuthenticationController {
         var userLogin = userService.findUserByUsername(user.getUsername()).orElseThrow();
         var token = jwtService.generateToken(userLogin);
         return ResponseEntity.ok(LoginResponseDTO.builder()
+                        .userId(userLogin.getUserId())
+                        .username(userLogin.getUsername())
                         .token(token)
-                        .token_type("Beare")
+                        .token_type("Bearer")
                         .expire_in(jwtService.extractExpiration(token))
                         .build());
     }
@@ -42,5 +44,12 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(loginResponseDTO);
     }
-
+     @PostMapping("/admin/signup")
+    public ResponseEntity<LoginResponseDTO> adminRegister(@RequestBody SignUpRequestDTO user){
+        LoginResponseDTO loginResponseDTO = userService.createdAdmin(user);
+        if(loginResponseDTO == null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(loginResponseDTO);
+     }
 }

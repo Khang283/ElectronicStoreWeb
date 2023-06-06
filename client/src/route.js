@@ -5,6 +5,8 @@ import Login from "./components/Login/Login";
 import Register from './components/Register/Register';
 import Cart from './components/Cart/Cart.js'
 import Home from './components/Home/Home.js'
+import Checkout from "./components/Checkout/Checkout.js";
+import ProductsList from "./components/admin/ProductsList";
 
 
 const router = createBrowserRouter([
@@ -27,8 +29,20 @@ const router = createBrowserRouter([
             },
             {
                 path: '/cart',
-                element: <Cart />
+                element: <Cart />,
+                children: [
+                    
+                ]
+            },
+            {
+                path: '/cart/checkout',
+                element: <Checkout />
+            },
+            {
+                path: '/admin/product',
+                element: <ProductsList />
             }
+
         ]
     }
 ]);

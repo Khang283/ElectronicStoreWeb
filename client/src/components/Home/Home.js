@@ -25,7 +25,7 @@ const Home = props => {
     const getProductPhone = () => {
         ProductServices.getType("phone")
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setproductPhone(response.data);
             })
             .catch(e => {
@@ -203,7 +203,7 @@ const Home = props => {
                         <Row xs={1} md={4} sm={2} className="g-4">
                             {productPhone?.map((product) => {
                                 return (
-                                    console.log(product.productName),
+                                    //console.log(product.productName),
                                     <Col >
                                         <Card className='card'>
                                             <Card.Img className='card-img' variant="top" src={product.productIcon} />

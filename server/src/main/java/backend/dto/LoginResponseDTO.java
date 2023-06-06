@@ -10,6 +10,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponseDTO {
+    private Long userId;
+    private String username;
     private String token;
     private String token_type;
     private Date expire_in; //time in utc

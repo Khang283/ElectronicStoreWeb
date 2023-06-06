@@ -1,16 +1,21 @@
 package backend.dto;
 
-import com.stripe.Stripe;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChangeCartItemQuantityDTO {
+public class CartItemDTO {
     private Long productId;
-    private Long amount;
+    private String productName;
+    private BigDecimal price;
+    private Long quantity;
+    private String productImage;
+
 }

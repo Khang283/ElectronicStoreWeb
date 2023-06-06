@@ -1,14 +1,19 @@
 package backend.service;
 
 import backend.dao.*;
+import backend.dto.CartDTO;
+import backend.dto.CartItemDTO;
 import backend.models.Cart;
 import backend.models.CartItem;
+import backend.models.Product;
 import backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -73,5 +78,36 @@ public class CartService {
         Cart cart = cartDAO.findCartByUserId(user.get().getUserId());
         if(cartDAO.removeCartItem(cart.getCartId(),productId)) return true;
         return false;
+    }
+
+    public CartDTO getCartByUsername(String username){
+        Optional<User>user = userDAO.findUserByUsername(username);
+        Cart cart = cartDAO.findCartByUserId(user.get().getUserId());
+        if(cart == null || cart.isDeleted()){
+            return null;
+        }
+        List<CartItemDTO> cartItemDTOS = new ArrayList<>();
+        List<CartItem> cartItems = cartDAO.findCartItemByCartId(cart.getCartId());
+        if(!cartItems.isEmpty() || cartItems == null){
+            for(CartItem cartItem : cartItems){
+                Product product = productDAO.findProductById(cartItem.getCartItemId().getProductId()).orElseThrow();
+                CartItemDTO cartItemDTO = CartItemDTO.builder()
+                        .productId(product.getProductId())
+                        .productName(product.getProductName())
+                        .productImage(productDAO.findProductIcon(product.getProductId()))
+                        .price(cartItem.getPrice())
+                        .quantity(cartItem.getQuantity())
+                        .build();
+                cartItemDTOS.add(cartItemDTO);
+            }
+        }
+        CartDTO cartDTO = CartDTO.builder()
+                .cartItems(cartItemDTOS)
+                .userId(user.get().getUserId())
+                .cartId(cart.getCartId())
+                .totalPrice(cart.getTotalMoney())
+                .totalQuantity(cart.getTotalQuantity())
+                .build();
+        return cartDTO;
     }
 }

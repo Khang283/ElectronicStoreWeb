@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000/", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 public class ProductController {
@@ -25,7 +24,7 @@ public class ProductController {
     }
 
     @GetMapping("/v1/product/{type}")
-    public ResponseEntity<List<ProductListDTO>> getAllPhone(@PathVariable("type")String type,
+    public ResponseEntity<List<ProductListDTO>> getAllProduct(@PathVariable("type")String type,
                                                             @RequestParam(name = "page", required = false,defaultValue = "1")int page,
                                                             @RequestParam(value = "search",required = false)String search,
                                                             @RequestParam(value = "company",required = false)String company){
@@ -41,6 +40,14 @@ public class ProductController {
         }
         if(company == null || company.isEmpty() || company.isBlank()) return ResponseEntity.ok(productListDTOS);
         return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).toList());
+    }
+
+    @GetMapping("/admin/product")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<ProductListDTO>>getAdminProduct(){
+        List<ProductListDTO>productListDTOS = productService.getAdminProduct();
+        if(productListDTOS.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(productListDTOS);
     }
 
     @DeleteMapping("/admin/product/delete")

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../reducer/userReducer';
 
 function Login() {
+    const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const dispatch = useDispatch();
 
     const handleLogin = () => {
         
@@ -18,9 +22,19 @@ function Login() {
         axios.post("/api/v1/login",loginResquest)
         .then(res=>{
             const token = res.data.token;
-            if(token){
-                Cookies.set('token',token,{expires: 1});
+            console.log(token);
+            if(token!=''){
+                const user = {
+                    userId: res.data.userId,
+                    username: res.data.username,
+                }
+                Cookies.set('authToken',token,{expires: 1});
+                console.log(res.data);
+                console.log(Cookies.get('authToken'));
+                dispatch(setUser(user));
             }
+        }).then(()=>{
+            navigate('/');
         })
     };
 

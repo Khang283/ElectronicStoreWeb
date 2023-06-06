@@ -1,6 +1,11 @@
-DROP DATABASE IF EXISTS electronic_store;
-CREATE DATABASE IF NOT EXISTS electronic_store;
-USE electronic_store;
+-- DROP DATABASE IF EXISTS electronic_store;
+-- CREATE DATABASE IF NOT EXISTS electronic_store;
+-- USE electronic_store;
+
+SET sql_mode = "NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE";
+START TRANSACTION;
+SET time_zone = "+07:00";
+
  
 /* PRODUCT TABLE */
 CREATE TABLE IF NOT EXISTS product(
@@ -51,7 +56,7 @@ CREATE TABLE IF NOT EXISTS assets (
 	asset_name VARCHAR(100) NOT NULL ,
 	asset_path VARCHAR(1000) NOT NULL,
 	asset_type VARCHAR(50) NOT NULL ,
-	created_at DATETIME DEFAULT NOW(),
+	created_at DATETIME ,
 	modified_at DATETIME ,
 	deleted BOOLEAN DEFAULT FALSE 
 );
@@ -78,7 +83,7 @@ CREATE TABLE IF NOT EXISTS reviews (
 CREATE TABLE IF NOT EXISTS cart
 (
 	cart_id BIGINT PRIMARY KEY AUTO_INCREMENT ,
-	user_id BIGINT,
+	user_id BIGINT NOT NULL ,
 	total_money DECIMAL(19,2) DEFAULT 0,
 	total_quantity BIGINT DEFAULT 0,
 	created_at DATETIME DEFAULT NOW(),
@@ -101,6 +106,7 @@ CREATE TABLE IF NOT EXISTS orders
 (
 	order_id BIGINT PRIMARY KEY AUTO_INCREMENT ,
 	user_id BIGINT NOT NULL,
+	cart_id BIGINT NOT NULL ,
 	total_price DECIMAL(19,2) DEFAULT 0,
 	total_quantity BIGINT DEFAULT 0,
 	receiver varchar(50) NOT NULL ,
@@ -184,6 +190,9 @@ ALTER TABLE product ADD CONSTRAINT FK_product_02 FOREIGN KEY (company_id) REFERE
 /* order_item */
 ALTER TABLE order_item ADD CONSTRAINT FK_order_item_01 FOREIGN KEY (order_id) REFERENCES orders(order_id);
 ALTER TABLE order_item ADD CONSTRAINT FK_order_item_02 FOREIGN KEY (product_id) REFERENCES product(product_id);
+/* order */
+ALTER TABLE orders ADD CONSTRAINT FK_orders_02 FOREIGN KEY (cart_id) REFERENCES cart(cart_id);
+ALTER TABLE orders ADD CONSTRAINT FK_orders_01 FOREIGN KEY (user_id) REFERENCES users(user_id);
 /* cart_item */
 ALTER TABLE cart_item ADD CONSTRAINT FK_cart_item_01 FOREIGN KEY (cart_id) REFERENCES cart(cart_id);
 ALTER TABLE cart_item ADD CONSTRAINT FK_cart_item_02 FOREIGN KEY (product_id) REFERENCES product(product_id);
@@ -461,216 +470,3 @@ INSERT INTO company (company_name) VALUES ("Realmi"); -- 12
 INSERT INTO company (company_name) VALUES ("HP"); -- 13
 INSERT INTO company (company_name) VALUES ("Gigabyte"); -- 14
 INSERT INTO company (company_name) VALUES ("Microsoft"); -- 15
--- Product
-INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','128GB',27190000,1,1);
-INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','256GB',30190000,1,1);
-INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','512GB',35990000,1,1);
-INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('iPhone 14 Pro Max','1TB',41990000,1,1);
-INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('Samsung Galaxy S22 5G','128GB',14990000,1,2);
-INSERT INTO product(product_name,product_version,product_price,category_id,company_id) VALUES ('Xiaomi Redmi Note 11 Pro','8GB - 128GB',5990000,1,9);
--- Asset 
-INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 1','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2022/11/30/638054217303176240_ip-14-pro-max-bac-1.jpg','image');
-INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 2','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/9/638139587930405930_iphone-14pro-trang-6.jpg','image');
-INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('iPhone 14 Pro Max image 3','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/3/9/638139587931205518_iphone-14pro-trang-4.jpg','image');
-INSERT INTO assets (asset_name,asset_path,asset_type) VALUES ('Samsung Galaxy S22 Ultra','https://images.fpt.shop/unsafe/fit-in/585x390/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/2/2/638108933021851432_samsung-galaxy-s23-ultra-xanh-1.jpg','image');
-
--- Product_Asset
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'icon');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (2,1,'icon');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (3,1,'icon');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (4,1,'icon');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,1,'slide');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,2,'slide');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (1,3,'slide');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (2,2,'slide');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (3,2,'slide');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (4,2,'slide');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (5,4,'slide');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (5,4,'icon');
-INSERT INTO product_asset(product_id,asset_id,asset_role) VALUES (6,4,'icon');
-
--- Spec_Group
-INSERT INTO spec_group (group_name) VALUES ('info');
-INSERT INTO spec_group (group_name) VALUES ('design and weight');
-INSERT INTO spec_group (group_name) VALUES ('processor');
-INSERT INTO spec_group (group_name) VALUES ('ram');
-INSERT INTO spec_group (group_name) VALUES ('screen');
-INSERT INTO spec_group (group_name) VALUES ('storage');
-INSERT INTO spec_group (group_name) VALUES ('security');
-INSERT INTO spec_group (group_name) VALUES ('os');
-INSERT INTO spec_group (group_name) VALUES ('battery');
-INSERT INTO spec_group (group_name) VALUES ('sound');
-INSERT INTO spec_group (group_name) VALUES ('camera');
-INSERT INTO spec_group (group_name) VALUES ('others');
--- Spec
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('ram 8gb','Dung lÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â°ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£ng ram','8gb',4);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu','PhiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªn bÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£n CPU','Snapdragon 8 Gen 1',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu type','LoÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡i CPU','Octa-Core',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu core','SÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“ nhÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢n','8',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu speed','TÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“c ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ tÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“i ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¾ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“a','2.20 GHz',3);
-INSERT INTO spec (spec_name,spec_detail,spec_value,group_id) VALUES ('cpu bit','64 Bits','KhÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â´ng',3);
--- Product detail
-INSERT INTO product_detail (product_id,spec_id) VALUES (1,1);
-INSERT INTO product_detail (product_id,spec_id) VALUES (2,1);
-INSERT INTO product_detail (product_id,spec_id) VALUES (3,1);
-INSERT INTO product_detail (product_id,spec_id) VALUES (4,1);
-INSERT INTO product_detail (product_id,spec_id) VALUES (5,1);
-INSERT INTO product_detail (product_id,spec_id) VALUES (5,2);
-INSERT INTO product_detail (product_id,spec_id) VALUES (5,3);
-INSERT INTO product_detail (product_id,spec_id) VALUES (5,4);
-INSERT INTO product_detail (product_id,spec_id) VALUES (5,5);
-INSERT INTO product_detail (product_id,spec_id) VALUES (5,6);
-INSERT INTO product_detail (product_id,spec_id) VALUES (6,1);
-
--- SELECT product_name, product_price, asset_path AS icon 
--- FROM product, assets, product_asset
--- WHERE product.product_id=product_asset.product_id AND assets.asset_id = product_asset.asset_id AND asset_role = 'icon'
--- -- 
--- SELECT assets.* 
--- FROM assets,product,product_asset
--- WHERE assets.asset_id=product_asset.asset_id AND product.product_id= product_asset.product_id AND product.product_id= 1
--- 
--- SELECT product.*
--- FROM product
--- INNER JOIN product_asset
--- ON product.product_id = product_asset.product_asset_id
--- INNER JOIN assets
--- ON assets.asset_id = product_asset.asset_id
-
-SELECT *
-FROM product
-
-SELECT product_name AS productName, product_price AS productPrice, asset_path AS productIcon, product_version AS productVersion,product_rating AS productRating,product_sold AS productSold,product_status AS productStatus,company_name AS company,category_name AS category 
-FROM product, assets, product_asset,company,category
-WHERE product.product_id=product_asset.product_id AND assets.asset_id = product_asset.asset_id AND product.category_id=category.category_id AND product.company_id = company.company_id
-AND asset_role = 'icon'
-LIMIT 10
-OFFSET 0
-
-UPDATE product_asset
-INNER JOIN product
-ON product_asset.product_id = product.product_id
-SET product_asset.deleted = FALSE , product.deleted=FALSE  
-WHERE product.product_id = 1
-
-SELECT spec_group.group_name, spec.*, product.*
-FROM product,spec,spec_group,product_detail
-WHERE product.product_id = product_detail.product_id AND product_detail.spec_id = spec.spec_id AND spec.group_id = spec_group.group_id AND product_name LIKE 'iphone%'
-
-SELECT DISTINCT product.*
-FROM product
-INNER JOIN ( SELECT company_id,company_name 
-				 FROM company
-				 WHERE company_name LIKE '%%') AS a
-ON a.company_id = product.company_id
-INNER JOIN ( SELECT category_id,category_name 
-				 FROM category
-				 WHERE category_name LIKE '%%') AS b
-ON b.category_id = product.category_id
-INNER JOIN ( SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
-				 FROM product_detail
-				 INNER JOIN spec
-				 ON spec.spec_id = product_detail.spec_id
-				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
-				 FROM product_detail
-				 INNER JOIN spec
-				 ON spec.spec_id = product_detail.spec_id
-				 INNER JOIN spec_group
-				 ON spec.group_id = spec_group.group_id
-				 WHERE spec_group.group_name LIKE 'screen' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%')) AS battery
-				 ON battery.spec_id = spec.spec_id
-				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
-				 FROM product_detail
-				 INNER JOIN spec
-				 ON spec.spec_id = product_detail.spec_id
-				 INNER JOIN spec_group
-				 ON spec.group_id = spec_group.group_id
-				 WHERE spec_group.group_name LIKE 'screen' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%')) AS screen
-				 ON screen.spec_id = battery.spec_id
-				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
-				 FROM product_detail
-				 INNER JOIN spec
-				 ON spec.spec_id = product_detail.spec_id
-				 INNER JOIN spec_group
-				 ON spec.group_id = spec_group.group_id
-				 WHERE spec_group.group_name LIKE '%%' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%') ) AS camera
-				 ON camera.spec_id = screen.spec_id
-				 INNER JOIN (SELECT DISTINCT spec.spec_id,product_detail.product_id,spec.spec_detail,spec.spec_value
-				 FROM product_detail
-				 INNER JOIN spec
-				 ON spec.spec_id = product_detail.spec_id
-				 INNER JOIN spec_group
-				 ON spec.group_id = spec_group.group_id
-				 WHERE spec_group.group_name LIKE '%%' AND (spec.spec_detail LIKE '%%' OR spec.spec_value LIKE '%%')) AS other
-				 ON other.spec_id = camera.spec_id ) AS c
-ON c.product_id = product.product_id
-WHERE (product.product_price BETWEEN 0 AND 100000000) AND product.product_rating >=0 AND product.product_sales = FALSE
-
-
-SELECT DISTINCT product.*
-FROM product
-WHERE product_name LIKE '%iphone%'
-UNION 
-SELECT DISTINCT product.*
-FROM product
-INNER JOIN company
-ON company.company_id = product.company_id 
-WHERE company_name LIKE '%iphone%'
-UNION 
-SELECT DISTINCT product.*
-FROM product
-INNER JOIN category
-ON category.category_id = product.category_id 
-WHERE category_name LIKE '%iphone%'
-UNION
-SELECT DISTINCT product.*
-FROM product
-INNER JOIN product_detail
-ON product_detail.product_id = product.product_id 
-INNER JOIN spec 
-ON spec.spec_id = product_detail.spec_id 
-INNER JOIN spec_group
-ON spec.group_id = spec_group.group_id
-WHERE  (spec_value LIKE '%iphone%' OR spec_detail LIKE'%iphone%')
-
-SELECT * 
-FROM cart 
-WHERE user_id = 1 AND deleted = FALSE 
-
-INSERT INTO cart_item(cart_id,product_id,price,quantity) VALUES (:cart_id,:product_id,:price,:quanity);
-
-SELECT * 
-FROM cart_item
-WHERE cart_id = :cart_id AND product_id=:product_id
-
-UPDATE cart_item
-SET quantity = quantity - 1
-WHERE cart_id = 1 AND product_id = 1
-
-UPDATE cart
-SET total_quantity = total_quantity + 1, total_money = total_money + 1
-WHERE cart_id = 3
-
-SELECT * 
-FROM cart_item
-WHERE cart_id = :cartId AND product_id=:productId
-
-UPDATE cart_item
-SET quantity = 2
-WHERE cart_id = 1 AND product_id = 1
-
-UPDATE cart
-SET tota_money = total_money + 1, total_money = total_money + 
-WHERE cart_id = 
-
-DELETE cart_item,cart
-FROM cart_item
-INNER JOIN cart
-ON cart_item.cart_id = cart.cart_id
-WHERE cart.cart_id = 5
-
-DELETE product_asset,product
-FROM product_asset
-INNER JOIN product
-ON product_asset.product_id = product.product_id
-WHERE product.product_id=5;

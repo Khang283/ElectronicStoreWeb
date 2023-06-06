@@ -9,6 +9,7 @@ import backend.models.Assets;
 import backend.models.Category;
 import backend.models.Company;
 import backend.models.Product;
+import org.hibernate.boot.model.source.spi.AssociationSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,6 +47,16 @@ public class ProductDAO {
 
         return productListDTOS;
     }
+
+    public List<ProductListDTO>getAdminProduct(){
+        List<Product> products = _product.findAll();
+        List<ProductListDTO> productListDTOS = new ArrayList<>();
+        for(Product product: products){
+            ProductListDTO productListDTO = productToProductListDTO(product);
+            productListDTOS.add(productListDTO);
+        }
+        return productListDTOS;
+    }
     public ProductListDTO productToProductListDTO(Product product){
         ProductListDTO productDTo = new ProductListDTO();
         productDTo.setProductId(product.getProductId());
@@ -54,6 +65,7 @@ public class ProductDAO {
         productDTo.setProductRating(product.getProductRating());
         productDTo.setProductSold(product.getProductSold());
         productDTo.setProductStatus(product.getProductStatus());
+        productDTo.setProductStock(product.getProductStock());
         productDTo.setProductVersion(product.getProductVersion());
         productDTo.setCategory(findProductCategory(product));
         productDTo.setCompany(findProductCompany(product));
@@ -146,6 +158,14 @@ public class ProductDAO {
 
     public Optional<Product>findProductById(long productId){
         return _product.findById(productId);
+    }
+
+    public String findProductIcon(long productId){
+        Assets assets = _asset.findAssetIconByProductId(productId);
+        if(assets == null || assets.isDeleted()){
+            return null;
+        }
+        return assets.getAssetPath();
     }
 
 }

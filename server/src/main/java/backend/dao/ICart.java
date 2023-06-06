@@ -30,7 +30,7 @@ public interface ICart extends JpaRepository<Cart,Long> {
     @Modifying
     @Transactional
     @Query(value =  "UPDATE cart\n" +
-                    "SET total_quantity = total_quantity + :quantity, total_money = total_money + :money\n" +
+                    "SET total_quantity = total_quantity + :quantity, total_money = total_money + :money \n" +
                     "WHERE cart_id = :cartId",nativeQuery = true)
     void updateCart(@Param("cartId")long cartId,@Param("quantity")long quantity,@Param("money")BigDecimal money);
 }

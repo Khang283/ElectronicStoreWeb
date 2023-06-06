@@ -1,26 +1,30 @@
 import React from "react";
-import  Container  from "react-bootstrap/Container";
+import Container from "react-bootstrap/Container";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Form from 'react-bootstrap/Form';
 import '../Header/Header.css';
 import { Link } from "react-router-dom";
-{/*const UserMenu = (
+import { useSelector } from "react-redux";
+/*const UserMenu = (
   <img
     src={'../user.png'}
     alt="UserName profile image"
     roundedCircle
     style={{ width: '40px', height: '40px' }}
   />
-) //Test thu hinh anh dai dien */              }
-function SearchClicked(){}
-function Header(){
-    return(
-        <Navbar collapseOnSelect bg="danger" expand="lg" className="row">
-            <Container>
-                <Navbar.Brand className="col-lg-2 text-light">Electronic Store</Navbar.Brand>
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+) //Test thu hinh anh dai dien */
+function SearchClicked() { }
+function Header() {
+  const userState = useSelector((state) => state.user);
+  const userId = userState.userId;
+  const username = userState.username;
+  return (
+    <Navbar collapseOnSelect bg="danger" expand="lg" className="row">
+      <Container>
+        <Navbar.Brand className="col-lg-2 text-light">Electronic Store</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="reponsive-navbar-nav">
           {/*<Nav className="me-auto" style={{marginLeft:20, marginRight:20}}>
              
@@ -33,36 +37,36 @@ function Header(){
             <img src="../searchButton.png" width={40} height={40} bg="white" alt="search" border={0}/>
             
     </Nav> //Test thu thanh nav */}
-    <Nav className="me-auto col-lg-8 " style={{marginLeft:20, marginRight:20}}>
-          <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Điện thoại <img className="text-light" src="../phone.png" alt="phone" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+          <Nav className="me-auto col-lg-8 " style={{ marginLeft: 20, marginRight: 20 }}>
+            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Điện thoại <img className="text-light" src="../phone.png" alt="phone" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Iphone</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Samsung</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Redmi</NavDropdown.Item>
 
             </NavDropdown>
-          <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Laptop <img src="../laptop.png" alt="laptop" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Laptop <img src="../laptop.png" alt="laptop" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">HP</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">DELL</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">MSI</NavDropdown.Item>
 
             </NavDropdown>
-          <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light" >Tablet <img src="../tablet.png" alt="tablet" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light" >Tablet <img src="../tablet.png" alt="tablet" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Samsung</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Apple</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Ipad</NavDropdown.Item>
 
             </NavDropdown>
-          <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Phụ kiện <img src="../accessories.png" alt="accesories" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Phụ kiện <img src="../accessories.png" alt="accesories" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Chuột</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Tai Nghe</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Bàn phím</NavDropdown.Item>
 
             </NavDropdown>
- 
-            <Form style = {{ width:200, height:20 ,  marginRight:20}} className = "d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className = "me-2" aria-label="Search"/></Form>
-           <img src="../searchButton.png" width={38} height={38}  onClick={SearchClicked} className="ml-2 mr-auto" alt="search" border={0}/>
+
+            <Form style={{ width: 200, height: 20, marginRight: 20 }} className="d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" /></Form>
+            <img src="../searchButton.png" width={38} height={38} onClick={SearchClicked} className="ml-2 mr-auto" alt="search" border={0} />
           </Nav>
-          
+
 
           {/*<Nav>
           <NavDropdown href="#account" className="dropdown" renderMenuOnMount={true} title="Tài khoản" id="collasible-nav-dropdown">
@@ -80,25 +84,30 @@ function Header(){
 
         </Navbar.Collapse >
         <Navbar.Collapse id="reponsive-navbar-nav">
-           <NavDropdown marginLeft={20} marginRight={20} href="#account" className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">Tài khoản <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
-              <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">
+          {userId == -1 ?
+            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
+              <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" >
                 <Link to={'/login'}>Đăng nhập</Link>
               </NavDropdown.Item>
-              <NavDropdown.Item href="#login">
+              <NavDropdown.Item >
                 <Link to={'/registry'} >Đăng ký</Link>
               </NavDropdown.Item>
-              <NavDropdown.Item href="#cart">
+            </NavDropdown>
+            :
+            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
+              <NavDropdown.Item>
                 <Link to={'/cart'}>Giỏ hàng</Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#logout">
+              <NavDropdown.Item >
                 Đăng xuất
               </NavDropdown.Item>
             </NavDropdown>
-            </Navbar.Collapse>
-            </Container>
-        </Navbar>
-    )
+          }
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  )
 }
 
 export default Header;

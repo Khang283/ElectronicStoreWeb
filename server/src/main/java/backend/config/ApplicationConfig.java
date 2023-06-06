@@ -22,6 +22,7 @@ public class ApplicationConfig {
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> _user.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("User not found"));
+                                //findUserByEmail if want log in with email
     }
 
     @Bean

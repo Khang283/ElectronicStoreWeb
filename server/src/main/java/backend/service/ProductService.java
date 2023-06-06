@@ -59,4 +59,7 @@ public class ProductService {
         return productDAO.insertProduct(insertProductDTO);
     }
 
+    public List<ProductListDTO>getAdminProduct(){
+        return productDAO.getAdminProduct();
+    }
 }

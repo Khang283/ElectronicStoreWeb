@@ -1,9 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function RegistrationForm() {
+  const navigate = useNavigate();
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
   const [passwordRetype,setPasswordRetype] = useState('');
@@ -72,8 +73,9 @@ function RegistrationForm() {
     .then(res=>{
       let token = res.data.token;
       if(token){
-        Cookies.set('token',token,{expires: 1});
-        console.log(Cookies.get('token'))
+        Cookies.set('authToken',token,{expires: 1});
+        console.log(Cookies.get('authToken'))
+        navigate('/');
       }
     })
   }

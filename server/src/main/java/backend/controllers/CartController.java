@@ -1,8 +1,11 @@
 package backend.controllers;
 
+import backend.dto.CartDTO;
 import backend.dto.ChangeCartItemQuantityDTO;
 import backend.service.CartService;
 import backend.service.JwtService;
+import com.stripe.Stripe;
+import com.stripe.model.Charge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,7 @@ public class CartController {
         String token = accessToken.substring(7);
         long productId = changeCartItemQuantityDTO.getProductId();
         long quantity = changeCartItemQuantityDTO.getAmount();
-        if(quantity<1){
+        if(quantity>=1){
             if(jwtService.isValidateToken(token)){
                 String username = jwtService.extractUsername(token);
                 if(cartService.changeQuantity(username,productId,quantity)) return ResponseEntity.ok("Đã thay đổi số lượng sản phẩm trong giỏ hàng");
@@ -49,4 +52,17 @@ public class CartController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("/cart")
+    public ResponseEntity<CartDTO>getCart(@RequestHeader("Authorization")String accessToken){
+        String token = accessToken.substring(7);
+        if(jwtService.isValidateToken(token)){
+            String username = jwtService.extractUsername(token);
+            CartDTO cartDTO = cartService.getCartByUsername(username);
+            if(cartDTO==null) return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(cartService.getCartByUsername(username));
+        }
+        return ResponseEntity.notFound().build();
+    }
+    public void Checkout(){
+    }
 }
