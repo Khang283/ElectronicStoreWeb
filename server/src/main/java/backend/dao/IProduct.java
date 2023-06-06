@@ -75,7 +75,6 @@ public interface IProduct extends JpaRepository<Product,Long> {
             "AND product_version= :productVersion", nativeQuery = true)
     Integer findProductId(@Param("productName") String productName, @Param("categoryId") int categoryId,
                           @Param("companyId") int companyId, @Param("productVersion") String productVersion);
-<<<<<<< HEAD
                           @Modifying
     @Transactional
     @Query(value = "UPDATE product\n"+
@@ -86,7 +85,4 @@ public interface IProduct extends JpaRepository<Product,Long> {
             "FROM product\n" +
             "WHERE product_name = :productName \n" + "AND category_id = :categoryId\n" + "AND company_id = :companyId\n" + "AND product_version = :productVersion", nativeQuery = true)
     Long getProductId(@Param("productName") String productName, @Param("categoryId") Long categoryId, @Param("companyId") Long companyId, @Param("productVersion") String productVersion);
-=======
-
->>>>>>> a2e569ac229438bff8bc9ce1b838584036b27203
 }

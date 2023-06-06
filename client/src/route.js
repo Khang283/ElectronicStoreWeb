@@ -5,7 +5,7 @@ import Login from "./components/Login/Login";
 import Register from './components/Register/Register';
 import Cart from './components/Cart/Cart.js';
 import Home from './components/Home/Home.js';
-import MyAccount from "./components/MyAccount/MyAccount";
+import Account from "./components/Account/Account";
 const router = createBrowserRouter([
     {
         path: '/',
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/logout',
-                element: <MyAccount />
+                element: <Account />
             }
         ]
     }

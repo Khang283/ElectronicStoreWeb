@@ -35,6 +35,14 @@ public class ProductService {
         return productListDTOS;
     }
 
+    public GetProductByIdDTO getProductById(int productId) {
+        GetProductByIdDTO product = new GetProductByIdDTO();
+        product = productDAO.getProductById(productId);
+
+        if (product == null) return null;
+        return product;
+    }
+
     public boolean deleteProductById(long productId){
         return productDAO.deleteProductById(productId);
     }

@@ -2,8 +2,9 @@ import React from 'react';
 import "../Footer/Footer.css";
 function Footer() {
   return (
-    <footer className="text-center text-lg-left text-secondary bg-danger" >
-        <div className="container text-center text-md-left pt-5 pb-5 ">
+    <div className="d-flex flex-column min-vh-100">
+    <footer className="text-center text-lg-left text-secondary bg-danger  mt-auto" >
+        <div className="container text-center text-md-left pt-5 ">
           <div className="row">
             <div className="col-lg-6 col-md-12 mb-4 mb-md-0">
               <h5 className="text-uppercase text-light">4man Electronic Store</h5>
@@ -44,10 +45,11 @@ function Footer() {
             </div>
           </div>
         </div>
-      <div className="row text-center p-2 bg-light bg-gradient" >
+      <div className="row text-center p-2 bg-light bg-gradient pt-0 mt-0" >
         <div className="text-dark fw-bold" >© 2023 Công ty cổ phần một thành viên 4man - chuyên bán những sản phẩm gia dụng, điện tử với mức giá hợp lí. Chịu trách nhiệm nội dung : Nhóm 4 người</div>
       </div>
     </footer>
+    </div>
   );
 }
 

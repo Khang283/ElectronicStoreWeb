@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-=======
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
->>>>>>> a2e569ac229438bff8bc9ce1b838584036b27203
+
 package backend.dto;
 import java.lang.Long;
 /**
@@ -59,8 +58,7 @@ public class ModifyProductDetailDTO {
         this.deleted = deleted;
     }
     
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> a2e569ac229438bff8bc9ce1b838584036b27203
+
+

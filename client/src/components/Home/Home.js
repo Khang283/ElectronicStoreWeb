@@ -8,7 +8,6 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Home/Home.css';
 
@@ -224,8 +223,6 @@ const Home = props => {
                                                 <div className='card-btn'>
                                                     <Button variant="danger" size="lg"><strong>Mua Ngay</strong></Button>{' '}
                                                 </div>
-
-
                                                 {/* <i class="bi bi-display"></i> */}
                                                 <link to={""}></link>
                                             </Card.Body>

@@ -6,7 +6,6 @@ import backend.models.CartItem;
 import backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
