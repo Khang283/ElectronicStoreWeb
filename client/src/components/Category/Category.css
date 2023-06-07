@@ -1,0 +1,23 @@
+.div-list {
+    border-radius: 0.5rem;
+    background-color: #fff;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.center {
+    /* display: inline;
+    text-align: center; */
+    /* display: block;
+    margin: auto; */
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+}
+
+.div-spec .pagination {
+    display: inline-block;
+    position: relative;
+}
+

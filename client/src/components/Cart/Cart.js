@@ -11,6 +11,8 @@ import 'reactjs-popup/dist/index.css';
 import Checkout from '../Checkout/Checkout';
 import { Link } from 'react-router-dom';
 import '../Cart/Cart.css';
+import Spinner from '../Loader/Loader';
+import Loader from '../Loader/Loader';
 
 //const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`); // nên để ở đây nhằm tránh tạo lại mỗi lần render
 
@@ -124,7 +126,6 @@ function Cart() {
         setQuantity(res.data.totalQuantity);
         setLoad(true);
         console.log(res.data);
-        //console.log(res.data)
       }
     })
     .catch(()=>{
@@ -170,9 +171,8 @@ function Cart() {
   if (!isLoaded) {
     return (
       <div className='centerText'>
-        <h2>Xin chờ ...</h2>
-      </div>
-    )
+      <Loader></Loader></div>
+    );
   }
   else if(notFound){
     return(

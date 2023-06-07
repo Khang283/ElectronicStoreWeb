@@ -9,6 +9,7 @@ import Checkout from "./components/Checkout/Checkout.js";
 import ProductsList from "./components/admin/ProductsList";
 import Details from "./components/Details/Details";
 import Account from "./components/Account/Account";
+import Category from "./components/Category/Category";
 
 
 const router = createBrowserRouter([
@@ -45,15 +46,16 @@ const router = createBrowserRouter([
                 element: <ProductsList />
             },
             {
-                path: '/:id/',
+                path: '/product/:id/',
                 element: <Details/>
-                // element: (props) => <Details {...props}/>
-                // render: (props) =>
-                //     <Details {...props} />
             },
             {
                 path: '/logout',
                 element: <Account />
+            },
+            {
+                path: '/:category',
+                element: <Category />
             }
 
         ]

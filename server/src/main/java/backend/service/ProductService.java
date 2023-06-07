@@ -26,7 +26,7 @@ public class ProductService {
     private ProductDAO productDAO;
     public List<ProductListDTO> getProductList(int page,String type){
         if(page<1) return null;
-        int limit = 10;
+        int limit = 13;
         int offset = page*limit - limit;
         List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset,type);
         if(productListDTOS == null || productListDTOS.isEmpty()){
@@ -41,6 +41,10 @@ public class ProductService {
 
         if (product == null) return null;
         return product;
+    }
+
+    public int countProduct(String type) {
+        return productDAO.countProduct(type);
     }
 
     public boolean deleteProductById(long productId){
@@ -59,7 +63,7 @@ public class ProductService {
 
     public List<ProductListDTO>findProductByKeyWord(String keyword,int page){
         if(page<1) return null;
-        int limit = 10;
+        int limit = 13;
         int offset = page*limit - limit;
         return productDAO.findProductByKeyWord(keyword,limit,offset);
     }

@@ -281,6 +281,11 @@
     font-size: 0.9rem;
 }   
 
+.infotext {
+    color: #1f1f1f;
+    font-size: x-large;
+}
+
 /*Responsive */
 @media (max-width: 1000px){
     .product-details{
