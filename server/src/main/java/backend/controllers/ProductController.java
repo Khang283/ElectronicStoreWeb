@@ -10,12 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import backend.dto.ModifyProductDTO;
-import backend.dto.ModifyProductDetailDTO;
-import backend.dto.ModifyProductAssetDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.lang.Long;
+
 @RestController
 @RequestMapping("/api")
 public class ProductController {
@@ -57,6 +56,12 @@ public class ProductController {
         }
 
         return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/v1/countproduct/{type}")
+    public ResponseEntity<Integer> countProduct(@PathVariable("type")String type) {
+        int count = productService.countProduct(type);
+        return ResponseEntity.ok(count);
     }
 
     @GetMapping("/admin/product")

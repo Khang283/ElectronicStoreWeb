@@ -42,6 +42,10 @@ public class ProductService {
         return product;
     }
 
+    public int countProduct(String type) {
+        return productDAO.countProduct(type);
+    }
+
     public boolean deleteProductById(long productId){
         return productDAO.deleteProductById(productId);
     }

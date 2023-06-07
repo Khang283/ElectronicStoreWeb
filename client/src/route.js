@@ -13,6 +13,7 @@ import UsersList from "./components/admin/UsersList";
 import CartHome from "./components/Cart/CartHome.js";
 import MyAccount from "./components/MyAccount/MyAccount";
 import UpdateUser from "./components/admin/UpdateUser";
+import Category from "./components/Category/Category";
 
 
 const router = createBrowserRouter([
@@ -60,9 +61,6 @@ const router = createBrowserRouter([
             {
                 path: '/:category/:id',
                 element: <Details/>
-                // element: (props) => <Details {...props}/>
-                // render: (props) =>
-                //     <Details {...props} />
             },
             {
                 path: '/account',

@@ -12,6 +12,8 @@ import Checkout from '../Checkout/Checkout';
 import { Link, Outlet } from 'react-router-dom';
 import '../Cart/Cart.css';
 import { useSelector } from 'react-redux';
+import Spinner from '../Loader/Loader';
+import Loader from '../Loader/Loader';
 
 //const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`); // nên để ở đây nhằm tránh tạo lại mỗi lần render
 
@@ -193,8 +195,7 @@ function Cart() {
   if (!isLogin) {
     return (
       <div className='centerText'>
-        <h2>Bạn chưa đăng nhập</h2>
-      </div>
+      <Loader></Loader></div>
     )
   }
   else {
