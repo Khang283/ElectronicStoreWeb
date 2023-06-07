@@ -1,6 +1,7 @@
 package backend.controllers;
 
 import backend.dto.CartDTO;
+import backend.dto.CartPayLoad;
 import backend.dto.ChangeCartItemQuantityDTO;
 import backend.service.CartService;
 import backend.service.JwtService;
@@ -19,21 +20,21 @@ public class CartController {
     @Autowired
     private JwtService jwtService;
     @PostMapping("/cart/add")
-    public ResponseEntity<String>addToCart(@RequestHeader("Authorization")String accessToken,@RequestBody long productId){
+    public ResponseEntity<String>addToCart(@RequestHeader("Authorization")String accessToken,@RequestBody CartPayLoad payLoad){
         String token = accessToken.substring(7);
         if(jwtService.isValidateToken(token)){
             String username = jwtService.extractUsername(token);
-            boolean isAdded = cartService.addProductToCart(username,productId);
+            boolean isAdded = cartService.addProductToCart(username,payLoad.getProductId());
             if(isAdded) return ResponseEntity.ok("Đã thêm sản phẩm vào giỏ hàng");
         }
         return ResponseEntity.badRequest().build();
     }
     @PutMapping("/cart/remove")
-    public ResponseEntity<String>removeFromCart(@RequestHeader("Authorization")String accessToken,@RequestBody long productId){
+    public ResponseEntity<String>removeFromCart(@RequestHeader("Authorization")String accessToken,@RequestBody CartPayLoad payLoad){
         String token = accessToken.substring(7);
         if(jwtService.isValidateToken(token)){
             String username = jwtService.extractUsername(token);
-            if(cartService.removeCartItem(username,productId)) return ResponseEntity.ok("Đã xóa sản phẩm khỏi giỏ hàng");
+            if(cartService.removeCartItem(username,payLoad.getProductId())) return ResponseEntity.ok("Đã xóa sản phẩm khỏi giỏ hàng");
         }
         return ResponseEntity.badRequest().build();
     }

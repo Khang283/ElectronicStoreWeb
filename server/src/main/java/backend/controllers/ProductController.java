@@ -31,13 +31,14 @@ public class ProductController {
     public ResponseEntity<List<ProductListDTO>> getAllProduct(@PathVariable("type")String type,
                                                             @RequestParam(name = "page", required = false,defaultValue = "1")int page,
                                                             @RequestParam(value = "search",required = false)String search,
-                                                            @RequestParam(value = "company",required = false)String company){
+                                                            @RequestParam(value = "company",required = false)String company,
+                                                              @RequestParam(value = "limit",required = false,defaultValue = "10")int limit){
         List<ProductListDTO> productListDTOS = new ArrayList<>();
         if(search==null){
-            productListDTOS = productService.getProductList(page,type);
+            productListDTOS = productService.getProductList(page,type,limit);
         }
         else{
-            productListDTOS = productService.findProductByKeyWord(search,page);
+            productListDTOS = productService.findProductByKeyWord(search,page,limit);
         }
         if (productListDTOS == null){
             return ResponseEntity.notFound().build();

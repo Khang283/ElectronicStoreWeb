@@ -245,8 +245,8 @@ const Home = props => {
                                     //console.log(product.productName),
                                     <Col >
                                         <Card className='card'>
-                                            <a href={"/" + product.productId}>
-                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
+                                            <Link to={"/"+product.category+"/" + product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
                                             <Card.Body>
                                                 <a href={"/" + product.productId}>
                                                     <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
@@ -261,7 +261,11 @@ const Home = props => {
                                                     <span ><i className='bi icon-screen-size'></i> spec</span>
                                                 </div>
                                                 <div className='card-btn'>
-                                                    <Button variant="danger" size="lg" href={"/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
+                                                    <Button variant="danger" size="lg">
+                                                        <Link to={'/'+product.category+'/'+product.productId}>
+                                                            <strong>Mua Ngay</strong>
+                                                        </Link>
+                                                    </Button>{' '}
                                                 </div>
 
                                                 {/* <Link to={"/1"}>View Reviews</Link> */}
@@ -318,11 +322,11 @@ const Home = props => {
                                     console.log(product.productName),
                                     <Col >
                                         <Card className='card'>
-                                            <a href={"/" + product.productId}>
-                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
+                                            <Link to={"/" + product.category+"/"+product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
                                             <Card.Body>
-                                                <a href={"/" + product.productId}>
-                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+                                                <Link to={"/" + product.category+"/"+product.productId}>
+                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
 
                                                 <Card.Text className='fontPrice'>
                                                     {moneyFormat.format(product.productPrice)}

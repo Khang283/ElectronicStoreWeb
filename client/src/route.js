@@ -9,16 +9,24 @@ import Checkout from "./components/Checkout/Checkout.js";
 import ProductsList from "./components/admin/ProductsList";
 import Details from "./components/Details/Details";
 import Account from "./components/Account/Account";
+import UsersList from "./components/admin/UsersList";
+import CartHome from "./components/Cart/CartHome.js";
+import MyAccount from "./components/MyAccount/MyAccount";
+import UpdateUser from "./components/admin/UpdateUser";
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element: <App/>,
         errorElement: <ErrorPage />,
         children: [
             {
-                path: '/',
+                path : '/',
+                element: <Home />
+            },
+            {
+                path: '/home',
                 element: <Home />
             },
             {
@@ -32,9 +40,6 @@ const router = createBrowserRouter([
             {
                 path: '/cart',
                 element: <Cart />,
-                children: [
-                    
-                ]
             },
             {
                 path: '/cart/checkout',
@@ -45,15 +50,27 @@ const router = createBrowserRouter([
                 element: <ProductsList />
             },
             {
-                path: '/:id/',
+                path: '/admin/user',
+                element: <UsersList />
+            },
+            {
+                path: '/:category',
+                element: <Home />,
+            },
+            {
+                path: '/:category/:id',
                 element: <Details/>
                 // element: (props) => <Details {...props}/>
                 // render: (props) =>
                 //     <Details {...props} />
             },
             {
-                path: '/logout',
+                path: '/account',
                 element: <Account />
+            },
+            {
+                path: '/admin/user/:userid',
+                element: <UpdateUser />
             }
 
         ]

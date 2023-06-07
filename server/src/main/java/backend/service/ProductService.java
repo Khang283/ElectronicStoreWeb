@@ -24,9 +24,8 @@ public class ProductService {
     private ICompany _company;
     @Autowired
     private ProductDAO productDAO;
-    public List<ProductListDTO> getProductList(int page,String type){
+    public List<ProductListDTO> getProductList(int page,String type,int limit){
         if(page<1) return null;
-        int limit = 10;
         int offset = page*limit - limit;
         List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset,type);
         if(productListDTOS == null || productListDTOS.isEmpty()){
@@ -57,9 +56,8 @@ public class ProductService {
         return productDAO.getAllProductDetail();
     }
 
-    public List<ProductListDTO>findProductByKeyWord(String keyword,int page){
+    public List<ProductListDTO>findProductByKeyWord(String keyword,int page,int limit){
         if(page<1) return null;
-        int limit = 10;
         int offset = page*limit - limit;
         return productDAO.findProductByKeyWord(keyword,limit,offset);
     }

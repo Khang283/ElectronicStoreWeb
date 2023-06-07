@@ -7,7 +7,11 @@ import Form from 'react-bootstrap/Form';
 import '../Header/Header.css';
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Image } from "react-bootstrap";
+import Cookies from "js-cookie";
+import { loadUser, setUser } from "../../reducer/userReducer";
+import axios from "axios";
 /*const UserMenu = (
   <img
     src={'../user.png'}
@@ -18,16 +22,51 @@ import { useSelector } from "react-redux";
 ) //Test thu hinh anh dai dien */
 function SearchClicked() { }
 function Header() {
+  const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
-  const userId = userState.userId;
-  const username = userState.username;
-  const role = userState.role;
+  let userId, username, role;
+  console.log(userState.isLoad);
+  if (userState.isLoad == false) {
+    axios.get('/api/user/me', {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('authToken')}`,
+      }
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          const user = {
+            userId: res.data.userId,
+            username: res.data.username,
+            role: res.data.role,
+          };
+          dispatch(setUser(user));
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+  userId = userState.userId;
+  username = userState.username;
+  role = userState.role;
+
+  const handleLogout =()=>{
+    Cookies.remove('authToken');
+    const user = {
+      userId: -1,
+      username: '',
+      role: 'USER',
+      isLoad: false,
+    };
+    dispatch(setUser(user));
+  }
+
   return (
     <Navbar collapseOnSelect bg="danger" expand="lg" className="row bg-radient">
       <Container>
         <Navbar.Brand className="col-lg-2 text-light">
           <Link to={'/'} className="nav-link">
-            Electronic Store
+            <Image src="../logo.png" alt="logo.png" width={30} height={50}></Image>
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -108,11 +147,14 @@ function Header() {
                 :
                 null
               }
+              <NavDropdown.Item >
+                <Link to={'/account'} >Tài khoản</Link>
+              </NavDropdown.Item>
               <NavDropdown.Item>
                 <Link to={'/cart'}>Giỏ hàng</Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item >
+              <NavDropdown.Item onClick={handleLogout}>
                 Đăng xuất
               </NavDropdown.Item>
             </NavDropdown>
