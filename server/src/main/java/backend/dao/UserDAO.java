@@ -1,6 +1,7 @@
 package backend.dao;
 
 import backend.dto.SignUpRequestDTO;
+import backend.dto.UserDTO;
 import backend.models.Role;
 import backend.models.User;
 import backend.service.JwtService;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -63,5 +66,25 @@ public class UserDAO {
         catch (SqlScriptException e){
             System.out.println("Error "+e.getMessage());
         }
+    }
+
+    public List<UserDTO> getAllUser(){
+        List<UserDTO> userDTOS = new ArrayList<>();
+        List<User> users = _user.findAll();
+        for(User user: users){
+            UserDTO userDTO = UserDTO.builder()
+                    .userId(user.getUserId())
+                    .username(user.getUsername())
+                    .address(user.getUserAddress())
+                    .email(user.getUserEmail())
+                    .phone(user.getUserPhone())
+                    .gender(user.getGender())
+                    .avatar(user.getAvatar())
+                    .dob(user.getDob())
+                    .role(user.getRole())
+                    .build();
+            userDTOS.add(userDTO);
+        }
+        return userDTOS;
     }
 }

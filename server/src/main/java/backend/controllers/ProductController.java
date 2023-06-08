@@ -10,12 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import backend.dto.ModifyProductDTO;
-import backend.dto.ModifyProductDetailDTO;
-import backend.dto.ModifyProductAssetDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.lang.Long;
+
 @RestController
 @RequestMapping("/api")
 public class ProductController {
@@ -31,13 +30,14 @@ public class ProductController {
     public ResponseEntity<List<ProductListDTO>> getAllProduct(@PathVariable("type")String type,
                                                             @RequestParam(name = "page", required = false,defaultValue = "1")int page,
                                                             @RequestParam(value = "search",required = false)String search,
-                                                            @RequestParam(value = "company",required = false)String company){
+                                                            @RequestParam(value = "company",required = false)String company,
+                                                              @RequestParam(value = "limit",required = false,defaultValue = "10")int limit){
         List<ProductListDTO> productListDTOS = new ArrayList<>();
         if(search==null){
-            productListDTOS = productService.getProductList(page,type);
+            productListDTOS = productService.getProductList(page,type,limit);
         }
         else{
-            productListDTOS = productService.findProductByKeyWord(search,page);
+            productListDTOS = productService.findProductByKeyWord(search,page,limit);
         }
         if (productListDTOS == null){
             return ResponseEntity.notFound().build();
@@ -56,6 +56,12 @@ public class ProductController {
         }
 
         return ResponseEntity.ok(product);
+    }
+
+    @GetMapping("/v1/countproduct/{type}")
+    public ResponseEntity<Integer> countProduct(@PathVariable("type")String type) {
+        int count = productService.countProduct(type);
+        return ResponseEntity.ok(count);
     }
 
     @GetMapping("/admin/product")
@@ -99,6 +105,19 @@ public class ProductController {
             return ResponseEntity.ok("Sửa sản phẩm thành công");
         }
         return ResponseEntity.badRequest().build();
+    }
+    @GetMapping("/v1/getlistcompany")
+    public ResponseEntity<List<Company>> getListCompany(){
+        List<Company> listCompany = productService.getListCompany();
+        if(listCompany.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(listCompany);
+    }
+
+    @GetMapping("/v1/getlistcategory")
+    public ResponseEntity<List<Category>> getListCategory(){
+        List<Category> listCategory = productService.getListCategory();
+        if(listCategory.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(listCategory);
     }
 
 }

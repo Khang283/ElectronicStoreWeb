@@ -57,6 +57,19 @@ public class ProductDAO {
         return productListDTOS;
     }
 
+    public int countProduct(String type){
+        List<Product> products=_product.findAll().stream().collect(Collectors.toList());
+        int count = 0;
+
+        for(Product product : products){
+            if(findProductCategory(product).equals(type)){
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public List<ProductListDTO>getAdminProduct(){
         List<Product> products = _product.findAll();
         List<ProductListDTO> productListDTOS = new ArrayList<>();
@@ -93,6 +106,7 @@ public class ProductDAO {
         for(Product product : products){
 
             if(product.getProductId() == productId){
+                productDTo.setProductStock(product.getProductStock());
                 productDTo.setProductName(product.getProductName());
                 productDTo.setProductPrice(product.getProductPrice());
                 productDTo.setProductRating(product.getProductRating());
@@ -297,6 +311,13 @@ public class ProductDAO {
             return null;
         }
         return assets.getAssetPath();
+    }
+    public List<Category> getListCategory() {
+        return _category.findAllCategory();
+    }
+
+    public List<Company> getListCompany() {
+        return _company.findAllCompany();
     }
 
 

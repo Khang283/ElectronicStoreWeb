@@ -3,6 +3,8 @@ package backend.controllers;
 import backend.dto.LoginRequestDTO;
 import backend.dto.LoginResponseDTO;
 import backend.dto.SignUpRequestDTO;
+import backend.models.Role;
+import backend.models.User;
 import backend.service.JwtService;
 import backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -38,8 +42,22 @@ public class AuthenticationController {
                         .build());
     }
     @PostMapping("/signup")
-    public ResponseEntity<LoginResponseDTO> register(@RequestBody SignUpRequestDTO user) {
-        LoginResponseDTO loginResponseDTO = userService.createUser(user);
+    public ResponseEntity<LoginResponseDTO> register(@RequestHeader("Authorization")String accessToken,@RequestBody SignUpRequestDTO user) {
+        String token = accessToken.substring(7);
+        String username = jwtService.extractUsername(token);
+        Optional<User> userr = userService.findUserByUsername(username);
+        LoginResponseDTO loginResponseDTO ;
+        if(user.getRole() == Role.ADMIN){
+            if(userr.get().getRole() == Role.ADMIN){
+                loginResponseDTO = userService.createdAdmin(user);
+            }
+            else{
+                return ResponseEntity.badRequest().build();
+            }
+        }
+        else{
+            loginResponseDTO = userService.createUser(user);
+        }
         if(loginResponseDTO==null){
             return ResponseEntity.badRequest().build();
         }
@@ -53,4 +71,6 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(loginResponseDTO);
      }
+
+
 }

@@ -9,19 +9,27 @@ import Checkout from "./components/Checkout/Checkout.js";
 import ProductsList from "./components/admin/ProductsList";
 import Details from "./components/Details/Details";
 import Account from "./components/Account/Account";
+import UsersList from "./components/admin/UsersList";
+import CartHome from "./components/Cart/CartHome.js";
+import MyAccount from "./components/MyAccount/MyAccount";
+import UpdateUser from "./components/admin/UpdateUser";
+import Category from "./components/Category/Category";
 import UpdateProduct from "./components/admin/UpdateProduct";
-import UpdateProductt from "./components/UpdateProduct/UpdateProductt";
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />,
+        element: <App/>,
         errorElement: <ErrorPage />,
         children: [
             {
-                path: '/',
-                element: <UpdateProductt/>
+                path : '/',
+                element: <Home />
+            },
+            {
+                path: '/home',
+                element: <Home />
             },
             {
                 path: '/login',
@@ -34,9 +42,6 @@ const router = createBrowserRouter([
             {
                 path: '/cart',
                 element: <Cart />,
-                children: [
-                    
-                ]
             },
             {
                 path: '/cart/checkout',
@@ -47,18 +52,27 @@ const router = createBrowserRouter([
                 element: <ProductsList />
             },
             {
-                path: '/:id/',
-                element: <Details/>
-                // element: (props) => <Details {...props}/>
-                // render: (props) =>
-                //     <Details {...props} />
+                path: '/admin/user',
+                element: <UsersList />
             },
             {
-                path: '/logout',
+                path: '/:category',
+                element: <Home />,
+            },
+            {
+                path: '/:category/:id',
+                element: <Details/>
+            },
+            {
+                path: '/account',
                 element: <Account />
             },
             {
-                path: '/admin/product/modify',
+                path: '/admin/user/:userid',
+                element: <UpdateUser />
+            },
+            {
+                path: '/admin/product/modify/:productid',
                 element: <UpdateProduct/>
             }
 

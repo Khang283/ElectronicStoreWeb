@@ -6,6 +6,7 @@ import backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,6 +56,7 @@ public class UserService {
                 .address(user.getUserAddress())
                 .email(user.getUserEmail())
                 .phone(user.getUserPhone())
+                .gender(user.getGender())
                 .avatar(user.getAvatar())
                 .dob(user.getDob())
                 .build();
@@ -81,5 +83,8 @@ public class UserService {
         return true;
     }
 
+    public List<UserDTO>getAllUser(){
+        return userDAO.getAllUser();
+    }
 
 }

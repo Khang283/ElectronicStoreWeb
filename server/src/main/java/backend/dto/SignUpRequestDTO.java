@@ -1,5 +1,6 @@
 package backend.dto;
 
+import backend.models.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -19,4 +20,5 @@ public class SignUpRequestDTO {
     private String userPhone;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dob;
+    private Role role = Role.USER;
 }

@@ -1,11 +1,13 @@
-import React from 'react'
+import React from 'react';
+import { Spinner } from 'react-bootstrap';
+import '../layout/Loader.css';
 
 const Loader = () => {
     return (
-        <div className="containerr">
-            <div className="loaderv loader9"></div>
+        <div className="loader">
+            <Spinner animation="border" variant="danger" />
         </div>
     )
 }
 
-export default Loader
+export default Loader;

@@ -7,8 +7,11 @@ import Form from 'react-bootstrap/Form';
 import '../Header/Header.css';
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import { useSelector } from "react-redux";
-import { FormGroup } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Image } from "react-bootstrap";
+import Cookies from "js-cookie";
+import { loadUser, setUser } from "../../reducer/userReducer";
+import axios from "axios";
 /*const UserMenu = (
   <img
     src={'../user.png'}
@@ -19,16 +22,51 @@ import { FormGroup } from "react-bootstrap";
 ) //Test thu hinh anh dai dien */
 function SearchClicked() { }
 function Header() {
+  const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
-  const userId = userState.userId;
-  const username = userState.username;
-  const role = userState.role;
+  let userId, username, role;
+  console.log(userState.isLoad);
+  if (userState.isLoad == false) {
+    axios.get('/api/user/me', {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('authToken')}`,
+      }
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          const user = {
+            userId: res.data.userId,
+            username: res.data.username,
+            role: res.data.role,
+          };
+          dispatch(setUser(user));
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+  userId = userState.userId;
+  username = userState.username;
+  role = userState.role;
+
+  const handleLogout =()=>{
+    Cookies.remove('authToken');
+    const user = {
+      userId: -1,
+      username: '',
+      role: 'USER',
+      isLoad: false,
+    };
+    dispatch(setUser(user));
+  }
+
   return (
     <Navbar collapseOnSelect bg="danger" expand="lg" className="row bg-radient">
       <Container>
         <Navbar.Brand className="col-lg-2 text-light">
           <Link to={'/'} className="nav-link">
-            Electronic Store
+            <Image src="../logo.png" alt="logo.png" width={30} height={50}></Image>
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -44,7 +82,7 @@ function Header() {
             <img src="../searchButton.png" width={40} height={40} bg="white" alt="search" border={0}/>
             
     </Nav> //Test thu thanh nav */}
-          <Nav className="col-12 col-md-6 mt-2 mt-md-0" style={{ marginLeft: 20, marginRight: 20 }}>
+          <Nav className="col-12 col-md-6 mt-2 mt-md-0">
             <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Điện thoại <img className="text-light" src="../phone.png" alt="phone" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Iphone</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Samsung</NavDropdown.Item>
@@ -96,7 +134,7 @@ function Header() {
         
         <Navbar.Collapse id="reponsive-navbar-nav">
           {userId == -1 ?
-            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown  className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" >
                 <Link to={'/login'}>Đăng nhập</Link>
               </NavDropdown.Item>
@@ -105,7 +143,7 @@ function Header() {
               </NavDropdown.Item>
             </NavDropdown>
             :
-            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown  className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
               {role == 'ADMIN' ?
                 <NavDropdown.Item>
                   <Link to={'/admin/product'}>Admin</Link>
@@ -113,11 +151,14 @@ function Header() {
                 :
                 null
               }
+              <NavDropdown.Item >
+                <Link to={'/account'} >Tài khoản</Link>
+              </NavDropdown.Item>
               <NavDropdown.Item>
                 <Link to={'/cart'}>Giỏ hàng</Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item >
+              <NavDropdown.Item onClick={handleLogout}>
                 Đăng xuất
               </NavDropdown.Item>
             </NavDropdown>

@@ -1,12 +1,101 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import MetaData from '../layout/MetaData';
 import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import './UpdateProduct.css';
+import Table from 'react-bootstrap/Table';
 //import ProductServices from '../../services';
-import { Button, FormControl, FormGroup, FormLabel, FormSelect } from 'react-bootstrap';
-import { Form } from 'react-router-dom';
-const UpdateProduct = ({ match, history }) => {
+import { Button, FormControl, FormGroup, FormLabel, FormSelect, Row } from 'react-bootstrap';
+import { Form, useParams } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import { Modal } from 'react-bootstrap';
+import ProductServices from "../../services/Product";
+export default function UpdateProduct() {
+    let { productid } = useParams();
+    const userState = useSelector(state => state.user);
+    const [name, setName] = useState('');
+    const [price, setPrice] = useState(0);
+    const [stock, setStock] = useState(0);
+    const [version, setVersion] = useState('');
+    const [status, setStatus] = useState('');
+    const [sold, setSold] = useState(0);
+    const alert = useAlert();
+    const [companyId, setCompanyId] = useState(0);
+    const [cagetoryId, setCagetoryId] = useState(0);
+    const [listCategory, setListCategory] = useState([]);
+    const [listCompany, setListCompany] = useState([]);
+    const [showspec, setShowspec] = useState(false);
+
+    const handleClosespec = () => setShowspec(false);
+    const handleShowspec = () => setShowspec(true);
+
+    const [showAsset, setShowAsset] = useState(false);
+
+    const handleCloseAsset = () => setShowAsset(false);
+    const handleShowAsset = () => setShowAsset(true);
+    /*useEffect(() => {
+        const getListCategory = () => {
+            axios.get(`/api/v1/getlistcategory`)
+                .then(response => {
+                    setListCategory(response.data);
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+        }
+        getListCategory();
+    })*/
+    /* useEffect(() => {
+         const getListCompany = () => {
+             axios.get(`/api/v1/getlistcompany`)
+                 .then(response => {
+                     setListCompany(response.data);
+                 })
+                 .catch(e => {
+                     console.log(e);
+                 })
+         }
+         getListCompany();
+     },([]))*/
+
+    const getProduct = id => {
+        ProductServices.getProductById(id)
+            .then(response => {
+
+                setName(response.data.productName);
+                setPrice(response.data.productPrice);
+                setVersion(response.data.productVersion);
+                setStock(response.data.productStock);
+                setCompanyId(response.data.companyId);
+                setCagetoryId(response.data.cagetoryId);
+                setStatus(response.data.productStatus);
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+    useEffect(() => {
+        getProduct(productid);
+        /*
+        const getProductById = () => {
+            axios.get(`/api/v1/product?productId=${productid}`)
+                .then(response => {
+                    setName(response.data.productName);
+                    setPrice(response.data.productPrice);
+                    setVersion(response.data.productVersion);
+                    setStock(response.data.productStock);
+                    setCompanyId(response.data.companyId);
+                    setCagetoryId(response.data.cagetoryId);
+                    console.log(response.data.name);
+                }
+                ).catch(e => { console.log(e) })
+            getProductById({ productid });*/
+
+    }
+        , ([]));
     /*const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [stock, setStock] = useState(0);
@@ -126,162 +215,50 @@ const onChange = e => {
 }
 
 */
-return (
-    <Fragment>
-        <MetaData title={'Update Product'} />
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl type='text'></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl type='text'></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl type='text'></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl type='text'></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl type='text'></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl type='text'></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl><FormSelect ></FormSelect></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl><FormSelect ></FormSelect></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Form className='col-md-4'><FormControl type='text'></FormControl></Form>
-        </FormGroup>
-        <FormGroup>
-            <FormLabel className='col-md-4 control-label'>Tên sản phẩm</FormLabel>
-            <Button className='btn btn-primary'> Save</Button>
-        </FormGroup>
-        {/*<div className="row">
-            <div className="col-12 col-md-2">
-                <Sidebar />
-            </div>
 
-            <div className="col-12 col-md-10">
-                <Fragment>
-                    <div className="wrapper my-5">
-                        <form className="shadow-lg" onSubmit={submitHandler} encType='multipart/form-data'>
-                            <h1 className="mb-4">Cập nhật sản phẩm</h1>
+    return (
+        <div className="bg-light">
+            <section className="section-content padding-y">
+                <div className="container">
 
-                            <div className="form-group">
-                                <label htmlFor="name_field">Tên sản phẩm</label>
-                                <input
-                                    type="text"
-                                    id="name_field"
-                                    className="form-control"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
+                    <div className=' container div-list'>
+                        <h1>Sửa sản phẩm</h1>
+                        {console.log({ productid })}
+                        <Container>
+                            <Row>
+                                <Col>
+                                    <FormGroup>
+                                        <Form>
+                                            <FormLabel>Tên sản phẩm</FormLabel>
+                                            <FormControl type='text' placeholder={name}></FormControl>
+                                        </Form>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <FormLabel>Giá:</FormLabel>
+                                        <FormControl type='text' placeholder={price}></FormControl>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <FormLabel>Phiên bản:</FormLabel>
+                                        <FormControl type='text' placeholder={version}></FormControl>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <FormLabel>Số lượng:</FormLabel>
+                                        <FormControl type='text' placeholder={stock}></FormControl>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <FormLabel>Trạng thái:</FormLabel>
+                                        <FormControl type='text' placeholder={status}></FormControl>
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                        </Container>
 
-                            <div className="form-group">
-                                <label htmlFor="price_field">Giá</label>
-                                <input
-                                    type="text"
-                                    id="price_field"
-                                    className="form-control"
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="description_field">Mô tả</label>
-                                <textarea className="form-control" id="description_field" rows="8" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="category_field">Danh mục</label>
-                                <select className="form-control" id="category_field" value={category} onChange={(e) => setCategory(e.target.value)}>
-                                    {categories.map(category => (
-                                        <option key={category} value={category} >{category}</option>
-                                    ))}
-
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="stock_field">Số lượng</label>
-                                <input
-                                    type="number"
-                                    id="stock_field"
-                                    className="form-control"
-                                    value={stock}
-                                    onChange={(e) => setStock(e.target.value)}
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="seller_field">Xuất xứ</label>
-                                <input
-                                    type="text"
-                                    id="seller_field"
-                                    className="form-control"
-                                    value={seller}
-                                    onChange={(e) => setSeller(e.target.value)}
-                                />
-                            </div>
-
-                            <div className='form-group'>
-                                <label>Ảnh</label>
-
-                                <div className='custom-file'>
-                                    <input
-                                        type='file'
-                                        name='product_images'
-                                        className='custom-file-input'
-                                        id='customFile'
-                                        onChange={onChange}
-                                        multiple
-                                    />
-                                    <label className='custom-file-label' htmlFor='customFile'>
-                                        Chọn hình
-                                    </label>
-                                </div>
-
-                                {oldImages && oldImages.map(img => (
-                                    <img key={img} src={img.url} alt={img.url} className="mt-3 mr-2" width="55" height="52" />
-                                ))}
-
-                                {imagesPreview.map(img => (
-                                    <img src={img} key={img} alt="Images Preview" className="mt-3 mr-2" width="55" height="52" />
-                                ))}
-
-                            </div>
-
-
-                            <button
-                                id="login_button"
-                                type="submit"
-                                className="btn btn-block py-3"
-                                disabled={loading ? true : false}
-                            >
-                                Cập nhật
-                            </button>
-
-                        </form>
                     </div>
-                </Fragment>
-            </div>
-                                </div>*/}
 
-    </Fragment>
-)
+                </div>
+            </section>
+        </div>
+    );
 }
-export default UpdateProduct;
+
+

@@ -16,7 +16,7 @@ public class HomeController {
     private ProductService productService;
     @GetMapping("/v1/search/{keyword}")
     public ResponseEntity<List<ProductListDTO>>searchByKeyword(@PathVariable("keyword")String keyword){
-        List<ProductListDTO>productListDTOS = productService.findProductByKeyWord(keyword,1);
+        List<ProductListDTO>productListDTOS = productService.findProductByKeyWord(keyword,1,10);
         if(productListDTOS.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(productListDTOS);
     }
