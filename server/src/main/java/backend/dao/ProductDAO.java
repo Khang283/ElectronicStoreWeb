@@ -53,7 +53,7 @@ public class ProductDAO {
             }
         }
 
-        return productListDTOS.stream().limit(limit).skip(offset).toList();
+        return productListDTOS.stream().limit(limit).skip(offset).collect(Collectors.toList());
     }
 
     public int countProduct(String type){
@@ -318,6 +318,9 @@ public class ProductDAO {
 
     public List<Company> getListCompany() {
         return _company.findAllCompany();
+    }
+    public List<SpecGroup> getListSpecGroup() {
+        return _specGroup.findAllSpecGroup();
     }
 
 }

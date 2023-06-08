@@ -6,6 +6,7 @@ import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
 import backend.models.Category;
 import backend.models.Company;
+import backend.models.SpecGroup;
 import backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -121,6 +122,13 @@ public class ProductController {
         List<Category> listCategory = productService.getListCategory();
         if(listCategory.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(listCategory);
+    }
+
+    @GetMapping("/v1/getlistspecgroup")
+    public ResponseEntity<List<SpecGroup>> getListSpecGroup(){
+        List<SpecGroup> listSpecGroup = productService.getListSpecGroup();
+        if(listSpecGroup.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(listSpecGroup);
     }
 
 
