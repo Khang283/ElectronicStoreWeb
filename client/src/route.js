@@ -14,6 +14,7 @@ import CartHome from "./components/Cart/CartHome.js";
 import MyAccount from "./components/MyAccount/MyAccount";
 import UpdateUser from "./components/admin/UpdateUser";
 import Category from "./components/Category/Category";
+import ProductAdd from "./components/admin/ProductAdd";
 
 
 const router = createBrowserRouter([
@@ -56,7 +57,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/:category',
-                element: <Home />,
+                element: <Category />,
             },
             {
                 path: '/:category/:id',
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
             {
                 path: '/admin/user/:userid',
                 element: <UpdateUser />
+            },
+            {
+                path: '/admin/newproduct',
+                element: <ProductAdd></ProductAdd>
             }
 
         ]

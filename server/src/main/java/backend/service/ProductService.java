@@ -2,6 +2,8 @@ package backend.service;
 
 import backend.dao.*;
 import backend.dto.ProductListDTO;
+import backend.models.Category;
+import backend.models.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import backend.dto.*;
@@ -74,5 +76,13 @@ public class ProductService {
 
     public List<ProductListDTO>getAdminProduct(){
         return productDAO.getAdminProduct();
+    }
+
+    public List<Category> getListCategory() {
+        return productDAO.getListCategory();
+    }
+
+    public List<Company> getListCompany() {
+        return productDAO.getListCompany();
     }
 }

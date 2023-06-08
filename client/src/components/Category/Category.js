@@ -75,7 +75,7 @@ const Category = props => {
         const page = currentPage;
         console.log(page);
         if (parseInt(currentPage) === 1)
-            ProductServices.getType(params.category)
+            ProductServices.getType(params.category, 12)
                 .then(response => {
                     setproduct(response.data);
                     setLoad(true);
@@ -84,7 +84,7 @@ const Category = props => {
                     console.log(e);
                 });
         else
-            ProductServices.getTypePage(params.category, currentPage)
+            ProductServices.getTypePage(params.category, currentPage, 12)
                 .then(response => {
                     console.log(response.data);
                     setproduct(response.data);
@@ -102,8 +102,8 @@ const Category = props => {
         <div className="bg-light">
             <section className="section-content padding-y">
                 <div className="container">
-                    <Row>
-                        <Col xs lg="2">
+                    <Row >
+                        <Col xs md="1">
                             xs=6 md=4
                         </Col>
                         <Col>
@@ -119,7 +119,7 @@ const Category = props => {
                                                     <h2>PHỤ KIỆN</h2>
                                         // params.category ==='accessories'
                                     }
-                                    <br/>
+                                    <br />
 
                                 </div>
                                 {
@@ -136,24 +136,26 @@ const Category = props => {
                                                     //console.log(product.productName),
                                                     <Col >
                                                         <Card className='card'>
-                                                            <a href={"/product/" + product.productId}>
-                                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
+                                                            <Link to={"/product/" + product.productId}>
+                                                                <Card.Img className='card-img' variant="top" src={product.productIcon} height={230} /></Link>
                                                             <Card.Body>
-                                                                <a href={"/product/" + product.productId}>
-                                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
-
+                                                                <Link to={"/product/" + product.productId}>
+                                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title>
+                                                                </Link>
                                                                 <Card.Text className='fontPrice'>
                                                                     {moneyFormat.format(product.productPrice)}
                                                                 </Card.Text>
 
                                                                 <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
 
-                                                                <div className='div-spec'>
+                                                                {/* <div className='div-spec'>
                                                                     <span ><i className='bi icon-screen-size'></i> spec</span>
-                                                                </div>
-                                                                <div className='card-btn'>
-                                                                    <Button variant="danger" size="lg" href={"/product/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
-                                                                </div>
+                                                                </div> */}
+
+                                                                <Link to={"/product/" + product.productId}>
+                                                                    <div className='card-btn'>
+                                                                        <Button variant="danger" size="lg" href={"/product/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
+                                                                    </div></Link>
 
                                                                 {/* <Link to={"/1"}>View Reviews</Link> */}
                                                             </Card.Body>

@@ -44,7 +44,7 @@ public class ProductDAO {
     @Autowired
     private ISpecGroup _specGroup;
     public List<ProductListDTO>getProductList(int limit, int offset,String type){
-        List<Product> products=_product.findAll().stream().skip(offset).limit(limit).collect(Collectors.toList());
+        List<Product> products=_product.findAll();
         List<ProductListDTO>productListDTOS = new ArrayList<>();
 
         for(Product product : products){
@@ -54,7 +54,7 @@ public class ProductDAO {
             }
         }
 
-        return productListDTOS;
+        return productListDTOS.stream().skip(offset).limit(limit).collect(Collectors.toList());
     }
 
     public int countProduct(String type){
@@ -313,6 +313,12 @@ public class ProductDAO {
         return assets.getAssetPath();
     }
 
+    public List<Category> getListCategory() {
+        return _category.findAllCategory();
+    }
 
+    public List<Company> getListCompany() {
+        return _company.findAllCompany();
+    }
 
 }
