@@ -11,6 +11,10 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
+import Checkbox from '../Category/Checkbox';
+import Stack from 'react-bootstrap/Stack';
+import Carousel from 'react-bootstrap/Carousel';
+import Image from 'react-bootstrap/Image';
 
 const Category = props => {
 
@@ -52,7 +56,7 @@ const Category = props => {
         }
         getCountProduct();
 
-    }, [])
+    }, [params])
     console.log(countProduct);
 
     useEffect(() => {
@@ -87,37 +91,73 @@ const Category = props => {
 
     const add = parseInt(currentPage) + 1;
 
+    useEffect(()=>{
+        setLoad(false);
+    },[params])
+
     return (
+
         <div className="bg-light">
             <section className="section-content padding-y">
                 <div className="container">
-                    <Row >
-                        <Col xs md="1">
-                            xs=6 md=4
-                        </Col>
-                        <Col>
-                            <div className="container div-list">
-                                <div >
-                                    {
-                                        params.category === 'phone' ?
-                                            <h2>ĐIỆN THOẠI</h2> :
-                                            params.category === 'laptop' ?
-                                                <h2>LAPTOP</h2> :
-                                                params.category === 'tablet' ?
-                                                    <h2>MÁY TÍNH BẢNG</h2> :
-                                                    <h2>PHỤ KIỆN</h2>
-                                        // params.category ==='accessories'
-                                    }
-                                    <br />
-
-                                </div>
+                <Carousel variant="dark" >
+                    <Carousel.Item interval={1000}>
+                        <img
+                            width='100%' 
+                            height={300}
+                            className="d-block w-100"
+                            src="https://images.fpt.shop/unsafe/fit-in/800x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/5/11/638193959218106497_F-H1_800x300.png"
+                            alt="First slide"
+                        />
+                    </Carousel.Item>
+                    <Carousel.Item interval={500}>
+                        <img
+                            width={800} 
+                            height={300}
+                            className="d-block w-100"
+                            src="https://images.fpt.shop/unsafe/fit-in/800x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/5/18/638200327011939557_F-H1_800x300.png"
+                            alt="Second slide"
+                        />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                            width={800} 
+                            height={300}
+                            className="d-block w-100"
+                            src="https://images.fpt.shop/unsafe/fit-in/800x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/5/6/638189536497232738_F-H1_800x300.png"
+                            // src="holder.js/800x400?text=Third slide&bg=20232a"
+                            alt="Third slide"
+                        />
+                    </Carousel.Item>
+                </Carousel>
+                <br/>
+                <Row>
+                    <Col xs lg="2">
+                        <Checkbox />
+                    </Col>
+                    <Col>
+                        <div className="container div-list">
+                            <div >
                                 {
-                                    isLoaded === false ?
-                                        <div className="home-btn">
-                                            <Loader className='mx-auto'></Loader>
-                                        </div>
-                                        :
-                                        <Row xs='auto' sm={1} md={2} lg={4} className="g-4 ">
+                                    params.category === 'phone' ?
+                                        <h2>ĐIỆN THOẠI</h2> :
+                                        params.category === 'laptop' ?
+                                            <h2>LAPTOP</h2> :
+                                            params.category === 'tablet' ?
+                                                <h2>MÁY TÍNH BẢNG</h2> :
+                                                <h2>PHỤ KIỆN</h2>
+                                    // params.category ==='accessories'
+                                }
+                                <br />
+
+                            </div>
+                            {
+                                isLoaded === false ?
+                                    <div className="home-btn">
+                                        <Loader className='mx-auto'></Loader>
+                                    </div>
+                                    :
+                                    <Row xs='auto' sm={1} md={2} lg={4} className="g-4 ">
 
 
                                             {product?.map((product) => {
@@ -131,23 +171,23 @@ const Category = props => {
                                                                 <Link to={"/product/" + product.category+"/"+product.productId}>
                                                                     <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
 
-                                                                <Card.Text className='fontPrice'>
-                                                                    {moneyFormat.format(product.productPrice)}
-                                                                </Card.Text>
+                                                            <Card.Text className='fontPrice'>
+                                                                {moneyFormat.format(product.productPrice)}
+                                                            </Card.Text>
 
-                                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+                                                            <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
 
-                                                                {/* <div className='div-spec'>
-                                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
-                                                                </div>
-                                                                 <Link to={"/1"}>View Reviews</Link> */}
-                                                                <div className='card-btn'>
-                                                                    <Button variant="danger" size="lg" >
+                                                             <div className='div-spec'>
+                                                                <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                            </div>
+                                                                 {/*<Link to={"/1"}>View Reviews</Link> */}
+                                                            <div className='card-btn'>
+                                                                <Button variant="danger" size="lg" >
                                                                         <Link to={"/product/" + product.category+"/"+product.productId}>
                                                                             <strong>Mua Ngay</strong>
                                                                         </Link>
                                                                     </Button>{' '}
-                                                                </div>
+                                                            </div>
 
                                                             </Card.Body>
                                                         </Card>
@@ -155,40 +195,40 @@ const Category = props => {
                                                 );
                                             })}
 
-                                        </Row>
-                                }
-                                <br />
+                                    </Row>
+                            }
+                            <br />
 
-                                <div className="container div-list">
+                            <div className="container div-list">
 
-                                    <div className="center">
-                                        <Pagination >
-                                            <Pagination.First disabled={parseInt(currentPage) === 1}
-                                                onClick={() => setCurrentPage(1)} />
-                                            <Pagination.Prev disabled={parseInt(currentPage) === 1}
-                                                onClick={() => setCurrentPage(parseInt(currentPage) - 1)} />
+                                <div className="center">
+                                    <Pagination >
+                                        <Pagination.First disabled={parseInt(currentPage) === 1}
+                                            onClick={() => setCurrentPage(1)} />
+                                        <Pagination.Prev disabled={parseInt(currentPage) === 1}
+                                            onClick={() => setCurrentPage(parseInt(currentPage) - 1)} />
 
-                                            {Array.from({ length: countPage }).map((_, idx) => (
-                                                <Pagination.Item key={idx + 1} active={(idx + 1) === parseInt(currentPage)}
-                                                    onClick={() => setCurrentPage(idx + 1)}>
-                                                    {idx + 1}
-                                                </Pagination.Item>
-                                            ))}
+                                        {Array.from({ length: countPage }).map((_, idx) => (
+                                            <Pagination.Item key={idx + 1} active={(idx + 1) === parseInt(currentPage)}
+                                                onClick={() => setCurrentPage(idx + 1)}>
+                                                {idx + 1}
+                                            </Pagination.Item>
+                                        ))}
 
-                                            <Pagination.Next disabled={parseInt(currentPage) === countPage}
-                                                onClick={() => setCurrentPage(parseInt(currentPage) + 1)} />
-                                            <Pagination.Last disabled={parseInt(currentPage) === countPage}
-                                                onClick={() => setCurrentPage(parseInt(countPage))} />
-                                        </Pagination>
-                                    </div>
+                                        <Pagination.Next disabled={parseInt(currentPage) === countPage}
+                                            onClick={() => setCurrentPage(parseInt(currentPage) + 1)} />
+                                        <Pagination.Last disabled={parseInt(currentPage) === countPage}
+                                            onClick={() => setCurrentPage(parseInt(countPage))} />
+                                    </Pagination>
                                 </div>
-
                             </div>
-                        </Col>
 
-                    </Row>
-                </div>
-            </section >
+                        </div>
+                    </Col>
+
+                </Row>
+        </div>
+        </section >
         </div >
     );
 

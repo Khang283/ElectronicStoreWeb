@@ -5,12 +5,15 @@ import Header from './components/Header/Header.js';
 import { Outlet } from 'react-router-dom';
 import Breadcumb from './components/Breadcumb/Breadcump.js';
 import SupportEngine from './components/SupportChat';
+import Favorite from './components/Favorite/Favorite';
+
 
 function App() {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header/>
       <Breadcumb />
+      {/* <Favorite/> */}
       <Outlet />
       <SupportEngine />
       <Footer />

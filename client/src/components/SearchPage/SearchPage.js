@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
+import Checkbox from '../Category/Checkbox';
 
 const SearchPage = props => {
 
@@ -69,19 +70,19 @@ const SearchPage = props => {
 
     useEffect(() => {
         getProduct();
-    }, [currentPage,params]);
+    }, [currentPage, params]);
 
     const getProduct = () => {
         const page = currentPage;
         console.log(page);
         //console.log('/api/v1/product/'+params.category+"?page="+currentPage+(params.company?`&company=${params.company}`:''))
         axios.get(`/api/v1/search/${params.keyword}?page=${currentPage}&limit=${12}`)
-        .then(res=>{
-            setproduct(res.data);
-            setLoad(true);
-        }).catch(e=>{
-            console.log(e);
-        })
+            .then(res => {
+                setproduct(res.data);
+                setLoad(true);
+            }).catch(e => {
+                console.log(e);
+            })
     }
 
 
@@ -93,13 +94,13 @@ const SearchPage = props => {
                 <div className="container">
                     <Row>
                         <Col xs lg="2">
-                            xs=6 md=4
+                            <Checkbox />
                         </Col>
                         <Col>
                             <div className="container div-list">
                                 <div >
                                     <h2>Tìm kiếm sản phẩm</h2>
-                                    <br/>
+                                    <br />
 
                                 </div>
                                 {
@@ -116,10 +117,10 @@ const SearchPage = props => {
                                                     //console.log(product.productName),
                                                     <Col >
                                                         <Card className='card'>
-                                                            <Link to={"/product/" + product.category+"/"+product.productId}>
+                                                            <Link to={"/product/" + product.category + "/" + product.productId}>
                                                                 <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
                                                             <Card.Body>
-                                                                <Link to={"/product/" + product.category+"/"+product.productId}>
+                                                                <Link to={"/product/" + product.category + "/" + product.productId}>
                                                                     <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
 
                                                                 <Card.Text className='fontPrice'>
@@ -133,7 +134,7 @@ const SearchPage = props => {
                                                                 </div>
                                                                 <div className='card-btn'>
                                                                     <Button variant="danger" size="lg" >
-                                                                        <Link to={"/product/" + product.category+"/"+product.productId}>
+                                                                        <Link to={"/product/" + product.category + "/" + product.productId}>
                                                                             <strong>Mua Ngay</strong>
                                                                         </Link>
                                                                     </Button>{' '}

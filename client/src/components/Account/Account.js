@@ -3,8 +3,8 @@ import Tab  from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import MyAccount from "../MyAccount/MyAccount";
 import MyActivities from "../MyActivities/MyActivities";
-import Favorites from "../Favorites/Favorites";
 import Purchased from "../Purchased/Purchased";
+import Favorite from "../Favorite/Favorite";
 function Account(){
     return(
      <Tabs  defaultActiveKey={1}>
@@ -15,7 +15,7 @@ function Account(){
       <MyActivities></MyActivities>
     </Tab>
     <Tab eventKey={3} className="text-dark" title="Những sản phẩm yêu thích">
-      <Favorites></Favorites>
+      <Favorite/>
     </Tab>
     <Tab eventKey={4} className="text-dark" title="Đơn hàng đã mua">
       <Purchased/>
