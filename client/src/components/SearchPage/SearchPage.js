@@ -12,7 +12,7 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
 
-const Category = props => {
+const SearchPage = props => {
 
     const [product, setproduct] = useState([]);
     const [isLoaded, setLoad] = useState(false);
@@ -74,8 +74,8 @@ const Category = props => {
     const getProduct = () => {
         const page = currentPage;
         console.log(page);
-        console.log('/api/v1/product/'+params.category+"?page="+currentPage+(params.company?`&company=${params.company}`:''))
-        axios.get('/api/v1/product/'+params.category+"?page="+currentPage+(params.company?`&company=${params.company}`:''))
+        //console.log('/api/v1/product/'+params.category+"?page="+currentPage+(params.company?`&company=${params.company}`:''))
+        axios.get(`/api/v1/search/${params.keyword}?page=${currentPage}&limit=${12}`)
         .then(res=>{
             setproduct(res.data);
             setLoad(true);
@@ -98,16 +98,7 @@ const Category = props => {
                         <Col>
                             <div className="container div-list">
                                 <div >
-                                    {
-                                        params.category === 'phone' ?
-                                            <h2>ĐIỆN THOẠI</h2> :
-                                            params.category === 'laptop' ?
-                                                <h2>LAPTOP</h2> :
-                                                params.category === 'tablet' ?
-                                                    <h2>MÁY TÍNH BẢNG</h2> :
-                                                    <h2>PHỤ KIỆN</h2>
-                                        // params.category ==='accessories'
-                                    }
+                                    <h2>Tìm kiếm sản phẩm</h2>
                                     <br/>
 
                                 </div>
@@ -194,5 +185,5 @@ const Category = props => {
 
 }
 
-export default Category;
+export default SearchPage;
 

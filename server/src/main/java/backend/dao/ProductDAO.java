@@ -44,9 +44,8 @@ public class ProductDAO {
     @Autowired
     private ISpecGroup _specGroup;
     public List<ProductListDTO>getProductList(int limit, int offset,String type){
-        List<Product> products=_product.findAll().stream().skip(offset).limit(limit).collect(Collectors.toList());
+        List<Product> products=_product.findAll();
         List<ProductListDTO>productListDTOS = new ArrayList<>();
-
         for(Product product : products){
             ProductListDTO productDTO = productToProductListDTO(product);
             if(productDTO.getCategory().equals(type)){
@@ -54,7 +53,7 @@ public class ProductDAO {
             }
         }
 
-        return productListDTOS;
+        return productListDTOS.stream().limit(limit).skip(offset).toList();
     }
 
     public int countProduct(String type){

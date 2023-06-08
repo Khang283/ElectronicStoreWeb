@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import backend.dto.ModifyProductDTO;
 
+import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         if(company == null || company.isEmpty() || company.isBlank()) return ResponseEntity.ok(productListDTOS);
-        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).collect(Collectors.toList()));
+        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().toUpperCase().equals(company.toUpperCase())).collect(Collectors.toList()));
     }
 
     @GetMapping("/v1/product")
@@ -105,4 +106,5 @@ public class ProductController {
         }
         return ResponseEntity.badRequest().build();
     }
+
 }

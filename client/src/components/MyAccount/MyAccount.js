@@ -38,6 +38,10 @@ function MyAccount() {
   const [gender, setGender] = useState();
   const [dob, setDob] = useState();
   const [phone, setPhone] = useState();
+  const [newPassword,setNewPass]=useState();
+  const [oldPassword,setOldPass]=useState();
+  const [confirmPass,setConfirm]=useState();
+  
   useEffect(() => {
     axios.get('/api/user/me', {
       headers: {
@@ -73,6 +77,33 @@ function MyAccount() {
       </div>
     )
   }
+
+  const handlePasswordChange = ()=>{
+    const payload ={
+        id: user.userId,
+        oldPassword: oldPassword,
+        newPassword : newPassword
+    };
+
+    if(newPassword != confirmPass || newPassword === oldPassword){
+        alert("Xin chọn lại mật khẩu mới");
+    }
+    else{
+
+        axios.put('/api/user/password',payload,{
+            headers: {
+                Authorization: `Bearer ${Cookies.get('authToken')}`,
+            }
+        }).then(res=>{
+            if(res.status == 200){
+                alert("Đổi mật khẩu thành công");
+            }
+        }).catch(e=>{
+            console.log(e);
+        })
+    }
+
+}
   return (
     <Container>
       <div className="row">
@@ -208,20 +239,20 @@ function MyAccount() {
                     <div className="row col-xxl-12">
                       <Form>
                         <Form.Label>Mật khẩu cũ *</Form.Label>
-                        <Form.Control type="password" id="oldpwd"></Form.Control>
+                        <Form.Control type="password" id="oldpwd" onChange={e=>setOldPass(e.target.value)}></Form.Control>
                       </Form>
                       <Form>
                         <Form.Label>Mật khẩu mới *</Form.Label>
-                        <Form.Control type="password" id="newpwd"></Form.Control>
+                        <Form.Control type="password" id="newpwd" onChange={e=>setNewPass(e.target.value)}></Form.Control>
                       </Form>
                       <Form>
                         <Form.Label>Xác nhận mật khẩu *</Form.Label>
-                        <Form.Control type="password" id="confirmpwd"></Form.Control>
+                        <Form.Control type="password" id="confirmpwd" onChange={e=>setConfirm(e.target.value)}></Form.Control>
                       </Form>
                     </div>
                   </Modal.Body>
                   <Modal.Footer>
-                    <Button variant="danger" onClick={closePassWord}>
+                    <Button variant="danger" onClick={handlePasswordChange}>
                       Xác nhận
                     </Button>
                   </Modal.Footer>

@@ -1,3 +1,4 @@
+import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import ErrorPage from "./components/Error/Error";
@@ -10,10 +11,10 @@ import ProductsList from "./components/admin/ProductsList";
 import Details from "./components/Details/Details";
 import Account from "./components/Account/Account";
 import UsersList from "./components/admin/UsersList";
-import CartHome from "./components/Cart/CartHome.js";
-import MyAccount from "./components/MyAccount/MyAccount";
 import UpdateUser from "./components/admin/UpdateUser";
 import Category from "./components/Category/Category";
+import SupportAdmin from "./components/SupportChatAdmin";
+import SearchPage from "./components/SearchPage/SearchPage";
 
 
 const router = createBrowserRouter([
@@ -56,10 +57,14 @@ const router = createBrowserRouter([
             },
             {
                 path: '/:category',
-                element: <Home />,
+                element: <Category />
             },
             {
-                path: '/:category/:id',
+                path: '/:category/:company',
+                element: <Category />,
+            },
+            {
+                path: '/:category/:company/:id',
                 element: <Details/>
             },
             {
@@ -69,6 +74,14 @@ const router = createBrowserRouter([
             {
                 path: '/admin/user/:userid',
                 element: <UpdateUser />
+            },
+            {
+                path: '/admin/support',
+                element: <SupportAdmin />
+            },
+            {
+                path: '/search/:keyword',
+                element: <SearchPage />
             }
 
         ]

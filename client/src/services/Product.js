@@ -11,7 +11,7 @@ class ProductServices {
         return axios.get(`/api/v1/product/${type}?page=${page}`)
     }
     countProduct (type) {
-        return axios.get(`http://localhost:3000/api/v1/countproduct/${type}`)
+        return axios.get(`/api/v1/countproduct/${type}`)
     }
 }
 
