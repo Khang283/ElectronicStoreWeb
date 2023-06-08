@@ -2,8 +2,8 @@ import React from 'react';
 import "../Footer/Footer.css";
 function Footer() {
   return (
-    <div className="d-flex flex-column min-vh-100">
-    <footer className="text-center text-lg-left text-secondary bg-danger  mt-auto" >
+    <div className="d-flex flex-column">
+    <footer className="text-center text-lg-left text-secondary bg-danger mt-auto" >
         <div className="container text-center text-md-left pt-5 ">
           <div className="row">
             <div className="col-lg-6 col-md-12 mb-4 mb-md-0">

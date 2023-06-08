@@ -66,7 +66,7 @@ function Header() {
       <Container>
         <Navbar.Brand className="col-lg-2 text-light">
           <Link to={'/'} className="nav-link">
-            <Image src="../logo.png" alt="logo.png" width={30} height={50}></Image>
+            <Image src="../Logo.png" alt="Logo.png" ></Image>
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -83,32 +83,32 @@ function Header() {
             
     </Nav> //Test thu thanh nav */}
           <Nav className="me-auto col-lg-8 " style={{ marginLeft: 20, marginRight: 20 }}>
-            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Điện thoại <img className="text-light" src="../phone.png" alt="phone" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={40} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Điện thoại <img className="text-light" src="../phone.png" alt="phone" width={30} height={30}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Iphone</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Samsung</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Redmi</NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Laptop <img src="../laptop.png" alt="laptop" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Laptop <img src="../laptop.png" alt="laptop" width={30} height={30}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">HP</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">DELL</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">MSI</NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light" >Tablet <img src="../tablet.png" alt="tablet" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={40} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light" >Tablet <img src="../tablet.png" alt="tablet" width={30} height={30}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Samsung</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Apple</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Ipad</NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Phụ kiện <img src="../accessories.png" alt="accesories" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Phụ kiện <img src="../accessories.png" alt="accesories" width={30} height={30}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Chuột</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Tai Nghe</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Bàn phím</NavDropdown.Item>
 
             </NavDropdown>
 
-            <Form style={{ width: 200, height: 20, marginRight: 20 }} className="d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" /></Form>
+            <Form style={{ width:200, height: 30, marginRight: 20, marginLeft: 20 }} className="d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" /></Form>
             <Button className="bg-danger border-0" onClick={SearchClicked}><img src="../searchButton.png" width={30} height={30} className="ml-2 mr-auto" alt="search" border={0} /></Button>
           </Nav>
 
@@ -130,7 +130,7 @@ function Header() {
         </Navbar.Collapse >
         <Navbar.Collapse id="reponsive-navbar-nav">
           {userId == -1 ?
-            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={30} height={30}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" >
                 <Link to={'/login'}>Đăng nhập</Link>
               </NavDropdown.Item>
@@ -139,7 +139,7 @@ function Header() {
               </NavDropdown.Item>
             </NavDropdown>
             :
-            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">
+            <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={30} height={30}></img></p>} id="collasible-nav-dropdown">
               {role == 'ADMIN' ?
                 <NavDropdown.Item>
                   <Link to={'/admin/product'}>Admin</Link>

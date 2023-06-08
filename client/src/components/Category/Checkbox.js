@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import '../Category/Category.css';
 import React, { useState } from 'react';
 import RangeSlider from 'react-bootstrap-range-slider';
+import { MDBCheckbox } from 'mdb-react-ui-kit';
 
 function Checkbox() {
 
@@ -17,7 +18,7 @@ function Checkbox() {
                     <Row xs lg="2">
                         <Col>
                             <Form.Check >
-                                <Form.Check.Input type={type} />
+                                <Form.Check.Input type={type} defaultChecked />
                                 <Form.Check.Label>{'Tất cả'}</Form.Check.Label>
                             </Form.Check>
                         </Col>
@@ -78,16 +79,34 @@ function Checkbox() {
                     </Row>
                     <br />
                     <h6> Mức giá (triệu đồng) </h6>
-                    <RangeSlider
-                        value={value}
-                        min={0}
-                        max={50}
-                        onChange={changeEvent => setValue(changeEvent.target.value)}
-                    />
+                    <Form.Check >
+                        <Form.Check.Input type={type} defaultChecked />
+                        <Form.Check.Label>{'Tất cả'}</Form.Check.Label>
+                    </Form.Check>
+                    <Form.Check >
+                        <Form.Check.Input type={type} />
+                        <Form.Check.Label>{'Dưới 2 triệu'}</Form.Check.Label>
+                    </Form.Check>
+                    <Form.Check >
+                        <Form.Check.Input type={type} />
+                        <Form.Check.Label>{'Từ 2 triệu đến 4 triệu'}</Form.Check.Label>
+                    </Form.Check>
+                    <Form.Check >
+                        <Form.Check.Input type={type} />
+                        <Form.Check.Label>{'Từ 4 triệu đến 7 triệu'}</Form.Check.Label>
+                    </Form.Check>
+                    <Form.Check >
+                        <Form.Check.Input type={type} />
+                        <Form.Check.Label>{'Từ 7 triệu đến 13 triệu '}</Form.Check.Label>
+                    </Form.Check>
+                    <Form.Check >
+                        <Form.Check.Input type={type} />
+                        <Form.Check.Label>{'Trên 13 triệu'}</Form.Check.Label>
+                    </Form.Check>
                     <br />
                     <h6> Tính năng đặc biệt </h6>
                     <Form.Check >
-                        <Form.Check.Input type={type} />
+                        <Form.Check.Input type={type} defaultChecked />
                         <Form.Check.Label>{'Tất cả'}</Form.Check.Label>
                     </Form.Check>
                     <Form.Check >
@@ -117,7 +136,7 @@ function Checkbox() {
                     <br />
                     <h6> Hiệu năng và pin </h6>
                     <Form.Check >
-                        <Form.Check.Input type={type} />
+                        <Form.Check.Input type={type} defaultChecked/>
                         <Form.Check.Label>{'Tất cả'}</Form.Check.Label>
                     </Form.Check>
                     <Form.Check >
@@ -143,7 +162,7 @@ function Checkbox() {
                     <br />
                     <h6> Trả góp </h6>
                     <Form.Check >
-                        <Form.Check.Input type={type} />
+                        <Form.Check.Input type={type} defaultChecked/>
                         <Form.Check.Label>{'Tất cả'}</Form.Check.Label>
                     </Form.Check>
                     <Form.Check >
