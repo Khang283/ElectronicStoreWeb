@@ -91,7 +91,7 @@ const ProductsList = ({ history }) => {
                 price: `${(product.productPrice).toLocaleString()} VNĐ`,
                 stock: product.productStock,
                 actions: <Fragment>
-                    <Link to={`/admin/product/${product.productId}`} className="btn btn-primary py-1 px-2">
+                    <Link to={`/admin/product/modify/${product.productId}`} className="btn btn-primary py-1 px-2">
                     <i class="bi bi-pencil-square"></i>
                     </Link>
                     <button className="btn btn-danger py-1 px-2 ml-2" data-toggle="modal" data-target="#exampleModal" >

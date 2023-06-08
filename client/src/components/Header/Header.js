@@ -8,6 +8,7 @@ import '../Header/Header.css';
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { useSelector } from "react-redux";
+import { FormGroup } from "react-bootstrap";
 /*const UserMenu = (
   <img
     src={'../user.png'}
@@ -43,7 +44,7 @@ function Header() {
             <img src="../searchButton.png" width={40} height={40} bg="white" alt="search" border={0}/>
             
     </Nav> //Test thu thanh nav */}
-          <Nav className="me-auto col-lg-8 " style={{ marginLeft: 20, marginRight: 20 }}>
+          <Nav className="col-12 col-md-6 mt-2 mt-md-0" style={{ marginLeft: 20, marginRight: 20 }}>
             <NavDropdown marginLeft={30} marginRight={30} href="#productdetail" className="dropdown" renderMenuOnMount={true} title={<p className="text-light">Điện thoại <img className="text-light" src="../phone.png" alt="phone" width={20} height={20}></img></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" href="#action/3.1">Iphone</NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu" href="#login">Samsung</NavDropdown.Item>
@@ -68,9 +69,11 @@ function Header() {
               <NavDropdown.Item className=".dropdown-menu" href="#cart">Bàn phím</NavDropdown.Item>
 
             </NavDropdown>
-
-            <Form style={{ width: 200, height: 20, marginRight: 20 }} className="d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" /></Form>
-            <Button className="bg-danger border-0" onClick={SearchClicked}><img src="../searchButton.png" width={30} height={30} className="ml-2 mr-auto" alt="search" border={0} /></Button>
+            
+              
+            <Form style={{ width: 200, height: 20, marginRight: 20 }} className="navbar-form d-flex input-lg form-inline ml-5 "> <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" /></Form>
+            <Button className="bg-danger border-0 form-inline" onClick={SearchClicked}><img src="../searchButton.png" width={30} height={30} className="" alt="search" border={0} /></Button>
+          
           </Nav>
 
 
@@ -89,6 +92,8 @@ function Header() {
 
 
         </Navbar.Collapse >
+        
+        
         <Navbar.Collapse id="reponsive-navbar-nav">
           {userId == -1 ?
             <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={16} height={16}></img></p>} id="collasible-nav-dropdown">

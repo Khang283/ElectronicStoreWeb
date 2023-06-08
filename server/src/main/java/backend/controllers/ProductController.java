@@ -92,11 +92,13 @@ public class ProductController {
         return ResponseEntity.badRequest().build();
     }
     
-    @PostMapping("v1/admin/product/modify")
+    @PostMapping("/admin/product/modify")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String>modifyProduct(@RequestBody ModifyProductDTO modProdDTO){
         if(productService.modifyProductByID(modProdDTO)){
             return ResponseEntity.ok("Sửa sản phẩm thành công");
         }
         return ResponseEntity.badRequest().build();
     }
+
 }

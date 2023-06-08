@@ -9,6 +9,8 @@ import Checkout from "./components/Checkout/Checkout.js";
 import ProductsList from "./components/admin/ProductsList";
 import Details from "./components/Details/Details";
 import Account from "./components/Account/Account";
+import UpdateProduct from "./components/admin/UpdateProduct";
+import UpdateProductt from "./components/UpdateProduct/UpdateProductt";
 
 
 const router = createBrowserRouter([
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
-                element: <Home />
+                element: <UpdateProductt/>
             },
             {
                 path: '/login',
@@ -54,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: '/logout',
                 element: <Account />
+            },
+            {
+                path: '/admin/product/modify',
+                element: <UpdateProduct/>
             }
 
         ]
