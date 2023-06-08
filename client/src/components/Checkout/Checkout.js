@@ -7,6 +7,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useLocation } from "react-router-dom";
 import "./Checkout.css";
+import Loader from "../Loader/Loader";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -57,7 +58,7 @@ export default function Checkout(props) {
     else{
         return(
             <div>
-                <h1>Xin chờ ...</h1>
+                <Loader />
             </div>
         )
     }

@@ -5,8 +5,12 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function CheckoutForm() {
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -46,6 +50,7 @@ export default function CheckoutForm() {
     });
   }, [stripe]);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -61,7 +66,8 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000",
+        return_url: "http://localhost:3000/cart/checkout/confirmpayment",
+        
       },
     });
 

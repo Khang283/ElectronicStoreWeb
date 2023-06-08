@@ -16,6 +16,7 @@ import Category from "./components/Category/Category";
 import SupportAdmin from "./components/SupportChatAdmin";
 import SearchPage from "./components/SearchPage/SearchPage";
 import ProductAdd from "./components/admin/ProductAdd";
+import ConfirmPayment from "./components/Checkout/ConfirmPayment";
 
 
 const router = createBrowserRouter([
@@ -87,6 +88,14 @@ const router = createBrowserRouter([
             {
                 path: '/admin/product/new',
                 element: <ProductAdd />
+            },
+            {
+                path: '/cart/checkout/confirmpayment',
+                element: <ConfirmPayment />
+            },
+            {
+                path: '/admin',
+                element: <UsersList />
             }
 
         ]

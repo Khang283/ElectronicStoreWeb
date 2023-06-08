@@ -1,12 +1,16 @@
 package backend.dao;
 
+import backend.dto.CartDTO;
+import backend.dto.CartItemDTO;
 import backend.models.Cart;
 import backend.models.CartItem;
 import backend.models.Product;
+import org.hibernate.tool.schema.spi.SqlScriptException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +75,17 @@ public class CartDAO {
 
     public List<CartItem> findCartItemByCartId(long cartId){
         return _cartItem.findCartItemByCartId(cartId).orElseThrow();
+    }
 
+    public void deleteCartByCartId(long id){
+        try{
+            _cart.deleteCartByCartId(id);
+        }catch (SqlScriptException e){
+            System.out.println("Error: "+e.getMessage());
+        }
+    }
+
+    public List<Cart>getHistory(long userId){
+        return _cart.getHistory(userId);
     }
 }

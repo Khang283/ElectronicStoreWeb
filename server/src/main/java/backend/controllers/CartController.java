@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.image.ReplicateScaleFilter;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api")
@@ -64,6 +67,22 @@ public class CartController {
         }
         return ResponseEntity.notFound().build();
     }
-    public void Checkout(){
+    @PostMapping("/cart/checkout/confirm")
+    public ResponseEntity<String>confirmCheckout(@RequestHeader("Authorization")String accessToken){
+        String token = accessToken.substring(7);
+        String username = jwtService.extractUsername(token);
+        if(cartService.deleteCartByUsername(username)) return ResponseEntity.ok("Xóa giỏ hảng thành công");
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/cart/history")
+    public ResponseEntity<List<CartDTO>>getHistory(@RequestHeader("Authorization")String accessToken){
+        String token = accessToken.substring(7);
+        String username = jwtService.extractUsername(token);
+        List<CartDTO>cartDTOS = cartService.getHistory(username);
+        if(cartDTOS.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(cartDTOS);
     }
 }

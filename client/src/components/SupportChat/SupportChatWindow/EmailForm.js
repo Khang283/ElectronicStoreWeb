@@ -8,22 +8,22 @@ import { LoadingOutlined } from '@ant-design/icons'
 
 import Avatar from '../Avatar'
 
-const EmailForm = (props) => {
+const EmailForm = props => {
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
 
     function getOrCreateUser(callback) {
-         axios.put(
+        axios.put(
             'https://api.chatengine.io/users/',
             { username: email, email: email, secret: email },
-            { headers: { "PRIVATE-KEY": process.env.REACT_APP_CE_PRIVATE_KEY } }
+            { headers: { "Private-Key": process.env.REACT_APP_CE_PRIVATE_KEY } }
         )
             .then(r => callback(r.data))
             .catch(e => console.log('Get or create user error', e))
     }
 
     function getOrCreateChat(callback) {
-         axios.put(
+        axios.put(
             'https://api.chatengine.io/chats/',
             { usernames: [email, 'ADMIN'], is_direct_chat: true },
             {
@@ -31,7 +31,6 @@ const EmailForm = (props) => {
                     "Project-ID": process.env.REACT_APP_CE_PROJECT_ID,
                     "User-Name": email,
                     "User-Secret": email,
-                    withCredentials: false,
                 }
             }
         )
@@ -39,8 +38,8 @@ const EmailForm = (props) => {
             .catch(e => console.log('Get or create chat error', e))
     }
 
-     function handleSubmit(event) {
-         event.preventDefault();
+    function handleSubmit(event) {
+        event.preventDefault();
         setLoading(true)
 
         console.log('Sending Email', email)
@@ -59,10 +58,10 @@ const EmailForm = (props) => {
             return
         }
 
-         getOrCreateUser(
-             user => {
+        getOrCreateUser(
+            user => {
                 props.setUser && props.setUser(user)
-                 getOrCreateChat(chat => {
+                getOrCreateChat(chat => {
                     setLoading(false)
                     props.setChat && props.setChat(chat)
                 })

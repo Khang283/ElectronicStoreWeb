@@ -64,6 +64,7 @@ function Cart() {
     setCartItems(updatedCartItems);
   };
 
+
   const handlePlus = (id) => {
     setLoad(false);
     const updatedCartItems = cartItems.map((item) => {
@@ -150,13 +151,12 @@ function Cart() {
         //console.log(res.data);
         //console.log(res.data)
       }
-    })
-      .catch(() => {
+    }).catch(() => {
         setLoad(true);
         setFound(true);
       })
 
-  }, [cartItems]);
+  }, [cartItems,userState.userId]);
 
   function setCart() {
     cart = {
@@ -192,17 +192,18 @@ function Cart() {
     })
   }
 
-  if (!isLogin) {
+  if (userState.userId == -1) {
     return (
       <div className='centerText'>
-      <Loader></Loader></div>
+      <h2>Bạn chưa đăng nhập</h2>
+      </div>
     )
   }
   else {
     if (!isLoaded) {
       return (
         <div className='centerText '>
-          <h2>Xin chờ ...</h2>
+          <Loader />
         </div>
       )
     }

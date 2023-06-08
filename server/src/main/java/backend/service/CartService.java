@@ -7,13 +7,12 @@ import backend.models.Cart;
 import backend.models.CartItem;
 import backend.models.Product;
 import backend.models.User;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.annotation.web.oauth2.resourceserver.OpaqueTokenDsl;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CartService {
@@ -108,5 +107,55 @@ public class CartService {
                 .totalQuantity(cart.getTotalQuantity())
                 .build();
         return cartDTO;
+    }
+
+    public boolean deleteCartByUsername(String username){
+        Optional<User>user = userDAO.findUserByUsername(username);
+        if(user.isPresent()){
+            Cart cart = cartDAO.findCartByUserId(user.get().getUserId());
+            if(cart==null || cart.isDeleted()) return false;
+            try{
+                cartDAO.deleteCartByCartId(cart.getCartId());
+            }catch (Exception e){
+                System.out.println("Error: "+e.getMessage());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public List<CartDTO>getHistory(String username){
+        Optional<User> user = userDAO.findUserByUsername(username);
+        if(!user.isPresent()) return null;
+        List<Cart>carts = cartDAO.getHistory(user.get().getUserId());
+        List<CartDTO>cartDTOS = new ArrayList<>();
+        for(Cart cart: carts){
+            CartDTO cartDTO = CartDTO.builder()
+                    .cartId(cart.getCartId())
+                    .userId(cart.getUserId())
+                    .cartItems(getCartItemDTOByCartId(cart.getCartId()))
+                    .totalQuantity(cart.getTotalQuantity())
+                    .totalPrice(cart.getTotalMoney())
+                    .build();
+            cartDTOS.add(cartDTO);
+        }
+        return cartDTOS;
+    }
+
+    public List<CartItemDTO>getCartItemDTOByCartId(long cartId){
+        List<CartItemDTO>cartItemDTOS = new ArrayList<>();
+        List<CartItem> cartItems = cartDAO.findCartItemByCartId(cartId);
+        for(CartItem cartItem: cartItems){
+            Optional<Product> product = productDAO.findProductById(cartItem.getCartItemId().getProductId());
+            CartItemDTO cartItemDTO = CartItemDTO.builder()
+                    .productId(cartItem.getCartItemId().getProductId())
+                    .productName(product.get().getProductName())
+                    .price(product.get().getProductPrice())
+                    .productImage(productDAO.findProductIcon(product.get().getProductId()))
+                    .quantity(cartItem.getQuantity())
+                    .build();
+            cartItemDTOS.add(cartItemDTO);
+        }
+        return cartItemDTOS;
     }
 }

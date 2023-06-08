@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { ChatEngineWrapper, Socket, ChatFeed } from 'react-chat-engine'
 
-const ChatEngine = (props) => {
+const ChatEngine = props => {
     const [showChat, setShowChat] = useState(false)
 
     useEffect(() => {
