@@ -176,16 +176,7 @@ const ProductAdd = () => {
     }
 
     // add  
-    const [Product, setProduct] = useState({
-        productName: "",
-        productPrice: null,
-        productVersion: "",
-        productStock: null,
-        companyId: 1,
-        categoryId: 1,
-        assets: [],
-        specs: []
-    });
+    const [Product, setProduct] = useState({});
     const [productName, setproductName] = useState('');
     const [productPrice, setproductPrice] = useState(null);
     const [productVersion, setproductVersion] = useState('');
@@ -222,18 +213,30 @@ const ProductAdd = () => {
     const [submitted, setSubmitted] = useState(false);
     const [isLoaded, setLoad] = useState(false);
 
-    function addProduct() {
-
-
-        if (productName == "" || productPrice == null || productVersion == "" || companyId == null || categoryId == null || productStock == null || assets == null || specs == null)
+    const addProduct = () => {
+        if (productName == "" || productPrice == '' || productVersion == "" || companyId == null || categoryId == null || productStock == '' || assets == null || specs == null)
             alert("Vui lòng nhập đủ thông tin!!!");
         else {
             setShow(true);
             setLoad(true);
-            setassets(listProductAsset);
-            setspecs(listProductSpec);
-            setProduct({ productName, productPrice, productVersion, productStock, companyId, categoryId, listProductAsset, listProductSpec })
-            axios.post('/api/admin/product/add', Product, {
+            // setassets(listProductAsset);
+            // setspecs(listProductSpec);
+            // setProduct({ productName, productPrice, productVersion, productStock, companyId, categoryId, listProductAsset, listProductSpec })
+            // console.log(Product);
+
+            const productnew = {
+                productName: productName,
+                productPrice: productPrice,
+                productVersion: productVersion,
+                productStock: productStock,
+                companyId: companyId,
+                categoryId: categoryId,
+                assets: listProductAsset,
+                specs: listProductSpec
+            };
+            console.log(productnew);
+
+            axios.post('/api/admin/product/add', productnew, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('authToken')}`,
                 }
@@ -242,7 +245,6 @@ const ProductAdd = () => {
                     setSubmitted(true);
                     // console.log(res.data);
                     setLoad(false);
-                    console.log(Product);
 
                 }
             })
@@ -253,10 +255,6 @@ const ProductAdd = () => {
 
         }
     }
-    // console.log(submitted);
-    // console.log(Product);
-
-    // popup
 
     const [showspec, setShowspec] = useState(false);
 
@@ -274,6 +272,16 @@ const ProductAdd = () => {
     // const handleShow = () => setShow(true);
     const handleContinue = () => {
         setShow(false);
+
+        setproductPrice('');
+        setproductStock('');
+        setproductVersion('');
+        setcompanyId(1);
+        setcategoryId(1);
+        setproductName('');
+        setAsset([]);
+        setSpec([]);
+
         setProduct({
             productName: "",
             productPrice: "",
@@ -322,12 +330,11 @@ const ProductAdd = () => {
                                                 <Button variant="secondary" onClick={handleContinue}>
                                                     Tiếp tục
                                                 </Button>
-
-                                                <Button variant="primary">
-                                                    <Link to={"/admin/product"}>
+                                                <Link to={"/admin/product"}>
+                                                    <Button variant="primary">
                                                         Hoàn tất
-                                                    </Link>
-                                                </Button>
+                                                    </Button>
+                                                </Link>
                                             </Modal.Footer>
                                         </div> :
                                         <div>

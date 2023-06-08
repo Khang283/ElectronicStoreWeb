@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../Details/Details.css';
 import SoldIcon from '../../images/sold.png';
 import { useParams } from "react-router-dom";
+import CardProduct from '../Card/CardProduct';
 
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -12,6 +13,7 @@ import Cookies from 'js-cookie';
 import Cart from '../Cart/Cart';
 import Popup from 'reactjs-popup';
 import Loader from '../layout/Loader';
+import Table from 'react-bootstrap/Table';
 
 
 const Details = (props) => {
@@ -24,13 +26,13 @@ const Details = (props) => {
 
   const [change, setChange] = useState(9);
 
-  const {id} = useParams();
+  const { id } = useParams();
 
-  const [loading,setLoad] = useState(true);
+  const [loading, setLoad] = useState(true);
 
   // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
 
-  const [infoTitle, setInfoTitle] = useState();
+  const [infoTitle, setInfoTitle] = useState('Cấu hình');
 
   const slideRef = useRef();
   //
@@ -38,6 +40,7 @@ const Details = (props) => {
     style: 'currency',
     currency: 'VND'
   })
+
 
   const [Product, setProduct] = useState({
     // productId: null,
@@ -59,6 +62,9 @@ const Details = (props) => {
     ProductServices.getProductById(id)
       .then(response => {
         setProduct(response.data);
+        setListAsset(response.data.assets);
+        setCompany(response.data.company);
+        setCategory(response.data.category);
         console.log(response.data);
       })
       .catch(e => {
@@ -70,7 +76,34 @@ const Details = (props) => {
   useEffect(() => {
     getProduct(params.id)
   }, [params.id]);
+
+
+  //list
+  const [listProduct, setListProduct] = useState([]);
+  const [loadingList, setLoadList] = useState(false);
+  const [company, setCompany] = useState('');
+  const [category, setCategory] = useState('');
+
+  useEffect(() => {
+    getListProduct();
+  }, []);
+
+  const getListProduct = () => {
+    setLoadList(true);
+    console.log(company);
+    console.log(`/api/v1/product/${category}?limit=8&company=${company}`);
+    axios.get(`/api/v1/product/${category}?limit=8&company=${company}`)
+      .then(res => {
+        setListProduct(res.data);
+        setLoadList(false);
+        console.log(res.data);
+      }).catch(e => {
+        console.log(e);
+      })
+  }
   //
+console.log(listProduct);
+
   useEffect(() => {
     if (!slideRef.current) return;
     const scrollWidth = slideRef.current.scrollWidth;
@@ -84,8 +117,8 @@ const Details = (props) => {
   }
 
   function slideShow(n) {
-    if (n > Product.assets.length) { setSlideIndex(1) };
-    if (n < 1) { setSlideIndex(Product.assets.length) };
+    if (n > listAsset.length) { setSlideIndex(1) };
+    if (n < 1) { setSlideIndex(listAsset.length) };
   }
 
   function dragStart(e) {
@@ -111,52 +144,62 @@ const Details = (props) => {
     slideRef.current.scrollLeft = slideIndex > numOfThumb ? (slideIndex - 1) * width : 0;
   }, [width, slideIndex])
 
-  const handleAddToCart = ()=>{
+  const handleAddToCart = () => {
     console.log(id);
     const payload = {
-      productId : id,
+      productId: id,
     }
-    axios.post('/api/cart/add',payload,{
+    axios.post('/api/cart/add', payload, {
       headers: {
         Authorization: `Bearer ${Cookies.get('authToken')}`,
       }
-    }).then(res =>{
-      if(res.status ===200){
+    }).then(res => {
+      if (res.status === 200) {
         setLoad(false);
       }
-    }).catch(e=>{
+    }).catch(e => {
       console.log(e);
     })
   }
 
+  const [listAsset, setListAsset] = useState([]);
+
+
+  useEffect(() => {
+    const getListAsset = () => {
+      setListAsset(listAsset.filter((item) => item.assetRole !== 'icon'));
+      console.log(listAsset);
+    }
+    getListAsset();
+  }, [Product])
+
+  // console.log(listAsset);
 
   return (
     <div className='container'>
       <React.Fragment>
         <section className='product-details'>
-          <div className='product-page-img'>
+          <div className='product-page-img' >
             {
-              Product.assets.map((image, index) => (
-                image.assetRole === "slide" ?
-                  <div key={index} className='mySlides'
-                    style={{ display: (index + 1) === slideIndex ? "block" : "none" }}>
-                    <div className='numbertext'>{index + 1} / {Product.assets.length}</div>
-                    <img src={image.assetPath} alt=""></img>
-                  </div> : <div />
+              listAsset.map((image, index) => (
+                <div key={index} className='mySlides'
+                  style={{ display: (index + 1) === slideIndex ? "block" : "none" }}>
+                  <div className='numbertext'>{index + 1} / {Product.assets.length}</div>
+                  <img src={image.assetPath} alt="" width={200} height={2}></img>
+                </div>
               ))
             }
 
-            {/* <a href="#" className='prev' onClick={() => plusSlides(-1)}>&#10094;</a>
-          <a href="#" className='next' onClick={() => plusSlides(1)}>&#10095;</a> */}
+            <a href="#" className='prev' onClick={() => plusSlides(-1)}>&#10094;</a>
+            <a href="#" className='next' onClick={() => plusSlides(1)}>&#10095;</a>
             <div className='slider-img' draggable={true} ref={slideRef}
               onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
               {
-                Product.assets.map((image, index) => (
-                  image.assetRole === "slide" ?
-                    <div key={index} className={`slider-box ${index + 1 === slideIndex ? 'active' : ''}`}
-                      onClick={() => setSlideIndex(index + 1)}>
-                      <img src={image.assetPath} alt=""></img>
-                    </div> : <div />
+                listAsset.map((image, index) => (
+                  <div key={index} className={`slider-box ${index + 1 === slideIndex ? 'active' : ''}`}
+                    onClick={() => setSlideIndex(index + 1)}>
+                    <img src={image.assetPath} alt=""></img>
+                  </div>
                 ))
               }
             </div>
@@ -195,7 +238,7 @@ const Details = (props) => {
                </div> */}
 
               <div className='product-sold'>
-              <img src={SoldIcon} alt="SoldIcon" />
+                <img src={SoldIcon} alt="SoldIcon" />
                 <strong><span>Đã bán: </span> {Product.productSold}</strong>
               </div>
 
@@ -204,10 +247,10 @@ const Details = (props) => {
               </div>
 
               <div className='cart-btns'>
-              <Popup onOpen={handleAddToCart} modal trigger={<button className='add-cart'>Thêm vào giỏ hàng</button>}>
-                {/* {loading ? <Loader /> : <Cart />} */}
-                <Cart />
-              </Popup>
+                <Popup onOpen={handleAddToCart} modal trigger={<button className='add-cart'>Thêm vào giỏ hàng</button>}>
+                  {/* {loading ? <Loader /> : <Cart />} */}
+                  <Cart />
+                </Popup>
                 {/* <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button> */}
                 {/* <a href="#" className='add-cart buy-now'>Buy Now</a> */}
               </div>
@@ -236,15 +279,6 @@ const Details = (props) => {
               className={`p-info-list ${'Câu hỏi thường gặp' === infoTitle ? 'active' : ''}`}>
               Câu hỏi thường gặp
             </li>
-
-            {/* {
-            product.infos.map(info => (
-              <li key={info.title} onClick={() => setInfoTitle(info.title)}
-                className={`p-info-list ${info.title === infoTitle ? 'active' : ''}`}>
-                {info.title}
-              </li>
-            ))
-          } */}
           </ul>
 
           <div key='Thông tin sản phẩm'
@@ -256,15 +290,17 @@ const Details = (props) => {
             className={`info-container ${'Cấu hình' === infoTitle ? 'active' : ''}`}>
             <div className='infotext'>Cấu hình chi tiết:</div>
             <br />
-
-            {
-              Product.specs.map(spec => (
-                <div key={spec.specDetail}>
-                  <Row xs={2} md={4} lg={6}>
-                    <Col>{spec.specDetail}: </Col>
-                    <Col>{spec.specValue}</Col>
-                  </Row></div>
-              ))}
+            <Table striped bordered hover responsive>
+              <tbody>
+                {
+                  Product.specs.map((spec) => (
+                    <tr key={spec.specDetail}>
+                      <td>{spec.specDetail} </td>
+                      <td>{spec.specValue}</td>
+                    </tr>
+                  ))
+                }</tbody>
+            </Table>
 
           </div>
           <div key='Đánh giá sản phẩm'
@@ -275,15 +311,30 @@ const Details = (props) => {
             className={`info-container ${'Câu hỏi thường gặp' === infoTitle ? 'active' : ''}`}>
             Câu hỏi thường gặp
           </div>
-          {/* {
-          product.infos.map(info => (
-            <div key={info.title}
-              className={`info-container ${info.title === infoTitle ? 'active' : ''}`}>
-              {info.content}
-            </div>
-          ))
-        } */}
         </section>
+
+        <div className="container div-list">
+          <div >
+            <h2>SẢN PHẨM CÙNG HẢNG</h2>
+
+          </div>
+          {
+            loadingList === true ?
+              <div className="home-btn">
+                <Loader></Loader>
+              </div>
+              :
+              <Row xs={1} md={4} sm={2} className="g-4">
+                {listProduct?.map((product) => {
+                  return (
+                    <Col >
+                      <CardProduct product={product}></CardProduct>
+                    </Col>
+                  );
+                })}
+              </Row>
+          }
+        </div>
       </React.Fragment>
     </div>
   )

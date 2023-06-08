@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
+import CardProduct from '../Card/CardProduct';
 
 const Category = props => {
 
@@ -69,19 +70,20 @@ const Category = props => {
 
     useEffect(() => {
         getProduct();
-    }, [currentPage,params]);
+    }, [currentPage, params]);
 
     const getProduct = () => {
         const page = currentPage;
         console.log(page);
-        console.log('/api/v1/product/'+params.category+"?page="+currentPage+(params.company?`&company=${params.company}`:''))
-        axios.get('/api/v1/product/'+params.category+"?page="+currentPage+(params.company?`&company=${params.company}`:''))
-        .then(res=>{
-            setproduct(res.data);
-            setLoad(true);
-        }).catch(e=>{
-            console.log(e);
-        })
+        console.log('/api/v1/product/' + params.category + "?page=" + currentPage + (params.company ? `&company=${params.company}` : ''))
+        axios.get('/api/v1/product/' + params.category + "?page=" + currentPage + (params.company ? `&company=${params.company}` : ''))
+            .then(res => {
+                setproduct(res.data);
+                setLoad(true);
+                console.log(res.data);
+            }).catch(e => {
+                console.log(e);
+            })
     }
 
 
@@ -124,33 +126,7 @@ const Category = props => {
                                                 return (
                                                     //console.log(product.productName),
                                                     <Col >
-                                                        <Card className='card'>
-                                                            <Link to={"/product/" + product.category+"/"+product.productId}>
-                                                                <Card.Img className='card-img' variant="top" src={product.productIcon} height={230} /></Link>
-                                                            <Card.Body>
-                                                                <Link to={"/product/" + product.category+"/"+product.productId}>
-                                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
-
-                                                                <Card.Text className='fontPrice'>
-                                                                    {moneyFormat.format(product.productPrice)}
-                                                                </Card.Text>
-
-                                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
-
-                                                                {/* <div className='div-spec'>
-                                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
-                                                                </div>
-                                                                 <Link to={"/1"}>View Reviews</Link> */}
-                                                                <div className='card-btn'>
-                                                                    <Button variant="danger" size="lg" >
-                                                                        <Link to={"/product/" + product.category+"/"+product.productId}>
-                                                                            <strong>Mua Ngay</strong>
-                                                                        </Link>
-                                                                    </Button>{' '}
-                                                                </div>
-
-                                                            </Card.Body>
-                                                        </Card>
+                                                        <CardProduct product={product}></CardProduct>
                                                     </Col>
                                                 );
                                             })}
