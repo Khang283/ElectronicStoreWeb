@@ -15,6 +15,7 @@ import UpdateUser from "./components/admin/UpdateUser";
 import Category from "./components/Category/Category";
 import SupportAdmin from "./components/SupportChatAdmin";
 import SearchPage from "./components/SearchPage/SearchPage";
+import ProductAdd from "./components/admin/ProductAdd";
 
 
 const router = createBrowserRouter([
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
             {
                 path: '/search/:keyword',
                 element: <SearchPage />
+            },
+            {
+                path: '/admin/product/new',
+                element: <ProductAdd />
             }
 
         ]

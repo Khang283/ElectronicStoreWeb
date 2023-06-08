@@ -312,6 +312,12 @@ public class ProductDAO {
         return assets.getAssetPath();
     }
 
+    public List<Category> getListCategory() {
+        return _category.findAllCategory();
+    }
 
+    public List<Company> getListCompany() {
+        return _company.findAllCompany();
+    }
 
 }

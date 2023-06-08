@@ -4,6 +4,8 @@ import backend.dto.DeleteProductDTO;
 import backend.dto.GetProductByIdDTO;
 import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
+import backend.models.Category;
+import backend.models.Company;
 import backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -106,5 +108,21 @@ public class ProductController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+    @GetMapping("/v1/getlistcompany")
+    public ResponseEntity<List<Company>> getListCompany(){
+        List<Company> listCompany = productService.getListCompany();
+        if(listCompany.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(listCompany);
+    }
+
+    @GetMapping("/v1/getlistcategory")
+    public ResponseEntity<List<Category>> getListCategory(){
+        List<Category> listCategory = productService.getListCategory();
+        if(listCategory.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(listCategory);
+    }
+
+
 
 }

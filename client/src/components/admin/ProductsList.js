@@ -142,7 +142,7 @@ const ProductsList = ({ history }) => {
                 <div className="col-12 col-md-10">
                     <Fragment>
                         <h1 className="my-5">Tất cả sản phẩm</h1>
-                        <Link to='/admin/product'><button type="button" className="btn btn-primary">Thêm sản phẩm mới</button></Link>
+                        <Link to='/admin/product/new'><button type="button" className="btn btn-primary">Thêm sản phẩm mới</button></Link>
 
                         {loading ? <Loader /> : (
                             <MDBDataTable

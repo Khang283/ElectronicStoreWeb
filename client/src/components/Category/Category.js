@@ -91,8 +91,8 @@ const Category = props => {
         <div className="bg-light">
             <section className="section-content padding-y">
                 <div className="container">
-                    <Row>
-                        <Col xs lg="2">
+                    <Row >
+                        <Col xs md="1">
                             xs=6 md=4
                         </Col>
                         <Col>
@@ -108,7 +108,7 @@ const Category = props => {
                                                     <h2>PHỤ KIỆN</h2>
                                         // params.category ==='accessories'
                                     }
-                                    <br/>
+                                    <br />
 
                                 </div>
                                 {
@@ -126,7 +126,7 @@ const Category = props => {
                                                     <Col >
                                                         <Card className='card'>
                                                             <Link to={"/product/" + product.category+"/"+product.productId}>
-                                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
+                                                                <Card.Img className='card-img' variant="top" src={product.productIcon} height={230} /></Link>
                                                             <Card.Body>
                                                                 <Link to={"/product/" + product.category+"/"+product.productId}>
                                                                     <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
@@ -137,9 +137,10 @@ const Category = props => {
 
                                                                 <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
 
-                                                                <div className='div-spec'>
+                                                                {/* <div className='div-spec'>
                                                                     <span ><i className='bi icon-screen-size'></i> spec</span>
                                                                 </div>
+                                                                 <Link to={"/1"}>View Reviews</Link> */}
                                                                 <div className='card-btn'>
                                                                     <Button variant="danger" size="lg" >
                                                                         <Link to={"/product/" + product.category+"/"+product.productId}>
@@ -148,7 +149,6 @@ const Category = props => {
                                                                     </Button>{' '}
                                                                 </div>
 
-                                                                {/* <Link to={"/1"}>View Reviews</Link> */}
                                                             </Card.Body>
                                                         </Card>
                                                     </Col>
