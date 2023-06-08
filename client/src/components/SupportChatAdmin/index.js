@@ -9,6 +9,7 @@ const SupportAdmin = () => {
       userName='ADMIN'
       userSecret='username'
       height='calc(100vh - 12px)'
+      offset={7}
     />
   );
 }
