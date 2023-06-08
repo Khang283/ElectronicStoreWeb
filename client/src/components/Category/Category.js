@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Pagination from 'react-bootstrap/Pagination';
+import Checkbox from '../Category/Checkbox';
 
 const Category = props => {
 
@@ -104,7 +105,7 @@ const Category = props => {
                 <div className="container">
                     <Row>
                         <Col xs lg="2">
-                            xs=6 md=4
+                            <Checkbox/>
                         </Col>
                         <Col>
                             <div className="container div-list">
