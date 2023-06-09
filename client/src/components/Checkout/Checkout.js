@@ -18,9 +18,11 @@ const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 export default function Checkout(props) {
 
     const location = useLocation();
-    const [locationState,setLocationState] = useState({cart: {}});
+    const [locationState,setLocationState] = useState({});
     const [clientSecret, setClientSecret] = useState("");
     let cart = location.state.cart;
+    let orderId = location.state.order;
+    console.log(location.state);
     //let cart = props.cart;
     useEffect(() => {
         setLocationState(location.state);
@@ -51,7 +53,7 @@ export default function Checkout(props) {
     if (clientSecret) {
         return (
             <Elements options={options} stripe={stripePromise}>
-                <CheckoutForm />
+                <CheckoutForm orderId={orderId}/>
             </Elements>
         )
     }

@@ -21,6 +21,7 @@ const ProductsList = ({ history }) => {
 
     const [productList,setProductList] = useState([])
     const [loading,setLoad] =useState(true);
+    const [selected , setSelected ] = useState();
 
     useEffect(() => {
         axios.get('/api/admin/product',{
@@ -30,7 +31,7 @@ const ProductsList = ({ history }) => {
         }).then(res=>{
             if(res.status==200){
                 setProductList(res.data);
-                console.log(res.data);
+                //console.log(res.data);
                 setLoad(false);
             }
         })
@@ -51,7 +52,32 @@ const ProductsList = ({ history }) => {
         //     dispatch({ type: DELETE_PRODUCT_RESET })
         // }
 
-    }, [/*dispatch, alert, error, deleteError, isDeleted, history*/])
+    }, [productList]);
+
+    const deleteProduct = ()=>{
+        const payload = {
+            productId: selected
+        }
+        console.log(selected);
+
+        axios.delete('/api/admin/product/delete',{
+            headers: {
+                Authorization: `Bearer ${Cookies.get('authToken')}`
+            },
+            data:{
+                productId: selected,
+            }
+        }).then(res=>{
+            if(res.status===200){
+                productList.forEach((product,index)=>{
+                    if(product.productId == selected){
+                        productList.slice(index,1);
+                    }
+                })
+                setProductList(productList);
+            }
+        })
+    }
 
     const setProducts = () => {
         const data = {
@@ -94,7 +120,7 @@ const ProductsList = ({ history }) => {
                     <Link to={`/admin/product/${product.productId}`} className="btn btn-primary py-1 px-2">
                     <i class="bi bi-pencil-square"></i>
                     </Link>
-                    <button className="btn btn-danger py-1 px-2 ml-2" data-toggle="modal" data-target="#exampleModal" >
+                    <button className="btn btn-danger py-1 px-2 ml-2" value={product.productId} onClick={e=>setSelected(e.target.value)} data-toggle="modal" data-target="#exampleModal" >
                         <i className="fa fa-trash"></i>
                     </button>
                     {/* model delete */}
@@ -113,7 +139,7 @@ const ProductsList = ({ history }) => {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                        <button type="button" className="btn btn-danger"  data-dismiss="modal">Xóa</button>
+                                        <button type="button" className="btn btn-danger" onClick={deleteProduct}  data-dismiss="modal">Xóa</button>
                                     </div>
                                 </div>
                             </div>

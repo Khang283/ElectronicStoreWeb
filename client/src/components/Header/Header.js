@@ -59,6 +59,7 @@ function Header() {
       isLoad: false,
     };
     dispatch(setUser(user));
+    navigate('/');
   }
 
   const searchClicked = () => {

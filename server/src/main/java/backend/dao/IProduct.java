@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 import backend.dto.ModifyProductDTO;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -94,4 +95,11 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "LIMIT :limit\n" +
                     "OFFSET :offset",nativeQuery = true)
     List<Product>findAllProduct(@Param("limit")int limit,@Param("offset")int offset);
+
+    @Query(value = "SELECT product.*\n" +
+                    "FROM product,category\n" +
+                    "WHERE category_name = :type AND category.category_id=product.category_id\n" +
+                    "LIMIT :limit\n" +
+                    "OFFSET :offset",nativeQuery = true)
+    List<Product>findProductByType(@Param("limit")int limit,@Param("offset")int offset,@Param("type") String type);
 }

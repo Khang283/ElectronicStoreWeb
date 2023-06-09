@@ -12,9 +12,11 @@ import Cookies from 'js-cookie';
 import Cart from '../Cart/Cart';
 import Popup from 'reactjs-popup';
 import Loader from '../layout/Loader';
+import { useAlert } from 'react-alert';
 
 
 const Details = (props) => {
+  const alert = useAlert();
 
   const [slideIndex, setSlideIndex] = useState(1);
 
@@ -123,9 +125,11 @@ const Details = (props) => {
     }).then(res =>{
       if(res.status ===200){
         setLoad(false);
+        alert.success("Thêm vào giỏ hàng thành công");
       }
     }).catch(e=>{
       console.log(e);
+      alert.error("Đã xảy ra lỗi");
     })
   }
 
@@ -204,10 +208,8 @@ const Details = (props) => {
               </div>
 
               <div className='cart-btns'>
-              <Popup onOpen={handleAddToCart} modal trigger={<button className='add-cart'>Thêm vào giỏ hàng</button>}>
+              <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
                 {/* {loading ? <Loader /> : <Cart />} */}
-                <Cart />
-              </Popup>
                 {/* <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button> */}
                 {/* <a href="#" className='add-cart buy-now'>Buy Now</a> */}
               </div>

@@ -13,9 +13,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import Loader from "../layout/Loader";
+import { useAlert } from "react-alert";
 
 
 function MyAccount() {
+  const alert = useAlert();
   const { userid } = useParams();
   const [show, setShow] = useState(false);
   const [pwdshow, setPwdShow] = useState(false);
@@ -38,10 +40,11 @@ function MyAccount() {
   const [gender, setGender] = useState();
   const [dob, setDob] = useState();
   const [phone, setPhone] = useState();
-  const [newPassword,setNewPass]=useState();
-  const [oldPassword,setOldPass]=useState();
-  const [confirmPass,setConfirm]=useState();
-  
+  const [newPassword, setNewPass] = useState();
+  const [oldPassword, setOldPass] = useState();
+  const [confirmPass, setConfirm] = useState();
+  const [modfify,setModify] = useState(false);
+
   useEffect(() => {
     axios.get('/api/user/me', {
       headers: {
@@ -63,13 +66,14 @@ function MyAccount() {
         setDob(newDob);
         setGender(res.data.gender);
         setPhone(res.data.phone);
+        //console.log(res.data);
         setLoad(false)
       }
     }).catch(e => {
       console.log(e);
     })
 
-  }, [])
+  }, [modfify])
   if (userState.userId == -1) {
     return (
       <div>
@@ -78,32 +82,68 @@ function MyAccount() {
     )
   }
 
-  const handlePasswordChange = ()=>{
-    const payload ={
-        id: user.userId,
-        oldPassword: oldPassword,
-        newPassword : newPassword
+  const handlePasswordChange = () => {
+    const payload = {
+      id: user.userId,
+      oldPassword: oldPassword,
+      newPassword: newPassword
     };
 
-    if(newPassword != confirmPass || newPassword === oldPassword){
-        alert("Xin chọn lại mật khẩu mới");
+    if (newPassword != confirmPass || newPassword === oldPassword) {
+      alert.success("Xin chọn lại mật khẩu mới");
     }
-    else{
+    else {
 
-        axios.put('/api/user/password',payload,{
-            headers: {
-                Authorization: `Bearer ${Cookies.get('authToken')}`,
-            }
-        }).then(res=>{
-            if(res.status == 200){
-                alert("Đổi mật khẩu thành công");
-            }
-        }).catch(e=>{
-            console.log(e);
-        })
+      axios.put('/api/user/password', payload, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('authToken')}`,
+        }
+      }).then(res => {
+        if (res.status == 200) {
+          alert.error("Đổi mật khẩu thành công");
+        }
+      }).catch(e => {
+        console.log(e);
+      })
     }
 
-}
+  }
+
+  const handleUpdate = () => {
+    const userRequest = {
+      id: user.userId,
+      username,
+      address,
+      email,
+      phone,
+      gender,
+      dob,
+      role: "USER"
+    }
+    console.log(userRequest);
+    axios.put('/api/user', userRequest, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('authToken')}`,
+      }
+    }).then(res => {
+      if (res.status === 200) {
+        closeDialog();
+        alert.success("Cập nhật thông tin thành công");
+        setModify(true);
+      }
+    }).catch(e => {
+      closeDialog();
+      alert.error("Đã xảy ra lỗi");
+    })
+  }
+  if (userState.userId == -1) {
+    return (
+      <div>
+        <h2>Bạn chưa đăng nhập</h2>
+      </div>
+    )
+  }
+
   return (
     <Container>
       <div className="row">
@@ -175,7 +215,7 @@ function MyAccount() {
                             variant={idx % 2 ? 'outline-primary' : 'outline-danger'}
                             name="radio"
                             value={gender}
-                            checked={radioValue === gender}
+                            checked={radioValue == gender}
                             onChange={(e) => setRadioValue(e.currentTarget.value)}
                             className="rounded-button m-1"
                           >
@@ -226,7 +266,7 @@ function MyAccount() {
                     <Button variant="secondary" onClick={closeDialog}>
                       Huỷ
                     </Button>
-                    <Button variant="primary" onClick={closeDialog}>
+                    <Button variant="primary" onClick={handleUpdate}>
                       Xác nhận
                     </Button>
                   </Modal.Footer>
@@ -239,15 +279,15 @@ function MyAccount() {
                     <div className="row col-xxl-12">
                       <Form>
                         <Form.Label>Mật khẩu cũ *</Form.Label>
-                        <Form.Control type="password" id="oldpwd" onChange={e=>setOldPass(e.target.value)}></Form.Control>
+                        <Form.Control type="password" id="oldpwd" onChange={e => setOldPass(e.target.value)}></Form.Control>
                       </Form>
                       <Form>
                         <Form.Label>Mật khẩu mới *</Form.Label>
-                        <Form.Control type="password" id="newpwd" onChange={e=>setNewPass(e.target.value)}></Form.Control>
+                        <Form.Control type="password" id="newpwd" onChange={e => setNewPass(e.target.value)}></Form.Control>
                       </Form>
                       <Form>
                         <Form.Label>Xác nhận mật khẩu *</Form.Label>
-                        <Form.Control type="password" id="confirmpwd" onChange={e=>setConfirm(e.target.value)}></Form.Control>
+                        <Form.Control type="password" id="confirmpwd" onChange={e => setConfirm(e.target.value)}></Form.Control>
                       </Form>
                     </div>
                   </Modal.Body>

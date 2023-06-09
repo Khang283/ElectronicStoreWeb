@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../reducer/userReducer';
+import { useAlert } from 'react-alert';
 
 function Login() {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
+    const alert = useAlert();
 
     const handleLogin = () => {
         
@@ -24,20 +26,26 @@ function Login() {
         
         axios.post("/api/v1/login",loginResquest)
         .then(res=>{
-            const token = res.data.token;
-            console.log(token);
-            if(token!=''){
-                const user = {
-                    userId: res.data.userId,
-                    username: res.data.username,
-                    role: res.data.role,
+            if(res.status===200){
+                const token = res.data.token;
+                console.log(token);
+                if(token!=''){
+                    const user = {
+                        userId: res.data.userId,
+                        username: res.data.username,
+                        role: res.data.role,
+                    }
+                    Cookies.set('authToken',token,{expires: 1});
+                    dispatch(setUser(user));
+                    alert.success("Tạo tài khoản thành công")
+                    navigate('/');
                 }
-                Cookies.set('authToken',token,{expires: 1});
-                dispatch(setUser(user));
             }
-        }).then(()=>{
-            navigate('/');
+        }).catch(e=>{
+            console.log(e);
+            alert.error("Tạo tài khoản không thành công")
         })
+            
     };
 
     return (

@@ -1,17 +1,15 @@
 package backend.controllers;
 
-import backend.dto.CartDTO;
-import backend.dto.CartPayLoad;
-import backend.dto.ChangeCartItemQuantityDTO;
+import backend.dto.*;
+import backend.models.Orders;
 import backend.service.CartService;
 import backend.service.JwtService;
-import com.stripe.Stripe;
-import com.stripe.model.Charge;
+import backend.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.image.ReplicateScaleFilter;
 import java.util.List;
 
 
@@ -22,6 +20,8 @@ public class CartController {
     private CartService cartService;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private OrderService orderService;
     @PostMapping("/cart/add")
     public ResponseEntity<String>addToCart(@RequestHeader("Authorization")String accessToken,@RequestBody CartPayLoad payLoad){
         String token = accessToken.substring(7);
@@ -68,10 +68,12 @@ public class CartController {
         return ResponseEntity.notFound().build();
     }
     @PostMapping("/cart/checkout/confirm")
-    public ResponseEntity<String>confirmCheckout(@RequestHeader("Authorization")String accessToken){
+    public ResponseEntity<String>confirmCheckout(@RequestHeader("Authorization")String accessToken, @RequestBody UpdateOrderDTO updateOrderDTO){
         String token = accessToken.substring(7);
         String username = jwtService.extractUsername(token);
-        if(cartService.deleteCartByUsername(username)) return ResponseEntity.ok("Xóa giỏ hảng thành công");
+        if(cartService.deleteCartByUsername(username)){
+            if(orderService.updateOrder(updateOrderDTO)) return ResponseEntity.ok("Xóa giỏ hảng thành công và cập nhật trạng thái thành công");
+        }
         return ResponseEntity.badRequest().build();
     }
 
@@ -84,5 +86,20 @@ public class CartController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(cartDTOS);
+    }
+
+    @PostMapping("/order")
+    public ResponseEntity<Orders>createOrder(@RequestBody OrderDTO order ){
+        Orders orders = orderService.createOrder(order);
+        if(orders !=null) return ResponseEntity.ok(orders);
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/admin/cart/order")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<List<OrderListDTO>>getOrderHistoryList(){
+        List<OrderListDTO>orderListDTOS = orderService.getAllOrder();
+        if(orderListDTOS.isEmpty()) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(orderListDTOS);
     }
 }

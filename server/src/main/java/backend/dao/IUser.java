@@ -1,5 +1,6 @@
 package backend.dao;
 
+import backend.models.Role;
 import backend.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -41,4 +42,11 @@ public interface IUser extends JpaRepository<User,Long> {
                     "SET pass_word = :password\n" +
                     "WHERE user_id = :id",nativeQuery = true)
     void changePassword(@Param("id")long id,@Param("password")String password);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE users \n" +
+                    "SET role = :role \n" +
+                    "WHERE user_id = :id",nativeQuery = true)
+    void changeRole(@Param("id")long id, @Param("role")String role);
 }

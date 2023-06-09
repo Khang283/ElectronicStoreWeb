@@ -9,7 +9,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-export default function CheckoutForm() {
+export default function CheckoutForm(props) {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
@@ -66,7 +66,7 @@ export default function CheckoutForm() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: "http://localhost:3000/cart/checkout/confirmpayment",
+        return_url: "http://localhost:3000/cart/checkout/confirmpayment/"+props.orderId,
         
       },
     });

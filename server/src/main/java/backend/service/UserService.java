@@ -60,6 +60,7 @@ public class UserService {
                 .gender(user.getGender())
                 .avatar(user.getAvatar())
                 .dob(user.getDob())
+                .role(user.getRole())
                 .build();
     }
 
@@ -93,5 +94,12 @@ public class UserService {
     public void changePasswordByAdmin(ChangePasswordDTO changePasswordDTO){
         userDAO.changePassword(changePasswordDTO.getId(), changePasswordDTO.getNewPassword());
     }
-
+     public boolean changeRole(ChangeRoleDTO changeRoleDTO){
+        Optional<User>user = userDAO.findUserById(changeRoleDTO.getId());
+        if(user.isPresent()){
+            userDAO.changeRole(changeRoleDTO.getId(),changeRoleDTO.getRole());
+            return true;
+        }
+        return false;
+     }
 }

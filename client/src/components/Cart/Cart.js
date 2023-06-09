@@ -9,11 +9,13 @@ import { Elements, useCartElementState } from "@stripe/react-stripe-js";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Checkout from '../Checkout/Checkout';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../Cart/Cart.css';
 import { useSelector } from 'react-redux';
 import Spinner from '../Loader/Loader';
 import Loader from '../Loader/Loader';
+import { useAlert } from 'react-alert';
+import { Button } from 'react-bootstrap';
 
 //const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`); // nên để ở đây nhằm tránh tạo lại mỗi lần render
 
@@ -28,6 +30,12 @@ function Cart() {
   const [notFound, setFound] = useState(false);
   const [isLogin, setLogin] = useState();
   const userState = useSelector(state => state.user);
+  const [receiver,setReceiver] = useState('');
+  const [deliveryAddress, setDelivery] = useState('');
+  const [message,setMessage] = useState('');
+  const [orderId,setOrderId] = useState();
+  const alert = useAlert();
+  const navigate = useNavigate();
   const appearance = {
     theme: 'stripe',
   };
@@ -192,6 +200,41 @@ function Cart() {
     })
   }
 
+  const checkout = ()=>{
+    if(receiver === '' || deliveryAddress === ''){
+      alert.error("Xin hãy điền đủ thông tin");
+    }
+    else{
+      const payload ={
+        userId,
+        cartId,
+        totalPrice: totalCost,
+        totalQuantity,
+        receiver,
+        address: deliveryAddress,
+        message
+
+      }
+      axios.post('/api/order',payload,{
+        headers: {
+          Authorization : `Bearer ${Cookies.get('authToken')}`,
+        }
+      }).then(res=>{
+        if(res.status === 200){
+          console.log(res.data);
+          console.log(res.data.orderId);
+          setOrderId(res.data.orderId);
+          navigate("/cart/checkout",{state: {
+            cart: setCart(),
+            order: res.data.orderId,
+          }})
+        }
+      }).catch(e=>{
+        console.log(e);
+      })
+    }
+  }
+
   if (userState.userId == -1) {
     return (
       <div className='centerText'>
@@ -317,11 +360,12 @@ function Cart() {
                         >
                           <TestCheckout cart={setCart}/>
                         </Popup> */}
-                        <Link to={'checkout'} state={{ cart: setCart() }} className='btn btn-primary float-md-right' >Thanh toán</Link>
-                        <a href="#" className="btn btn-light">
+                        {/* <Link to={'checkout'} state={{cart: setCart(),order: orderId}} onClick={checkout} className='text-light btn btn-primary float-md-right' >Thanh toán</Link> */}
+                        <Button className='text-light btn btn-primary float-md-right' onClick={checkout}>Thanh toán</Button>
+                        <Link to={'/'} className="btn btn-light">
                           {" "}
                           <i className="fa fa-chevron-left"></i> Tiếp tục mua hàng{" "}
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </main>
@@ -330,16 +374,36 @@ function Cart() {
                       <div class="card-body">
                         <form>
                           <div class="form-group">
-                            <label>Nhập mã giảm giá</label>
+                            <label>Người nhận *</label>
                             <div class="input-group">
                               <input
                                 type="text"
                                 class="form-control"
-                                placeholder="Mã giảm giá"
+                                placeholder=""
+                                onChange={e=>setReceiver(e.target.value)}
                               />
-                              <span class="input-group-append">
-                                <button class="btn btn-primary">Nhập</button>
-                              </span>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label>Địa chỉ *</label>
+                            <div class="input-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder=""
+                                onChange={e=>setDelivery(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label>Lời nhắn</label>
+                            <div class="input-group">
+                              <input
+                                type="text"
+                                class="form-control"
+                                placeholder=""
+                                onChange={e=>setMessage(e.target.value)}
+                              />
                             </div>
                           </div>
                         </form>

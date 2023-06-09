@@ -30,9 +30,6 @@ public class ProductService {
         if(page<1) return null;
         int offset = page*limit - limit;
         List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset,type);
-        if(productListDTOS == null || productListDTOS.isEmpty()){
-            return null;
-        }
         return productListDTOS;
     }
 

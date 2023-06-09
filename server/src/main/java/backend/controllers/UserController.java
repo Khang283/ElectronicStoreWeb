@@ -1,6 +1,7 @@
 package backend.controllers;
 
 import backend.dto.ChangePasswordDTO;
+import backend.dto.ChangeRoleDTO;
 import backend.dto.UpdateUserDTO;
 import backend.dto.UserDTO;
 import backend.models.User;
@@ -66,14 +67,23 @@ public class UserController {
                 .email(user.get().getUserEmail())
                 .phone(user.get().getUserPhone())
                 .avatar(user.get().getAvatar())
+                .gender(user.get().getGender())
                 .dob(user.get().getDob())
                 .role(user.get().getRole())
                 .build());
     }
 
     @PutMapping("/admin/password")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String>changePasswordByAdmin(@RequestBody ChangePasswordDTO changePasswordDTO){
         userService.changePasswordByAdmin(changePasswordDTO);
         return ResponseEntity.ok("Đổi mật khẩu thành công");
+    }
+
+    @PostMapping("/admin/role")
+    @PreAuthorize(("hasAuthority('ADMIN')"))
+    public ResponseEntity<String>changeRole(@RequestBody ChangeRoleDTO changeRoleDTO){
+        if(userService.changeRole(changeRoleDTO)) return ResponseEntity.ok("Thay đổi quyền thành công");
+        return ResponseEntity.badRequest().build();
     }
 }

@@ -17,6 +17,7 @@ import SupportAdmin from "./components/SupportChatAdmin";
 import SearchPage from "./components/SearchPage/SearchPage";
 import ProductAdd from "./components/admin/ProductAdd";
 import ConfirmPayment from "./components/Checkout/ConfirmPayment";
+import OrderList from "./components/admin/OrderList";
 
 
 const router = createBrowserRouter([
@@ -90,12 +91,16 @@ const router = createBrowserRouter([
                 element: <ProductAdd />
             },
             {
-                path: '/cart/checkout/confirmpayment',
+                path: '/cart/checkout/confirmpayment/:orderid',
                 element: <ConfirmPayment />
             },
             {
                 path: '/admin',
                 element: <UsersList />
+            },
+            {
+                path: '/admin/orders',
+                element: <OrderList />
             }
 
         ]

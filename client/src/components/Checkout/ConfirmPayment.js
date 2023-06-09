@@ -2,13 +2,18 @@ import React from "react"
 import { useEffect } from "react"
 import Loader from "../Loader/Loader"
 import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import Cookies from "js-cookie"
 
 const ConfirmPayment = ()=>{
     const navigate = useNavigate();
+    const {orderid} = useParams();
+    const payload = {
+      id: orderid,
+      status: "Đã thanh toán"
+    }
     
-        axios.post('/api/cart/checkout/confirm','',{
+        axios.post('/api/cart/checkout/confirm',payload,{
             headers: {
               Authorization: `Bearer ${Cookies.get('authToken')}`,
             }

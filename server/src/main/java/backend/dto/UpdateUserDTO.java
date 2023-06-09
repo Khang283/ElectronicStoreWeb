@@ -19,6 +19,6 @@ public class UpdateUserDTO {
     private String email;
     private String phone;
     private String gender;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dob;
 }

@@ -87,4 +87,12 @@ public class UserDAO {
         }
         return userDTOS;
     }
+
+    public void changeRole(long id,Role role){
+        try{
+            _user.changeRole(id,role.toString());
+        }catch (SqlScriptException e){
+            System.out.println("Error: "+e.getMessage());
+        }
+    }
 }
