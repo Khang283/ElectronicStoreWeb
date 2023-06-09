@@ -1,6 +1,5 @@
-package backend.dao;
+package backend.dto;
 
-import backend.models.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartDTO {
-    private Long carId;
+    private Long cartId;
     private Long userId;
-    private List<CartItem> cartItems;
+    private List<CartItemDTO> cartItems;
     private Long totalQuantity;
     private BigDecimal totalPrice;
 }

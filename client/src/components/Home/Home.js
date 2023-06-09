@@ -10,6 +10,8 @@ import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../Home/Home.css';
+import Loader from '../Loader/Loader';
+import Stack from 'react-bootstrap/Stack';
 
 const Home = props => {
     const [productPhone, setproductPhone] = useState([]);
@@ -17,18 +19,66 @@ const Home = props => {
     const [productAccessories, setproductAccessories] = useState([]);
     const [productTablet, setproductTablet] = useState([]);
 
+    const [isLoadedPhone, setLoadPhone] = useState(false);
+    const [isLoadedLaptop, setLaptop] = useState(false);
+    const [isLoadedAccessories, setLoadAccessories] = useState(false);
+    const [isLoadedTablet, setLoadTablet] = useState(false);
+
+    const moneyFormat = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND'
+    })
+
     useEffect(() => {
         getProductPhone();
-        // getProductLaptop();
+        getProductLaptop();
         // getProductAccessories();
-        // getProductTablet();
+        getProductTablet();
     }, []);
 
     const getProductPhone = () => {
-        ProductServices.getType("phone")
+        ProductServices.getType("phone", 8)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setproductPhone(response.data);
+                //console.log(response.data);
+                setLoadPhone(true);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    const getProductLaptop = () => {
+        ProductServices.getType("laptop", 8)
+            .then(response => {
+                //console.log(response.data);
+                setproductLaptop(response.data);
+                setLaptop(true);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+
+    // const getProductAccessories = () => {
+    //     ProductServices.getType("accessories", 8)
+    //         .then(response => {
+    //             console.log(response.data);
+    //             setproductAccessories(response.data);
+    //             setLaptop(true);
+    //         })
+    //         .catch(e => {
+    //             console.log(e);
+    //         });
+    // }
+
+    const getProductTablet = () => {
+        ProductServices.getType("tablet", 8)
+            .then(response => {
+                //console.log(response.data);
+                setproductTablet(response.data);
+                setLoadTablet(true);
             })
             .catch(e => {
                 console.log(e);
@@ -44,7 +94,6 @@ const Home = props => {
                             <img
                                 className="d-block w-100"
                                 src="https://images.fpt.shop/unsafe/fit-in/800x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/5/11/638193959218106497_F-H1_800x300.png"
-                                // src="holder.js/800x400?text=First slide&bg=373940"
                                 alt="First slide"
                             />
                             {/* <Carousel.Caption>
@@ -75,193 +124,107 @@ const Home = props => {
                     <div className="container div-home">
                         <Row xs={2} md={8} sm={4}>
                             <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
+                                <Link to='/phone' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-dienthoai-desk.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Điện Thoại</div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
+                                <Link to='/laptop' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2022/iconcate/icon-laptop.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Laptop</div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
+                                <Link to='/tablet' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/icon-mtb-desk.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Máy Tính Bảng</div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
+                                <Link to='/accessories' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2022/iconcate/icon-accessories.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Phụ Kiện</div>
-                                </a>
-                            </div>
-
-
-
-                            <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
-                                    <div className="cate-img" >
-                                        <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-dienthoai-desk.png"
-                                            alt="Điện thoại"></img>
-                                    </div>
-                                    <div >Điện thoại</div>
-                                </a>
-                            </div>
-
-                            <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
-                                    <div className="cate-img" >
-                                        <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-dienthoai-desk.png"
-                                            alt="Điện thoại"></img>
-                                    </div>
-                                    <div >Điện thoại</div>
-                                </a>
-                            </div>
-
-                            <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
-                                    <div className="cate-img" >
-                                        <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-dienthoai-desk.png"
-                                            alt="Điện thoại"></img>
-                                    </div>
-                                    <div >Điện thoại</div>
-                                </a>
-                            </div>
-
-                            <div className="cate-item">
-                                <a href='#' className='cate-item-name'>
-                                    <div className="cate-img" >
-                                        <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-dienthoai-desk.png"
-                                            alt="Điện thoại"></img>
-                                    </div>
-                                    <div >Điện thoại</div>
-                                </a>
+                                </Link>
                             </div>
                         </Row>
                     </div>
 
                     <br />
-
-                    {/* <div className="container div-list">
-                        <div >
-                            <h2>SẢN PHẨM NỔI BẬT</h2>
-
-                        </div>
-
-                        <Row xs={1} md={4} sm={2} className="g-4">
-                            {Array.from({ length: 8 }).map((_, idx) => (
-                                <Col key={idx}>
-                                    <Card>
-                                        <Card.Img variant="top" src="https://images.fpt.shop/unsafe/fit-in/300x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/4/10/638167465484591506_samsung-galaxy-z-flip4-xanh-dd.jpg" />
-                                        <Card.Body>
-                                            <Card.Title>Card title</Card.Title>
-                                            <Card.Text>
-                                                This is a longer card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit
-                                                longer.
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))}
-                        </Row>
-                        <br />
-
-                        <div className="home-btn">
-                            <Button variant="outline-secondary" size="sm" href="#">Xem tất cả </Button>{' '}
-                        </div>
-
-
-                    </div>
-
-                    <br /> */}
-
-                    
 
                     <div className="container div-list">
                         <div >
                             <h2>ĐIỆN THOẠI NỔI BẬT</h2>
 
                         </div>
-
-                        <Row xs={1} md={4} sm={2} className="g-4 ">
-                            {productPhone?.map((product) => {
-                                return (
-                                    console.log(product.productName),
-                                    <Col >
-                                        <Card className='card'>
-                                            <Card.Img className='card-img' variant="top" src={product.productIcon} />
-                                            <Card.Body>
-                                                <Card.Title>{product.productName}</Card.Title>
-                                                <Card.Text className='fontPrice'>
-                                                    {product.productPrice}  ₫
-                                                </Card.Text>
-
-                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
-
-                                                <div className='div-spec'>
-                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
-                                                </div>
-                                                <div className='card-btn'>
-                                                    <Button variant="danger" size="lg"><strong>Mua Ngay</strong></Button>{' '}
-                                                </div>
-                                                {/* <i class="bi bi-display"></i> */}
-                                                <link to={""}></link>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                );
-                            })}
+                        {
+                            isLoadedPhone === false ?
+                                <div className="home-btn">
+                                    <Loader></Loader>
+                                </div>
+                                :
+                                <Row xs={1} md={4} sm={2} className="g-4 ">
 
 
-                            {/* {Array.from({ length: 8 }).map((_, idx) => (
-                                <Col key={idx}>
-                                    <Card>
-                                        <Card.Img variant="top" src="https://images.fpt.shop/unsafe/fit-in/300x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/4/10/638167465484591506_samsung-galaxy-z-flip4-xanh-dd.jpg" />
-                                        <Card.Body>
-                                            <Card.Title>Card title</Card.Title>
-                                            <Card.Text>
-                                                This is a longer card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit
-                                                longer.
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))} */}
-                        </Row>
+                                    {productPhone?.map((product) => {
+                                        return (
+                                            //console.log(product.productName),
+                                            <Col >
+                                                <Card className='card'>
+                                                    <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
+                                                    <Card.Body>
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                            <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
+
+                                                        <Card.Text className='fontPrice'>
+                                                            {moneyFormat.format(product.productPrice)}
+                                                        </Card.Text>
+
+                                                        <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+
+                                                        {/* <div className='div-spec'>
+                                                            <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                        </div> */}
+
+                                                        <div className='card-btn'>
+                                                            <Button variant="danger" size="lg">
+                                                                <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                                    <strong>Mua Ngay</strong>
+                                                                </Link>
+                                                            </Button>{' '}
+                                                        </div>
+
+                                                        {/* <Link to={"/1"}>View Reviews</Link> */}
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                        );
+                                    })}
+                                </Row>
+                        }
                         <br />
 
                         <div className="home-btn">
-                            <Button variant="outline-secondary" size="sm" href="#">Xem tất cả </Button>{' '}
+                            <Button variant="outline-secondary" size="sm" href="phone">Xem tất cả </Button>{' '}
                         </div>
 
 
-                    </div>
-
-                    <br />
-
-                    <div className="container div-home home-btn">
-                        <img src='https://images.fpt.shop/unsafe/fit-in/1200x200/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/5/12/638194816664696316_H5_1200X200.png'
-                            height={200}></img>
                     </div>
 
                     <br />
@@ -271,38 +234,57 @@ const Home = props => {
                             <h2>LAPTOP NỔI BẬT</h2>
 
                         </div>
+                        {
+                            isLoadedLaptop === false ?
+                                <div className="home-btn">
+                                    <Loader></Loader>
+                                </div>
+                                :
+                                <Row xs={1} md={4} sm={2} className="g-4">
+                                    {productLaptop?.map((product) => {
+                                        return (
+                                            console.log(product.productName),
+                                            <Col >
+                                                <Card className='card'>
+                                                    <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
+                                                    <Card.Body>
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                            <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
 
-                        <Row xs={1} md={4} sm={2} className="g-4">
-                            {Array.from({ length: 8 }).map((_, idx) => (
-                                <Col key={idx}>
-                                    <Card>
-                                        <Card.Img variant="top" src="https://images.fpt.shop/unsafe/fit-in/300x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/4/10/638167465484591506_samsung-galaxy-z-flip4-xanh-dd.jpg" />
-                                        <Card.Body>
-                                            <Card.Title>Card title</Card.Title>
-                                            <Card.Text>
-                                                This is a longer card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit
-                                                longer.
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))}
-                        </Row>
+                                                        <Card.Text className='fontPrice'>
+                                                            {moneyFormat.format(product.productPrice)}
+                                                        </Card.Text>
+
+                                                        <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+
+                                                        {/* <div className='div-spec'>
+                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                </div>
+                                                
+                                                 <Link to={"/1"}>View Reviews</Link> */}
+                                                <div className='card-btn'>
+                                                    <Button variant="danger" size="lg" >
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <strong>Mua Ngay</strong>
+
+                                                        </Link>
+                                                        </Button>{' '}
+                                                </div>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                        );
+                                    })}
+                                </Row>
+                        }
                         <br />
 
                         <div className="home-btn">
-                            <Button variant="outline-secondary" size="sm" href="#">Xem tất cả </Button>{' '}
+                            <Button variant="outline-secondary" size="sm" href="laptop">Xem tất cả </Button>{' '}
                         </div>
 
 
-                    </div>
-
-                    <br />
-
-                    <div className="container div-home home-btn">
-                        <img src='https://images.fpt.shop/unsafe/fit-in/1200x200/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/5/1/638184972894739287_F-H5_1200x200.png'
-                            height={200}></img>
                     </div>
 
                     <br />
@@ -312,32 +294,110 @@ const Home = props => {
                             <h2>TABLET NỔI BẬT</h2>
 
                         </div>
+                        {
+                            isLoadedTablet === false ?
+                                <div className="home-btn">
+                                    <Loader></Loader>
+                                </div>
+                                :
+                                <Row xs={1} md={4} sm={2} className="g-4">
+                                    {productTablet?.map((product) => {
+                                        return (
+                                            //console.log(product.productName),
+                                            <Col >
+                                                <Card className='card'>
+                                                    <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
+                                                    <Card.Body>
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                            <Card.Title>{product.productName} - {product.productVersion}</Card.Title>
+                                                </Link>
+                                                        <Card.Text className='fontPrice'>
+                                                            {moneyFormat.format(product.productPrice)}
+                                                        </Card.Text>
 
-                        <Row xs={1} md={4} sm={2} className="g-4">
-                            {Array.from({ length: 4 }).map((_, idx) => (
-                                <Col key={idx}>
-                                    <Card>
-                                        <Card.Img variant="top" src="https://images.fpt.shop/unsafe/fit-in/300x300/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/4/10/638167465484591506_samsung-galaxy-z-flip4-xanh-dd.jpg" />
-                                        <Card.Body>
-                                            <Card.Title>Card title</Card.Title>
-                                            <Card.Text>
-                                                This is a longer card with supporting text below as a natural
-                                                lead-in to additional content. This content is a little bit
-                                                longer.
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            ))}
-                        </Row>
+                                                        <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+
+                                                        {/* <div className='div-spec'>
+                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                </div> */}
+                                                        <div className='card-btn'>
+                                                            <Button variant="danger" size="lg">
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <strong>Mua Ngay</strong>
+                                                        </Link>
+                                                    </Button>{' '}
+                                                        </div>
+
+                                                        {/* <Link to={"/1"}>View Reviews</Link> */}
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                        );
+                                    })}
+                                </Row>
+                        }
                         <br />
 
                         <div className="home-btn">
-                            <Button variant="outline-secondary" size="sm" href="#">Xem tất cả </Button>{' '}
+                            <Button variant="outline-secondary" size="sm" href="tablet">Xem tất cả </Button>{' '}
                         </div>
 
 
                     </div>
+                    {/*
+                    <br />
+
+                    <div className="container div-list">
+                        <div >
+                            <h2>PHỤ KIỆN NỔI BẬT</h2>
+
+                        </div>
+
+                        <Row xs={1} md={4} sm={2} className="g-4">
+                            {productAccessories?.map((product) => {
+                                return (
+                                    //console.log(product.productName),
+                                    <Col >
+                                        <Card className='card'>
+                                            <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
+                                            <Card.Body>
+                                                <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
+
+                                                <Card.Text className='fontPrice'>
+                                                    {moneyFormat.format(product.productPrice)}
+                                                </Card.Text>
+
+                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+
+                                                <div className='div-spec'>
+                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                </div>
+                                                <div className='card-btn'>
+                                                    <Button variant="danger" size="lg" >
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <strong>Mua Ngay</strong>
+                                                        </Link>
+                                                    </Button>{' '}
+                                                </div>
+
+                                                <Link to={"/1"}>View Reviews</Link> 
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                );
+                            })}
+                        </Row>
+                        <br />
+
+                        <div className="home-btn">
+                            <Button variant="outline-secondary" size="sm" href="accessories">Xem tất cả </Button>{' '}
+                        </div>
+
+
+                    </div>*/}
                 </div>
             </section>
         </div>

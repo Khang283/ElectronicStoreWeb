@@ -10,6 +10,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 public interface ICartItem extends JpaRepository<CartItem,CartItem.CartItemId> {
@@ -17,6 +18,10 @@ public interface ICartItem extends JpaRepository<CartItem,CartItem.CartItemId> {
                     "FROM cart_item\n" +
                     "WHERE cart_id = :cartId AND product_id=:productId",nativeQuery = true)
     Optional<CartItem> findCartItemByCartIdAndProductId(@Param("cartId")long cartId,@Param("productId")long productId);
+    @Query(value =  "SELECT * \n" +
+            "FROM cart_item\n" +
+            "WHERE cart_id = :cartId",nativeQuery = true)
+    Optional<List<CartItem>> findCartItemByCartId(@Param("cartId")long cartId);
     @Query(value =  "SELECT * \n" +
                     "FROM cart_item\n" +
                     "WHERE cart_id = :cartId AND product_id=:productId",nativeQuery = true)

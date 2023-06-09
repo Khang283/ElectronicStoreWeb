@@ -1,5 +1,10 @@
 package backend.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import org.springframework.data.rest.core.config.Projection;
+
 public class InsertAssetDTO {
     private String assetName;
     private String assetPath;

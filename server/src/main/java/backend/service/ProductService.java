@@ -2,6 +2,8 @@ package backend.service;
 
 import backend.dao.*;
 import backend.dto.ProductListDTO;
+import backend.models.Category;
+import backend.models.Company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import backend.dto.*;
@@ -24,9 +26,10 @@ public class ProductService {
     private ICompany _company;
     @Autowired
     private ProductDAO productDAO;
-    public List<ProductListDTO> getProductList(int page,String type){
+    @Autowired
+    private ISpec _spec;
+    public List<ProductListDTO> getProductList(int page,String type,int limit){
         if(page<1) return null;
-        int limit = 10;
         int offset = page*limit - limit;
         List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset,type);
         if(productListDTOS == null || productListDTOS.isEmpty()){
@@ -43,10 +46,15 @@ public class ProductService {
         return product;
     }
 
+    public int countProduct(String type) {
+        return productDAO.countProduct(type);
+    }
+
     public boolean deleteProductById(long productId){
         return productDAO.deleteProductById(productId);
     }
-
+public boolean deleteSpecById(long specId) {return  productDAO.deleteSpecById(specId);}
+    public boolean deleteAssetById(long assetId) {return  productDAO.deleteAssetById(assetId);}
     public boolean restoreProductById(long productId){
         return productDAO.restoreProductById(productId);
     }
@@ -57,9 +65,8 @@ public class ProductService {
         return productDAO.getAllProductDetail();
     }
 
-    public List<ProductListDTO>findProductByKeyWord(String keyword,int page){
+    public List<ProductListDTO>findProductByKeyWord(String keyword,int page,int limit){
         if(page<1) return null;
-        int limit = 10;
         int offset = page*limit - limit;
         return productDAO.findProductByKeyWord(keyword,limit,offset);
     }
@@ -70,4 +77,18 @@ public class ProductService {
         return productDAO.modifyProductById(modProd);
     }
 
+    public List<ProductListDTO>getAdminProduct(){
+        return productDAO.getAdminProduct();
+    }
+
+    public List<Category> getListCategory() {
+        return productDAO.getListCategory();
+    }
+
+    public List<Company> getListCompany() {
+        return productDAO.getListCompany();
+    }
+    public boolean modifySpec(SpecModifyDTO spec) {return productDAO.modifySpecById(spec);}
+    public boolean modifyAsset(AssetModifyDTO asset) {return  productDAO.modifyAssetById(asset);}
+    public boolean modifyProduct(ProductModifyDTO prod) {return productDAO.modifyProduct(prod);};
 }

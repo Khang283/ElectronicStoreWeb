@@ -1,5 +1,6 @@
 package backend.dto;
 
+import com.stripe.Stripe;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

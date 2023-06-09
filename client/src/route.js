@@ -1,11 +1,24 @@
+import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import ErrorPage from "./components/Error/Error";
 import Login from "./components/Login/Login";
 import Register from './components/Register/Register';
-import Cart from './components/Cart/Cart.js';
-import Home from './components/Home/Home.js';
+import Cart from './components/Cart/Cart.js'
+import Home from './components/Home/Home.js'
+import Checkout from "./components/Checkout/Checkout.js";
+import ProductsList from "./components/admin/ProductsList";
+import Details from "./components/Details/Details";
 import Account from "./components/Account/Account";
+import UsersList from "./components/admin/UsersList";
+import UpdateUser from "./components/admin/UpdateUser";
+import Category from "./components/Category/Category";
+import SupportAdmin from "./components/SupportChatAdmin";
+import SearchPage from "./components/SearchPage/SearchPage";
+import ProductAdd from "./components/admin/ProductAdd";
+import UpdateProduct from "./components/admin/UpdateProduct";
+
+
 const router = createBrowserRouter([
     {
         path: '/',
@@ -14,6 +27,10 @@ const router = createBrowserRouter([
         children: [
             {
                 path: '/',
+                element: <Home />
+            },
+            {
+                path: '/home',
                 element: <Home />
             },
             {
@@ -26,12 +43,57 @@ const router = createBrowserRouter([
             },
             {
                 path: '/cart',
-                element: <Cart />
+                element: <Cart />,
             },
             {
-                path: '/logout',
+                path: '/cart/checkout',
+                element: <Checkout />
+            },
+            {
+                path: '/admin/product',
+                element: <ProductsList />
+            },
+            {
+                path: '/admin/user',
+                element: <UsersList />
+            },
+            {
+                path: '/:category',
+                element: <Category />
+            },
+            {
+                path: '/:category/:company',
+                element: <Category />,
+            },
+            {
+                path: '/:category/:company/:id',
+                element: <Details />
+            },
+            {
+                path: '/account',
                 element: <Account />
+            },
+            {
+                path: '/admin/user/:userid',
+                element: <UpdateUser />
+            },
+            {
+                path: '/admin/support',
+                element: <SupportAdmin />
+            },
+            {
+                path: '/search/:keyword',
+                element: <SearchPage />
+            },
+            {
+                path: '/admin/product/new',
+                element: <ProductAdd />
+            },
+            {
+                path: 'admin/product/modify/:productid',
+                element: <UpdateProduct />
             }
+
         ]
     }
 ]);

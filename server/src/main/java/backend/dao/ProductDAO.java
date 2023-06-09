@@ -10,6 +10,7 @@ import backend.models.Assets;
 import backend.models.Category;
 import backend.models.Company;
 import backend.models.Product;
+import org.hibernate.boot.model.source.spi.AssociationSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import backend.dto.ModifyProductDTO;
@@ -40,10 +41,11 @@ public class ProductDAO {
     private IProductAsset _productAsset;
     @Autowired
     private ISpec _spec;
+    @Autowired
+    private ISpecGroup _specGroup;
     public List<ProductListDTO>getProductList(int limit, int offset,String type){
-        List<Product> products=_product.findAll().stream().skip(offset).limit(limit).collect(Collectors.toList());
+        List<Product> products=_product.findAll();
         List<ProductListDTO>productListDTOS = new ArrayList<>();
-
         for(Product product : products){
             ProductListDTO productDTO = productToProductListDTO(product);
             if(productDTO.getCategory().equals(type)){
@@ -51,6 +53,29 @@ public class ProductDAO {
             }
         }
 
+        return productListDTOS.stream().limit(limit).skip(offset).toList();
+    }
+
+    public int countProduct(String type){
+        List<Product> products=_product.findAll().stream().collect(Collectors.toList());
+        int count = 0;
+
+        for(Product product : products){
+            if(findProductCategory(product).equals(type)){
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public List<ProductListDTO>getAdminProduct(){
+        List<Product> products = _product.findAll();
+        List<ProductListDTO> productListDTOS = new ArrayList<>();
+        for(Product product: products){
+            ProductListDTO productListDTO = productToProductListDTO(product);
+            productListDTOS.add(productListDTO);
+        }
         return productListDTOS;
     }
     public ProductListDTO productToProductListDTO(Product product){
@@ -62,6 +87,7 @@ public class ProductDAO {
         productDTo.setProductRating(product.getProductRating());
         productDTo.setProductSold(product.getProductSold());
         productDTo.setProductStatus(product.getProductStatus());
+        productDTo.setProductStock(product.getProductStock());
         productDTo.setProductVersion(product.getProductVersion());
         productDTo.setCategory(findProductCategory(product));
         productDTo.setCompany(findProductCompany(product));
@@ -77,32 +103,69 @@ public class ProductDAO {
         GetProductByIdDTO productDTo = new GetProductByIdDTO();
 
         for(Product product : products){
-//            ProductListDTO productDTO = productToProductListDTO(product);
 
             if(product.getProductId() == productId){
+                productDTo.setProductStock(product.getProductStock());
                 productDTo.setProductName(product.getProductName());
                 productDTo.setProductPrice(product.getProductPrice());
                 productDTo.setProductRating(product.getProductRating());
                 productDTo.setProductSold(product.getProductSold());
                 productDTo.setProductStatus(product.getProductStatus());
+                productDTo.setCategoryId(product.getCategoryId());
+                productDTo.setCompanyId(product.getCompanyId());
                 productDTo.setProductVersion(product.getProductVersion());
                 productDTo.setCategory(findProductCategory(product));
                 productDTo.setCompany(findProductCompany(product));
-                Assets asset = _asset.findAssetIconByProductId(product.getProductId());
-                if(asset!=null){
-                    productDTo.setProductIcon(asset.getAssetPath());
+                Assets assetIcon = _asset.findAssetIconByProductId(product.getProductId());
+                if(assetIcon!=null){
+                    productDTo.setProductIcon(assetIcon.getAssetPath());
                 }
 
-                List<Assets> listAsset = _asset.getListAssetByProductId(Math.toIntExact(product.getProductId()));
-                List<String> assetPath = new ArrayList<>();
-                for (Assets lst : listAsset) {
-                    assetPath.add(lst.getAssetPath());
-                }
-                productDTo.setAssets(assetPath);
+                productDTo.setAssets(getListAsset(Math.toIntExact(product.getProductId())));
+                productDTo.setSpecs(getListSpec(Math.toIntExact(product.getProductId())));
             }
         }
 
         return productDTo;
+    }
+
+    public List<GetAssetDTO> getListAsset(int productId) {
+        List<GetAssetDTO> listAsset = new ArrayList<>();
+        List<ProductAsset> listProductAsset = _productAsset.getListAssetByProductId(productId);
+        GetAssetDTO assetDTO;
+
+        for (ProductAsset lst: listProductAsset) {
+            assetDTO = new GetAssetDTO();
+            assetDTO.setAssetId(lst.getAssetId());
+            assetDTO.setAssetRole(lst.getAssetRole());
+
+            Assets asset = _asset.getAssetByAssetId(Math.toIntExact(lst.getAssetId()));
+            assetDTO.setAssetName(asset.getAssetName());
+            assetDTO.setAssetPath(asset.getAssetPath());
+            assetDTO.setAssetType(asset.getAssetType());
+
+            listAsset.add(assetDTO);
+        }
+        return  listAsset;
+    }
+
+    public List<GetSpecDTO> getListSpec(int productId) {
+        List<GetSpecDTO> listSpecDTO = new ArrayList<>();
+        List<Spec> listSpec =_spec.getListSpec(productId);
+        GetSpecDTO specDTO;
+
+        for (Spec lst: listSpec) {
+            specDTO= new GetSpecDTO();
+            specDTO.setSpecId(lst.getSpecId());
+            specDTO.setSpecName(lst.getSpecName());
+            specDTO.setSpecDetail(lst.getSpecDetail());
+            specDTO.setSpecValue(lst.getSpecValue());
+            specDTO.setGroupName(_specGroup.getGroupName(Math.toIntExact(lst.getGroupId())));
+
+            listSpecDTO.add(specDTO);
+        }
+
+        return listSpecDTO;
     }
 
     public String findProductCompany(Product product){
@@ -123,7 +186,22 @@ public class ProductDAO {
         }
         return null;
     }
-
+public boolean deleteSpecById(long specId){
+        try{
+            _spec.deleteSpec(specId);
+        }catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+    return true;
+}
+    public boolean deleteAssetById(long assetId){
+        try{
+            _asset.deleteAsset(assetId);
+        }catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+        return true;
+    }
     public boolean deleteProductById(long productId){
         try{
             _product.setDelete(productId,true);
@@ -185,6 +263,36 @@ public class ProductDAO {
         }
         return true;
     }
+    public boolean modifyAssetById(AssetModifyDTO asset){
+        try{
+            _asset.modifyAsset(asset.getAssetId(), asset.getAssetName(), asset.getAssetPath(),asset.getAssetType());
+        }
+        catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+        return true;
+    }
+    public boolean modifySpecById(SpecModifyDTO spec){
+        try{
+            _spec.modifySpec(spec.getSpecId(), spec.getSpecName(), spec.getSpecDetail(), spec.getSpecValue());
+        }
+        catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+        return true;
+    }
+    public boolean modifyProduct(ProductModifyDTO prod){
+        try{
+            _product.Modify(prod.getProductId(),prod.getProductStatus(),prod.getProductName(), prod.getProductVersion(),prod.getCompanyId(),prod.getProductStock(), prod.getProductPrice(),prod.getCategoryId());
+        }
+        catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+        return true;
+    }
+    public boolean modifyProduct(){
+        return false;
+    }
     public boolean modifyProductById(ModifyProductDTO modProd){
         try{
             _product.setModify(modProd.getProductId(),modProd.getProductName(),modProd.getProductVersion() ,modProd.getCompanyId() , modProd.getProductStock(),modProd.getProductPrice(), modProd.getProductRating(), modProd.getCategoryId());
@@ -222,7 +330,7 @@ public class ProductDAO {
                      _productDetail.insertProductDetail(modProd.getProductId(), specId);}
                  }
                  }else{
-                _spec.modifySpec(lst.getSpecId(),lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
+                _spec.modifySpec(lst.getSpecId(),lst.getSpecName(), lst.getSpecDetail(), lst.getSpecValue());
                 //Long specId = _spec.getSpecId(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
                 for(ModifyProductDetailDTO lstt : lst.getProductDtl()){
                 _productDetail.modifyProductDetail(modProd.getProductId(), lst.getSpecId());}
@@ -241,6 +349,24 @@ public class ProductDAO {
 
     public Optional<Product>findProductById(long productId){
         return _product.findById(productId);
+    }
+
+
+    public String findProductIcon(long productId){
+        Assets assets = _asset.findAssetIconByProductId(productId);
+        if(assets == null || assets.isDeleted()){
+            return null;
+        }
+        return assets.getAssetPath();
+    }
+
+
+    public List<Category> getListCategory() {
+        return _category.findAllCategory();
+    }
+
+    public List<Company> getListCompany() {
+        return _company.findAllCompany();
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -66,5 +67,10 @@ public class CartDAO {
         _cart.updateCart(cartId,-changeAmount,money.negate());
         _cartItem.deleteById(new CartItem.CartItemId(cartId,productId));
         return true;
+    }
+
+    public List<CartItem> findCartItemByCartId(long cartId){
+        return _cartItem.findCartItemByCartId(cartId).orElseThrow();
+
     }
 }
