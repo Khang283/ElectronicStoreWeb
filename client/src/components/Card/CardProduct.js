@@ -24,7 +24,13 @@ const CardProduct = (props) => {
                     {moneyFormat.format(props.product.productPrice)}
                 </Card.Text>
 
-                <Card.Text className='pro-rating'>{props.product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
+                <div className='product-rating'>
+                    {Array.from({ length: 5 }).map((_, idx) => (
+                        idx < props.product.productRating ? <i class="bi bi-star-fill"></i> : <i class="bi bi-star"></i>
+                    ))}
+                </div>
+
+                {/* <Card.Text className='pro-rating'>{props.product.productRating} <i class="bi bi-star-fill"></i></Card.Text> */}
 
                 {/* <div className='div-spec'>
                                                                     <span ><i className='bi icon-screen-size'></i> spec</span>

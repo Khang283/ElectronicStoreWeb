@@ -76,7 +76,7 @@ const Category = props => {
         const page = currentPage;
         console.log(page);
         console.log('/api/v1/product/' + params.category + "?page=" + currentPage + (params.company ? `&company=${params.company}` : ''))
-        axios.get('/api/v1/product/' + params.category + "?page=" + currentPage + (params.company ? `&company=${params.company}` : ''))
+        axios.get('/api/v1/product/' + params.category + "?page=" + currentPage + (params.company ? `&company=${params.company}` : '' + '&limit=12'))
             .then(res => {
                 setproduct(res.data);
                 setLoad(true);

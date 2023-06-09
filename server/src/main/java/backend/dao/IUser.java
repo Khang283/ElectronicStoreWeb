@@ -41,4 +41,9 @@ public interface IUser extends JpaRepository<User,Long> {
                     "SET pass_word = :password\n" +
                     "WHERE user_id = :id",nativeQuery = true)
     void changePassword(@Param("id")long id,@Param("password")String password);
+
+    @Query(value = "SELECT *\n" +
+            "FROM users\n" +
+            "WHERE user_id=:userId",nativeQuery = true)
+    User getUserByID(@Param("userId")int userId);
 }

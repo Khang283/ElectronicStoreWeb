@@ -14,6 +14,8 @@ import backend.models.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import backend.dto.ModifyProductDTO;
+
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class ProductService {
@@ -30,7 +32,8 @@ public class ProductService {
     public List<ProductListDTO> getProductList(int page,String type,int limit){
         if(page<1) return null;
         int offset = page*limit - limit;
-        List<ProductListDTO>productListDTOS = productDAO.getProductList(limit,offset,type);
+        List<ProductListDTO>productListDTOS =new ArrayList<>();
+                productListDTOS = productDAO.getProductList(limit,offset,type);
         if(productListDTOS == null || productListDTOS.isEmpty()){
             return null;
         }
