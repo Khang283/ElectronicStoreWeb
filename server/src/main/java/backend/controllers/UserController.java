@@ -70,4 +70,10 @@ public class UserController {
                 .role(user.get().getRole())
                 .build());
     }
+
+    @PutMapping("/admin/password")
+    public ResponseEntity<String>changePasswordByAdmin(@RequestBody ChangePasswordDTO changePasswordDTO){
+        userService.changePasswordByAdmin(changePasswordDTO);
+        return ResponseEntity.ok("Đổi mật khẩu thành công");
+    }
 }

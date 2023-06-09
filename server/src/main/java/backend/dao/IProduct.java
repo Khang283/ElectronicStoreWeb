@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import backend.dto.ModifyProductDTO;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.sound.sampled.Port;
 import java.util.List;
 import java.math.BigDecimal;
 import java.lang.Long;
@@ -85,4 +88,16 @@ public interface IProduct extends JpaRepository<Product,Long> {
             "FROM product\n" +
             "WHERE product_name = :productName \n" + "AND category_id = :categoryId\n" + "AND company_id = :companyId\n" + "AND product_version = :productVersion", nativeQuery = true)
     Long getProductId(@Param("productName") String productName, @Param("categoryId") Long categoryId, @Param("companyId") Long companyId, @Param("productVersion") String productVersion);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM product\n" +
+                    "LIMIT :limit\n" +
+                    "OFFSET :offset",nativeQuery = true)
+    List<Product>findAllProduct(@Param("limit")int limit,@Param("offset")int offset);
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE product \n" +
+            "SET product_status=:productStatus, product_name = :productName, product_version = :productVersion, category_id = :categoryId, company_id = :companyId, product_stock = :productStock, product_price = :productPrice\n"+
+            "WHERE product_id = :productId", nativeQuery = true)
+    void Modify(@Param("productId") Long productId , @Param("productStatus") String productStatus, @Param("productName") String productName, @Param("productVersion") String productVersion, @Param("companyId") Long companyId, @Param("productStock") Long productStock, @Param("productPrice") BigDecimal productPrice , @Param("categoryId") Long categoryId);
 }

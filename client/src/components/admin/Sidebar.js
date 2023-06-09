@@ -33,6 +33,10 @@ const Sidebar = () => {
                         <Link to="/admin/reviews"><i className="fa fa-star"></i> Quản lý bình luận</Link>
                     </li>
 
+                    <li>
+                        <Link to="/admin/support"><i class="bi bi-headset"></i> Hỗ trợ khách hàng</Link>
+                    </li>
+
                 </ul>
             </nav>
         </div>

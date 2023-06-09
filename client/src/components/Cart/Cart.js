@@ -201,7 +201,7 @@ function Cart() {
   else {
     if (!isLoaded) {
       return (
-        <div className='centerText'>
+        <div className='centerText '>
           <h2>Xin chờ ...</h2>
         </div>
       )

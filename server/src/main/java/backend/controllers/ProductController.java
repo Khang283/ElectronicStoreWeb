@@ -1,16 +1,15 @@
 package backend.controllers;
 
-import backend.dto.DeleteProductDTO;
-import backend.dto.GetProductByIdDTO;
-import backend.dto.InsertProductDTO;
-import backend.dto.ProductListDTO;
+import backend.dto.*;
+import backend.models.Category;
+import backend.models.Company;
 import backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import backend.dto.ModifyProductDTO;
 
+import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,7 +42,7 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
         if(company == null || company.isEmpty() || company.isBlank()) return ResponseEntity.ok(productListDTOS);
-        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().equals(company)).collect(Collectors.toList()));
+        return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().toUpperCase().equals(company.toUpperCase())).collect(Collectors.toList()));
     }
 
     @GetMapping("/v1/product")
@@ -98,14 +97,8 @@ public class ProductController {
         return ResponseEntity.badRequest().build();
     }
     
-    @PostMapping("/admin/product/modify")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<String>modifyProduct(@RequestBody ModifyProductDTO modProdDTO){
-        if(productService.modifyProductByID(modProdDTO)){
-            return ResponseEntity.ok("Sửa sản phẩm thành công");
-        }
-        return ResponseEntity.badRequest().build();
-    }
+
+
     @GetMapping("/v1/getlistcompany")
     public ResponseEntity<List<Company>> getListCompany(){
         List<Company> listCompany = productService.getListCompany();
@@ -120,4 +113,39 @@ public class ProductController {
         return ResponseEntity.ok(listCategory);
     }
 
+    @PostMapping("/v1/modify/spec")
+    public ResponseEntity<String>modifySpec(@RequestBody SpecModifyDTO spec){
+        if(productService.modifySpec(spec)){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/delete/spec")
+    public ResponseEntity<String>deleteSpec(@RequestBody DeleteSpecDTO spec){
+        if(productService.deleteSpecById(spec.getSpecId())){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/delete/asset")
+    public ResponseEntity<String>deleteAsset(@RequestBody DeleteAssetDTO asset){
+        if(productService.deleteAssetById(asset.getAssetId())){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/modify/asset")
+    public ResponseEntity<String>modifyAsset(@RequestBody AssetModifyDTO asset){
+        if(productService.modifyAsset(asset)){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/modify/product")
+    public ResponseEntity<String>modifyProduct(@RequestBody ProductModifyDTO modProdDTO){
+        if(productService.modifyProduct(modProdDTO)){
+            return ResponseEntity.ok("Sửa sản phẩm thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

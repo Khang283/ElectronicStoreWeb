@@ -1,3 +1,4 @@
+import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import ErrorPage from "./components/Error/Error";
@@ -10,21 +11,22 @@ import ProductsList from "./components/admin/ProductsList";
 import Details from "./components/Details/Details";
 import Account from "./components/Account/Account";
 import UsersList from "./components/admin/UsersList";
-import CartHome from "./components/Cart/CartHome.js";
-import MyAccount from "./components/MyAccount/MyAccount";
 import UpdateUser from "./components/admin/UpdateUser";
 import Category from "./components/Category/Category";
+import SupportAdmin from "./components/SupportChatAdmin";
+import SearchPage from "./components/SearchPage/SearchPage";
+import ProductAdd from "./components/admin/ProductAdd";
 import UpdateProduct from "./components/admin/UpdateProduct";
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App/>,
+        element: <App />,
         errorElement: <ErrorPage />,
         children: [
             {
-                path : '/',
+                path: '/',
                 element: <Home />
             },
             {
@@ -57,11 +59,15 @@ const router = createBrowserRouter([
             },
             {
                 path: '/:category',
-                element: <Home />,
+                element: <Category />
             },
             {
-                path: '/:category/:id',
-                element: <Details/>
+                path: '/:category/:company',
+                element: <Category />,
+            },
+            {
+                path: '/:category/:company/:id',
+                element: <Details />
             },
             {
                 path: '/account',
@@ -72,8 +78,20 @@ const router = createBrowserRouter([
                 element: <UpdateUser />
             },
             {
-                path: '/admin/product/modify/:productid',
-                element: <UpdateProduct/>
+                path: '/admin/support',
+                element: <SupportAdmin />
+            },
+            {
+                path: '/search/:keyword',
+                element: <SearchPage />
+            },
+            {
+                path: '/admin/product/new',
+                element: <ProductAdd />
+            },
+            {
+                path: 'admin/product/modify/:productid',
+                element: <UpdateProduct />
             }
 
         ]

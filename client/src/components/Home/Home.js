@@ -22,7 +22,7 @@ const Home = props => {
     const [isLoadedPhone, setLoadPhone] = useState(false);
     const [isLoadedLaptop, setLaptop] = useState(false);
     const [isLoadedAccessories, setLoadAccessories] = useState(false);
-    const [isLoadedPhoneTablet, setLoadTablet] = useState(false);
+    const [isLoadedTablet, setLoadTablet] = useState(false);
 
     const moneyFormat = new Intl.NumberFormat('vi-VN', {
         style: 'currency',
@@ -32,15 +32,16 @@ const Home = props => {
     useEffect(() => {
         getProductPhone();
         getProductLaptop();
-        getProductAccessories();
+        // getProductAccessories();
         getProductTablet();
     }, []);
 
     const getProductPhone = () => {
-        ProductServices.getType("phone")
+        ProductServices.getType("phone", 8)
             .then(response => {
                 //console.log(response.data);
                 setproductPhone(response.data);
+                //console.log(response.data);
                 setLoadPhone(true);
             })
             .catch(e => {
@@ -49,33 +50,35 @@ const Home = props => {
     }
 
     const getProductLaptop = () => {
-        ProductServices.getType("laptop")
+        ProductServices.getType("laptop", 8)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setproductLaptop(response.data);
-                // 
+                setLaptop(true);
             })
             .catch(e => {
                 console.log(e);
             });
     }
 
-    const getProductAccessories = () => {
-        ProductServices.getType("accessories")
-            .then(response => {
-                console.log(response.data);
-                setproductAccessories(response.data);
-            })
-            .catch(e => {
-                console.log(e);
-            });
-    }
+    // const getProductAccessories = () => {
+    //     ProductServices.getType("accessories", 8)
+    //         .then(response => {
+    //             console.log(response.data);
+    //             setproductAccessories(response.data);
+    //             setLaptop(true);
+    //         })
+    //         .catch(e => {
+    //             console.log(e);
+    //         });
+    // }
 
     const getProductTablet = () => {
-        ProductServices.getType("tablet")
+        ProductServices.getType("tablet", 8)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setproductTablet(response.data);
+                setLoadTablet(true);
             })
             .catch(e => {
                 console.log(e);
@@ -121,43 +124,43 @@ const Home = props => {
                     <div className="container div-home">
                         <Row xs={2} md={8} sm={4}>
                             <div className="cate-item">
-                                <a href='/phone' className='cate-item-name'>
+                                <Link to='/phone' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/img-dienthoai-desk.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Điện Thoại</div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="cate-item">
-                                <a href='laptop' className='cate-item-name'>
+                                <Link to='/laptop' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2022/iconcate/icon-laptop.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Laptop</div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="cate-item">
-                                <a href='tablet' className='cate-item-name'>
+                                <Link to='/tablet' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2015/icon-mtb-desk.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Máy Tính Bảng</div>
-                                </a>
+                                </Link>
                             </div>
 
                             <div className="cate-item">
-                                <a href='accessories' className='cate-item-name'>
+                                <Link to='/accessories' className='cate-item-name'>
                                     <div className="cate-img" >
                                         <img src="https://images.fpt.shop/unsafe/fit-in/60x60/filters:quality(90):fill(transparent)/fptshop.com.vn/Uploads/images/2022/iconcate/icon-accessories.png"
                                             alt="Điện thoại"></img>
                                     </div>
                                     <div >Phụ Kiện</div>
-                                </a>
+                                </Link>
                             </div>
                         </Row>
                     </div>
@@ -183,11 +186,11 @@ const Home = props => {
                                             //console.log(product.productName),
                                             <Col >
                                                 <Card className='card'>
-                                                    <Link to={"/product/"+product.category+"/" + product.productId}>
+                                                    <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
                                                         <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
                                                     <Card.Body>
-                                                        <a href={"/product/" + product.productId}>
-                                                            <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                            <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
 
                                                         <Card.Text className='fontPrice'>
                                                             {moneyFormat.format(product.productPrice)}
@@ -195,16 +198,17 @@ const Home = props => {
 
                                                         <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
 
-                                                <div className='div-spec'>
-                                                    <span ><i className='bi icon-screen-size'></i> spec</span>
-                                                </div>
-                                                <div className='card-btn'>
-                                                    <Button variant="danger" size="lg">
-                                                        <Link to={'/'+product.category+'/'+product.productId}>
-                                                            <strong>Mua Ngay</strong>
-                                                        </Link>
-                                                    </Button>{' '}
-                                                </div>
+                                                        {/* <div className='div-spec'>
+                                                            <span ><i className='bi icon-screen-size'></i> spec</span>
+                                                        </div> */}
+
+                                                        <div className='card-btn'>
+                                                            <Button variant="danger" size="lg">
+                                                                <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                                    <strong>Mua Ngay</strong>
+                                                                </Link>
+                                                            </Button>{' '}
+                                                        </div>
 
                                                         {/* <Link to={"/1"}>View Reviews</Link> */}
                                                     </Card.Body>
@@ -230,39 +234,50 @@ const Home = props => {
                             <h2>LAPTOP NỔI BẬT</h2>
 
                         </div>
+                        {
+                            isLoadedLaptop === false ?
+                                <div className="home-btn">
+                                    <Loader></Loader>
+                                </div>
+                                :
+                                <Row xs={1} md={4} sm={2} className="g-4">
+                                    {productLaptop?.map((product) => {
+                                        return (
+                                            console.log(product.productName),
+                                            <Col >
+                                                <Card className='card'>
+                                                    <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
+                                                    <Card.Body>
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                            <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
 
-                        <Row xs={1} md={4} sm={2} className="g-4">
-                            {productLaptop?.map((product) => {
-                                return (
-                                    console.log(product.productName),
-                                    <Col >
-                                        <Card className='card'>
-                                            <Link to={"/" + product.category+"/"+product.productId}>
-                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
-                                            <Card.Body>
-                                                <Link to={"/" + product.category+"/"+product.productId}>
-                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
+                                                        <Card.Text className='fontPrice'>
+                                                            {moneyFormat.format(product.productPrice)}
+                                                        </Card.Text>
 
-                                                <Card.Text className='fontPrice'>
-                                                    {moneyFormat.format(product.productPrice)}
-                                                </Card.Text>
+                                                        <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
 
-                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
-
-                                                <div className='div-spec'>
+                                                        {/* <div className='div-spec'>
                                                     <span ><i className='bi icon-screen-size'></i> spec</span>
                                                 </div>
+                                                
+                                                 <Link to={"/1"}>View Reviews</Link> */}
                                                 <div className='card-btn'>
-                                                    <Button variant="danger" size="lg" href={"/product/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
-                                                </div>
+                                                    <Button variant="danger" size="lg" >
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <strong>Mua Ngay</strong>
 
-                                                {/* <Link to={"/1"}>View Reviews</Link> */}
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                );
-                            })}
-                        </Row>
+                                                        </Link>
+                                                        </Button>{' '}
+                                                </div>
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                        );
+                                    })}
+                                </Row>
+                        }
                         <br />
 
                         <div className="home-btn">
@@ -279,39 +294,49 @@ const Home = props => {
                             <h2>TABLET NỔI BẬT</h2>
 
                         </div>
+                        {
+                            isLoadedTablet === false ?
+                                <div className="home-btn">
+                                    <Loader></Loader>
+                                </div>
+                                :
+                                <Row xs={1} md={4} sm={2} className="g-4">
+                                    {productTablet?.map((product) => {
+                                        return (
+                                            //console.log(product.productName),
+                                            <Col >
+                                                <Card className='card'>
+                                                    <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
+                                                    <Card.Body>
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                            <Card.Title>{product.productName} - {product.productVersion}</Card.Title>
+                                                </Link>
+                                                        <Card.Text className='fontPrice'>
+                                                            {moneyFormat.format(product.productPrice)}
+                                                        </Card.Text>
 
-                        <Row xs={1} md={4} sm={2} className="g-4">
-                            {productTablet?.map((product) => {
-                                return (
-                                    console.log(product.productName),
-                                    <Col >
-                                        <Card className='card'>
-                                            <a href={"/product/" + product.productId}>
-                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
-                                            <Card.Body>
-                                                <a href={"/product/" + product.productId}>
-                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+                                                        <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
 
-                                                <Card.Text className='fontPrice'>
-                                                    {moneyFormat.format(product.productPrice)}
-                                                </Card.Text>
-
-                                                <Card.Text className='pro-rating'>{product.productRating} <i class="bi bi-star-fill"></i></Card.Text>
-
-                                                <div className='div-spec'>
+                                                        {/* <div className='div-spec'>
                                                     <span ><i className='bi icon-screen-size'></i> spec</span>
-                                                </div>
-                                                <div className='card-btn'>
-                                                    <Button variant="danger" size="lg" href={"/product/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
-                                                </div>
+                                                </div> */}
+                                                        <div className='card-btn'>
+                                                            <Button variant="danger" size="lg">
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <strong>Mua Ngay</strong>
+                                                        </Link>
+                                                    </Button>{' '}
+                                                        </div>
 
-                                                {/* <Link to={"/1"}>View Reviews</Link> */}
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                );
-                            })}
-                        </Row>
+                                                        {/* <Link to={"/1"}>View Reviews</Link> */}
+                                                    </Card.Body>
+                                                </Card>
+                                            </Col>
+                                        );
+                                    })}
+                                </Row>
+                        }
                         <br />
 
                         <div className="home-btn">
@@ -320,7 +345,7 @@ const Home = props => {
 
 
                     </div>
-
+                    {/*
                     <br />
 
                     <div className="container div-list">
@@ -332,14 +357,14 @@ const Home = props => {
                         <Row xs={1} md={4} sm={2} className="g-4">
                             {productAccessories?.map((product) => {
                                 return (
-                                    console.log(product.productName),
+                                    //console.log(product.productName),
                                     <Col >
                                         <Card className='card'>
-                                            <a href={"/product/" + product.productId}>
-                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></a>
+                                            <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                <Card.Img className='card-img' variant="top" src={product.productIcon} /></Link>
                                             <Card.Body>
-                                                <a href={"/product/" + product.productId}>
-                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></a>
+                                                <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                    <Card.Title>{product.productName} - {product.productVersion}</Card.Title></Link>
 
                                                 <Card.Text className='fontPrice'>
                                                     {moneyFormat.format(product.productPrice)}
@@ -351,10 +376,14 @@ const Home = props => {
                                                     <span ><i className='bi icon-screen-size'></i> spec</span>
                                                 </div>
                                                 <div className='card-btn'>
-                                                    <Button variant="danger" size="lg" href={"/product/" + product.productId}><strong>Mua Ngay</strong></Button>{' '}
+                                                    <Button variant="danger" size="lg" >
+                                                        <Link to={"/"+product.category+"/"+product.company+"/" + product.productId}>
+                                                        <strong>Mua Ngay</strong>
+                                                        </Link>
+                                                    </Button>{' '}
                                                 </div>
 
-                                                {/* <Link to={"/1"}>View Reviews</Link> */}
+                                                <Link to={"/1"}>View Reviews</Link> 
                                             </Card.Body>
                                         </Card>
                                     </Col>
@@ -368,7 +397,7 @@ const Home = props => {
                         </div>
 
 
-                    </div>
+                    </div>*/}
                 </div>
             </section>
         </div>

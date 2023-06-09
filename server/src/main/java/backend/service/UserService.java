@@ -4,6 +4,7 @@ import backend.dto.*;
 import backend.dao.UserDAO;
 import backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -78,13 +79,19 @@ public class UserService {
         }
         String oldPassword = changePasswordDTO.getOldPassword();
         String newPassword = changePasswordDTO.getNewPassword();
-        if(!oldPassword.equals(newPassword)) return false;
+        if(oldPassword.equals(newPassword)) return false;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(!encoder.matches(oldPassword,user.get().getPassword())) return false;
         userDAO.changePassword(changePasswordDTO.getId(),newPassword);
         return true;
     }
 
     public List<UserDTO>getAllUser(){
         return userDAO.getAllUser();
+    }
+
+    public void changePasswordByAdmin(ChangePasswordDTO changePasswordDTO){
+        userDAO.changePassword(changePasswordDTO.getId(), changePasswordDTO.getNewPassword());
     }
 
 }

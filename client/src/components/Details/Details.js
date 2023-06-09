@@ -7,77 +7,13 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 import ProductServices from "../../services/Product"
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import Cart from '../Cart/Cart';
+import Popup from 'reactjs-popup';
+import Loader from '../layout/Loader';
 
 
-// const product = { // Product Data
-//   id: 1,
-//   name: ' macbook laptop',
-//   slug: 'new-luxury-laptop',
-//   photo: 'https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-//   price: 1999,
-//   desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque consectetur vero asperiores quis animi explicabo accusamus nemo cupiditate harum pariatur! Provident sit tenetur totam mollitia consectetur nesciunt, recusandae obcaecati itaque!',
-//   images: [
-//     {
-//       src: 'https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/812264/pexels-photo-812264.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/1006293/pexels-photo-1006293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/209151/pexels-photo-209151.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/1229861/pexels-photo-1229861.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/812264/pexels-photo-812264.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/1006293/pexels-photo-1006293.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     },
-//     {
-//       src: 'https://images.pexels.com/photos/209151/pexels-photo-209151.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-//     }
-//   ],
-//   colors: ["#2287fa", "#f71b1b", "green"],
-//   infos: [
-//     {
-//       title: "New",
-//       content: "Hàng mới nhất"
-//     },
-//     {
-//       title: "Cấu hình",
-//       content: "Thông tin cấu hình chi tiết"
-//     },
-//     {
-//       title: "Câu hỏi thường gặp",
-//       content: "Câu hỏi"
-//     },
-//     {
-//       title: "Thông tin sản phẩm",
-//       content: "fake news"
-//     }
-//   ],
-//   discount: 20,
-//   sold: 52,
-//   category: 'laptop',
-//   brand: 'apple'
-// }
 const Details = (props) => {
 
   const [slideIndex, setSlideIndex] = useState(1);
@@ -87,6 +23,10 @@ const Details = (props) => {
   const [start, setStart] = useState(0);
 
   const [change, setChange] = useState(9);
+
+  const {id} = useParams();
+
+  const [loading,setLoad] = useState(true);
 
   // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
 
@@ -171,6 +111,24 @@ const Details = (props) => {
     slideRef.current.scrollLeft = slideIndex > numOfThumb ? (slideIndex - 1) * width : 0;
   }, [width, slideIndex])
 
+  const handleAddToCart = ()=>{
+    console.log(id);
+    const payload = {
+      productId : id,
+    }
+    axios.post('/api/cart/add',payload,{
+      headers: {
+        Authorization: `Bearer ${Cookies.get('authToken')}`,
+      }
+    }).then(res =>{
+      if(res.status ===200){
+        setLoad(false);
+      }
+    }).catch(e=>{
+      console.log(e);
+    })
+  }
+
 
   return (
     <div className='container'>
@@ -246,7 +204,11 @@ const Details = (props) => {
               </div>
 
               <div className='cart-btns'>
-                <a href="#" className='add-cart'>Thêm vào giỏ hàng</a>
+              <Popup onOpen={handleAddToCart} modal trigger={<button className='add-cart'>Thêm vào giỏ hàng</button>}>
+                {/* {loading ? <Loader /> : <Cart />} */}
+                <Cart />
+              </Popup>
+                {/* <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button> */}
                 {/* <a href="#" className='add-cart buy-now'>Buy Now</a> */}
               </div>
             </div>

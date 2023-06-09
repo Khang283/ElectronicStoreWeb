@@ -88,3 +88,18 @@
     text-decoration: none;
     color: white;
   }
+
+  .textlink{
+    text-decoration: none;
+    color: white;
+  }
+
+  .textlink:hover{
+    text-decoration: none;
+    color: white;
+  }
+
+  .textdropdown{
+    text-decoration: none;
+    color: black;
+  }

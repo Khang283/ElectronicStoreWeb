@@ -16,6 +16,7 @@ import MetaData from '../layout/MetaData'
 import Loader from '../layout/Loader'
 import Sidebar from './Sidebar'
 import moment from "moment/moment";
+import AlertTemplate from "react-alert-template-basic";
 
 
 function UpdateUser() {
@@ -41,6 +42,9 @@ function UpdateUser() {
     const [gender,setGender] = useState();
     const [dob,setDob] = useState();
     const [phone,setPhone] = useState();
+    const [oldPassword,setOldPass] = useState();
+    const [newPassword,setNewPass] = useState();
+    const [confirmPass,setConfirm] = useState();
     useEffect(() => {
         axios.get('/api/user?id=' + userid, {
             headers: {
@@ -90,9 +94,33 @@ function UpdateUser() {
         )
     }
 
-    function handleDob(value){
-        setDob(moment(value,"dd-MM-yyyy"));
+    const handlePasswordChange = ()=>{
+        const payload ={
+            id: user.userId,
+            oldPassword: "",
+            newPassword : newPassword
+        };
+
+        if(newPassword != confirmPass){
+            alert("Xin chọn lại mật khẩu mới");
+        }
+        else{
+
+            axios.put('/api/user/admin/password',payload,{
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('authToken')}`,
+                }
+            }).then(res=>{
+                if(res.status === 200){
+                    alert("Đổi mật khẩu thành công");
+                }
+            }).catch(e=>{
+                console.log(e);
+            })
+        }
+
     }
+
     return (
         <Fragment>
             <MetaData title={'All Users'} />
@@ -235,22 +263,19 @@ function UpdateUser() {
                                                     </Modal.Header>
                                                     <Modal.Body>
                                                         <div className="row col-xxl-12">
-                                                            <Form>
-                                                                <Form.Label>Mật khẩu cũ *</Form.Label>
-                                                                <Form.Control type="password" id="oldpwd"></Form.Control>
-                                                            </Form>
+                                                            
                                                             <Form>
                                                                 <Form.Label>Mật khẩu mới *</Form.Label>
-                                                                <Form.Control type="password" id="newpwd"></Form.Control>
+                                                                <Form.Control type="password" id="newpwd" onChange={e=>setNewPass(e.target.value)}></Form.Control>
                                                             </Form>
                                                             <Form>
                                                                 <Form.Label>Xác nhận mật khẩu *</Form.Label>
-                                                                <Form.Control type="password" id="confirmpwd"></Form.Control>
+                                                                <Form.Control type="password" id="confirmpwd"onChange={e=>setConfirm(e.target.value)}></Form.Control>
                                                             </Form>
                                                         </div>
                                                     </Modal.Body>
                                                     <Modal.Footer>
-                                                        <Button variant="danger" onClick={closePassWord}>
+                                                        <Button variant="danger" onClick={handlePasswordChange}>
                                                             Xác nhận
                                                         </Button>
                                                     </Modal.Footer>

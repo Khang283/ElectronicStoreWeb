@@ -48,6 +48,12 @@ public interface IAsset extends JpaRepository<Assets,Long> {
                     "FROM assets\n" +
                     "WHERE asset_id =:assetId",nativeQuery = true)
     Assets getAssetByAssetId(@Param("assetId") int assetId);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE assets\n" +
+            "SET deleted = 1\n" +
+            "WHERE asset_id= :assetId", nativeQuery = true)
+    void deleteAsset(@Param("assetId") long assetId);
 
 
 

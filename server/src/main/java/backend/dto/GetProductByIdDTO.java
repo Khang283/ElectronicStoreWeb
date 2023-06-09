@@ -26,6 +26,8 @@ public class GetProductByIdDTO {
     private String productStatus;
     private String company;
     private String category;
+    private Long categoryId;
+    private Long companyId;
     private List<GetAssetDTO> assets = new ArrayList<>();
     private List<GetSpecDTO> specs= new ArrayList<>();
 }

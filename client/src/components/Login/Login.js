@@ -18,6 +18,9 @@ function Login() {
             username,
             password
         }
+
+        console.log(username);
+        console.log(password);
         
         axios.post("/api/v1/login",loginResquest)
         .then(res=>{
