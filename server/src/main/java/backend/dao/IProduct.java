@@ -102,4 +102,10 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "LIMIT :limit\n" +
                     "OFFSET :offset",nativeQuery = true)
     List<Product>findProductByType(@Param("limit")int limit,@Param("offset")int offset,@Param("type") String type);
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE product \n" +
+            "SET product_status=:productStatus, product_name = :productName, product_version = :productVersion, category_id = :categoryId, company_id = :companyId, product_stock = :productStock, product_price = :productPrice\n"+
+            "WHERE product_id = :productId", nativeQuery = true)
+    void Modify(@Param("productId") Long productId , @Param("productStatus") String productStatus, @Param("productName") String productName, @Param("productVersion") String productVersion, @Param("companyId") Long companyId, @Param("productStock") Long productStock, @Param("productPrice") BigDecimal productPrice , @Param("categoryId") Long categoryId);
 }

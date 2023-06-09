@@ -36,5 +36,5 @@ public interface IOrder extends JpaRepository<Orders,Long> {
     @Query(value =  "SELECT * \n" +
                     "FROM orders \n" +
                     "WHERE user_id = :id",nativeQuery = true)
-    List<Orders>findOrderById(@Param("id")long id);
+    List<Orders>findOrderByUserId(@Param("id")long id);
 }

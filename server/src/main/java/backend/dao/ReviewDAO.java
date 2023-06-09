@@ -5,6 +5,7 @@ import backend.dto.InsertAssetDTO;
 import backend.dto.InsertSpecDTO;
 import backend.dto.addReviewDTO;
 import backend.models.Review;
+import org.hibernate.tool.schema.spi.SqlScriptException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +42,7 @@ public class ReviewDAO {
         try {
             _review.insertReview(review.getReviewContent(), review.getReviewRating(), review.getUserId(), review.getProductId());
         }
-        catch(Exception e){
+        catch(SqlScriptException e){
             System.out.println("Error: "+e);
         }
         return true;

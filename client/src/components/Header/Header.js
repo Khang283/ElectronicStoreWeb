@@ -183,6 +183,8 @@ function Header() {
 
 
         </Navbar.Collapse >
+        
+        
         <Navbar.Collapse id="reponsive-navbar-nav">
           {userId == -1 ?
             <NavDropdown marginLeft={20} marginRight={20} className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <img src="../user.png" alt="user" width={30} height={30}></img></p>} id="collasible-nav-dropdown">

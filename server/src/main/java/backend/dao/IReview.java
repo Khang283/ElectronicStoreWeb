@@ -19,7 +19,7 @@ public interface IReview extends JpaRepository<Review,Long> {
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO reviews (review_content, review_rating, user_id, product_id)\n" +
-            "VALUES (:reviewContent, :reviewRating, :userId, :productId)", nativeQuery = true)
+                    "VALUES (:reviewContent, :reviewRating, :userId, :productId)", nativeQuery = true)
     void insertReview(@Param("reviewContent") String reviewContent, @Param("reviewRating") Long reviewRating,
                             @Param("userId") Long userId, @Param("productId") Long productId);
 }

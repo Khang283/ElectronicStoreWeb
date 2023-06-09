@@ -66,4 +66,27 @@ public class OrderService {
         }
         return orderListDTOs;
     }
+
+    public List<OrderListDTO>getOrdersByUserId(long userId){
+        List<OrderListDTO>orderListDTOs = new ArrayList<>();
+        List<Orders> orders = orderDAO.findOrderByUserId(userId);
+        for(Orders order : orders){
+            Optional<User> user = userDAO.findUserById(order.getUserId());
+            OrderListDTO orderListDTO = OrderListDTO.builder()
+                    .orderId(order.getOrderId())
+                    .cartId(order.getCartId())
+                    .userId(order.getUserId())
+                    .username(user.get().getUsername())
+                    .totalPrice(order.getTotalPrice())
+                    .totalQuantity(order.getTotalQuantity())
+                    .receiver(order.getReceiver())
+                    .message(order.getDeliveryMessage())
+                    .address(order.getOrderAddress())
+                    .cartItems(cartService.getCartItemDTOByCartId(order.getCartId()))
+                    .status(order.getStatus())
+                    .build();
+            orderListDTOs.add(orderListDTO);
+        }
+        return orderListDTOs;
+    }
 }

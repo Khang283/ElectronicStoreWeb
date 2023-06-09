@@ -46,4 +46,8 @@ public class OrderDAO {
     public List<Orders>findAllOrders(){
         return _order.findAll();
     }
+
+    public List<Orders>findOrderByUserId(long userId){
+        return _order.findOrderByUserId(userId);
+    }
 }

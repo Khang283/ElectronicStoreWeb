@@ -46,6 +46,6 @@ public interface IProductAsset extends JpaRepository<ProductAsset, Long> {
             "FROM assets,product,product_asset\n" +
             "WHERE assets.asset_id=product_asset.asset_id\n" +
             "AND product.product_id= product_asset.product_id\n" +
-            "AND product_asset.product_id =:productId",nativeQuery = true)
+            "AND product_asset.product_id = :productId \n" ,nativeQuery = true)
     List<ProductAsset> getListAssetByProductId(@Param("productId") int productId);
 }

@@ -18,16 +18,17 @@ import SearchPage from "./components/SearchPage/SearchPage";
 import ProductAdd from "./components/admin/ProductAdd";
 import ConfirmPayment from "./components/Checkout/ConfirmPayment";
 import OrderList from "./components/admin/OrderList";
+import UpdateProduct from "./components/admin/UpdateProduct";
 
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <App/>,
+        element: <App />,
         errorElement: <ErrorPage />,
         children: [
             {
-                path : '/',
+                path: '/',
                 element: <Home />
             },
             {
@@ -68,7 +69,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/:category/:company/:id',
-                element: <Details/>
+                element: <Details />
             },
             {
                 path: '/account',
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
             {
                 path: '/admin/orders',
                 element: <OrderList />
+            },
+            {
+                path: 'admin/product/modify/:productid',
+                element: <UpdateProduct />
             }
 
         ]

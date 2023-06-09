@@ -230,10 +230,10 @@ const Details = (props) => {
       alert("Vui lòng nhập đủ thông tin!!!");
     else {
       const review = ({
-        product_id: parseInt(params.id),
-        user_id: userState.userId,
-        review_rating: parseInt(reviewRating),
-        review_content: reviewContent,
+        productId: parseInt(params.id),
+        userId: userState.userId,
+        reviewRating: parseInt(reviewRating),
+        reviewContent: reviewContent,
       })
       console.log(review);
 

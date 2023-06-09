@@ -58,7 +58,7 @@ const Purchased = props => {
 
         orders.forEach(order=>{
             data.rows.push({
-                id: order.cartId,
+                id: order.orderId,
                 totalPrice: order.totalPrice.toLocaleString()+" VND",
                 totalQuantity: order.totalQuantity,
                 status: "Đã thanh toán",

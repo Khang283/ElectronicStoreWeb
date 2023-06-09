@@ -2,15 +2,18 @@ package backend.controllers;
 
 import backend.dto.*;
 import backend.models.Orders;
+import backend.models.User;
 import backend.service.CartService;
 import backend.service.JwtService;
 import backend.service.OrderService;
+import backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -22,6 +25,8 @@ public class CartController {
     private JwtService jwtService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserService userService;
     @PostMapping("/cart/add")
     public ResponseEntity<String>addToCart(@RequestHeader("Authorization")String accessToken,@RequestBody CartPayLoad payLoad){
         String token = accessToken.substring(7);
@@ -78,14 +83,15 @@ public class CartController {
     }
 
     @GetMapping("/cart/history")
-    public ResponseEntity<List<CartDTO>>getHistory(@RequestHeader("Authorization")String accessToken){
+    public ResponseEntity<List<OrderListDTO>>getHistory(@RequestHeader("Authorization")String accessToken){
         String token = accessToken.substring(7);
         String username = jwtService.extractUsername(token);
-        List<CartDTO>cartDTOS = cartService.getHistory(username);
-        if(cartDTOS.isEmpty()){
+        Optional<User> user = userService.findUserByUsername(username);
+        List<OrderListDTO>orderListDTOS = orderService.getOrdersByUserId(user.get().getUserId());
+        if(orderListDTOS.isEmpty()){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(cartDTOS);
+        return ResponseEntity.ok(orderListDTOS);
     }
 
     @PostMapping("/order")

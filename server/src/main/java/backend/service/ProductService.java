@@ -29,6 +29,8 @@ public class ProductService {
     private ICompany _company;
     @Autowired
     private ProductDAO productDAO;
+    @Autowired
+    private ISpec _spec;
     public List<ProductListDTO> getProductList(int page,String type,int limit){
         if(page<1) return null;
         int offset = page*limit - limit;
@@ -51,7 +53,8 @@ public class ProductService {
     public boolean deleteProductById(long productId){
         return productDAO.deleteProductById(productId);
     }
-
+public boolean deleteSpecById(long specId) {return  productDAO.deleteSpecById(specId);}
+    public boolean deleteAssetById(long assetId) {return  productDAO.deleteAssetById(assetId);}
     public boolean restoreProductById(long productId){
         return productDAO.restoreProductById(productId);
     }
@@ -88,4 +91,7 @@ public class ProductService {
     public List<SpecGroup> getListSpecGroup() {
         return productDAO.getListSpecGroup();
     }
+    public boolean modifySpec(SpecModifyDTO spec) {return productDAO.modifySpecById(spec);}
+    public boolean modifyAsset(AssetModifyDTO asset) {return  productDAO.modifyAssetById(asset);}
+    public boolean modifyProduct(ProductModifyDTO prod) {return productDAO.modifyProduct(prod);};
 }

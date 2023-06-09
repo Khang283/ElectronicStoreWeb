@@ -111,6 +111,8 @@ public class ProductDAO {
                 productDTo.setProductRating(product.getProductRating());
                 productDTo.setProductSold(product.getProductSold());
                 productDTo.setProductStatus(product.getProductStatus());
+                productDTo.setCategoryId(product.getCategoryId());
+                productDTo.setCompanyId(product.getCompanyId());
                 productDTo.setProductVersion(product.getProductVersion());
                 productDTo.setCategory(findProductCategory(product));
                 productDTo.setCompany(findProductCompany(product));
@@ -184,7 +186,22 @@ public class ProductDAO {
         }
         return null;
     }
-
+public boolean deleteSpecById(long specId){
+        try{
+            _spec.deleteSpec(specId);
+        }catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+    return true;
+}
+    public boolean deleteAssetById(long assetId){
+        try{
+            _asset.deleteAsset(assetId);
+        }catch(Exception e){
+            System.out.println("Error: "+e);
+        }
+        return true;
+    }
     public boolean deleteProductById(long productId){
         try{
             _product.setDelete(productId,true);
@@ -246,6 +263,36 @@ public class ProductDAO {
         }
         return true;
     }
+    public boolean modifyAssetById(AssetModifyDTO asset){
+        try{
+            _asset.modifyAsset(asset.getAssetId(), asset.getAssetName(), asset.getAssetPath(),asset.getAssetType());
+        }
+        catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+        return true;
+    }
+    public boolean modifySpecById(SpecModifyDTO spec){
+        try{
+            _spec.modifySpec(spec.getSpecId(), spec.getSpecName(), spec.getSpecDetail(), spec.getSpecValue());
+        }
+        catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+        return true;
+    }
+    public boolean modifyProduct(ProductModifyDTO prod){
+        try{
+            _product.Modify(prod.getProductId(),prod.getProductStatus(),prod.getProductName(), prod.getProductVersion(),prod.getCompanyId(),prod.getProductStock(), prod.getProductPrice(),prod.getCategoryId());
+        }
+        catch(Exception e){
+            System.out.println("Error: " + e);
+        }
+        return true;
+    }
+    public boolean modifyProduct(){
+        return false;
+    }
     public boolean modifyProductById(ModifyProductDTO modProd){
         try{
             _product.setModify(modProd.getProductId(),modProd.getProductName(),modProd.getProductVersion() ,modProd.getCompanyId() , modProd.getProductStock(),modProd.getProductPrice(), modProd.getProductRating(), modProd.getCategoryId());
@@ -283,7 +330,7 @@ public class ProductDAO {
                      _productDetail.insertProductDetail(modProd.getProductId(), specId);}
                  }
                  }else{
-                _spec.modifySpec(lst.getSpecId(),lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
+                _spec.modifySpec(lst.getSpecId(),lst.getSpecName(), lst.getSpecDetail(), lst.getSpecValue());
                 //Long specId = _spec.getSpecId(lst.getSpecName(), lst.getGroupId(), lst.getSpecDetail(), lst.getSpecValue());
                 for(ModifyProductDetailDTO lstt : lst.getProductDtl()){
                 _productDetail.modifyProductDetail(modProd.getProductId(), lst.getSpecId());}
@@ -304,6 +351,7 @@ public class ProductDAO {
         return _product.findById(productId);
     }
 
+
     public String findProductIcon(long productId){
         Assets assets = _asset.findAssetIconByProductId(productId);
         if(assets == null || assets.isDeleted()){
@@ -311,6 +359,7 @@ public class ProductDAO {
         }
         return assets.getAssetPath();
     }
+
 
     public List<Category> getListCategory() {
         return _category.findAllCategory();

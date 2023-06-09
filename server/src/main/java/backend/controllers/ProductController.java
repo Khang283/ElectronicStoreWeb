@@ -1,9 +1,6 @@
 package backend.controllers;
 
-import backend.dto.DeleteProductDTO;
-import backend.dto.GetProductByIdDTO;
-import backend.dto.InsertProductDTO;
-import backend.dto.ProductListDTO;
+import backend.dto.*;
 import backend.models.Category;
 import backend.models.Company;
 import backend.models.SpecGroup;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import backend.dto.ModifyProductDTO;
 
 import javax.sound.sampled.Port;
 import java.util.ArrayList;
@@ -102,13 +98,7 @@ public class ProductController {
         return ResponseEntity.badRequest().build();
     }
     
-    @PostMapping("v1/admin/product/modify")
-    public ResponseEntity<String>modifyProduct(@RequestBody ModifyProductDTO modProdDTO){
-        if(productService.modifyProductByID(modProdDTO)){
-            return ResponseEntity.ok("Sửa sản phẩm thành công");
-        }
-        return ResponseEntity.badRequest().build();
-    }
+
 
     @GetMapping("/v1/getlistcompany")
     public ResponseEntity<List<Company>> getListCompany(){
@@ -131,6 +121,39 @@ public class ProductController {
         return ResponseEntity.ok(listSpecGroup);
     }
 
-
-
+    @PostMapping("/v1/modify/spec")
+    public ResponseEntity<String>modifySpec(@RequestBody SpecModifyDTO spec){
+        if(productService.modifySpec(spec)){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/delete/spec")
+    public ResponseEntity<String>deleteSpec(@RequestBody DeleteSpecDTO spec){
+        if(productService.deleteSpecById(spec.getSpecId())){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/delete/asset")
+    public ResponseEntity<String>deleteAsset(@RequestBody DeleteAssetDTO asset){
+        if(productService.deleteAssetById(asset.getAssetId())){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/modify/asset")
+    public ResponseEntity<String>modifyAsset(@RequestBody AssetModifyDTO asset){
+        if(productService.modifyAsset(asset)){
+            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+    @PostMapping("/v1/modify/product")
+    public ResponseEntity<String>modifyProduct(@RequestBody ProductModifyDTO modProdDTO){
+        if(productService.modifyProduct(modProdDTO)){
+            return ResponseEntity.ok("Sửa sản phẩm thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }
