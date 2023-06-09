@@ -291,7 +291,7 @@ function Cart() {
                               <td className="align-middle">
                                 <figure className="itemside">
                                   <div className="aside">
-                                    <img src={item.productImage} className="img-sm" />
+                                    <img src={item.productImage} className="img-sm" width={100} height={100}/>
                                   </div>
                                   <figcaption className="info">
                                     <a href="#" className="title text-dark">

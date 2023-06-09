@@ -49,4 +49,9 @@ public interface IUser extends JpaRepository<User,Long> {
                     "SET role = :role \n" +
                     "WHERE user_id = :id",nativeQuery = true)
     void changeRole(@Param("id")long id, @Param("role")String role);
+
+    @Query(value = "SELECT *\n" +
+            "FROM users\n" +
+            "WHERE user_id=:userId",nativeQuery = true)
+    User getUserByID(@Param("userId")int userId);
 }

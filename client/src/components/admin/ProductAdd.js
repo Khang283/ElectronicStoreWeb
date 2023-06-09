@@ -21,6 +21,7 @@ const ProductAdd = () => {
     //
     const [listCategory, setListCategory] = useState([]);
     const [listCompany, setListcompany] = useState([]);
+    const [listSpecGroup, setListSpecGroup] = useState([]);
 
     useEffect(() => {
         const getListCategory = () => {
@@ -36,7 +37,7 @@ const ProductAdd = () => {
         }
 
         getListCategory();
-    })
+    }, [])
 
     useEffect(() => {
         const getListCompany = () => {
@@ -52,10 +53,30 @@ const ProductAdd = () => {
         }
 
         getListCompany();
-    })
+    }, [])
 
-    //get data
+    useEffect(() => {
+        const getListSpecGroup = () => {
+            axios.get(`/api/v1/getlistspecgroup`)
+                .then(response => {
+                    setListSpecGroup(response.data);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        }
+
+        getListSpecGroup();
+    }, [])
+
+    //get data spect
     const [listProductSpec, setListProductSpec] = useState([]);
+    const [specName, setSpecName] = useState("");
+    const [specDetail, setSpecDetail] = useState("");
+    const [specValue, setSpecValue] = useState("");
+    const [groupId, setGroupId] = useState(1);
+
+
     const [spec, setSpec] = useState({
         specName: "",
         specDetail: "",
@@ -64,38 +85,51 @@ const ProductAdd = () => {
     })
 
     function specNameChange(event) {
-        spec.specName = event.target.value;
+        setSpecName(event.target.value);
     }
     function specDetailChange(event) {
-        spec.specDetail = event.target.value;
+        setSpecDetail(event.target.value);
     }
     function specValueChange(event) {
-        spec.specValue = event.target.value;
+        setSpecValue(event.target.value);
+    }
+    function groupIdChange(event) {
+        setGroupId(event.target.value);
     }
 
     function specAdd() {
-        if (spec.specName === '' || spec.specDetail === "" || spec.specValue === "")
+        if (specName === '' || specDetail === "" || specValue === "")
             alert("Vui lòng nhập đủ thông tin!!!");
         else {
-            const newList = listProductSpec.concat({ specName: spec.specName, specDetail: spec.specDetail, specValue: spec.specValue, groupId: 1 });
+            // setSpec({ specName, specDetail, specValue, groupId });
+            const newList = listProductSpec.concat({ specName, specDetail, specValue, groupId });
+            // const newList = listProductSpec.concat(spec);
 
             setListProductSpec(newList);
             console.log(listProductSpec);
-            spec.specName = '';
-            spec.specDetail = "";
-            spec.specValue = "";
+            setSpecName('');
+            setSpecDetail('');
+            setSpecValue('');
+            setGroupId(1);
+
             setShowspec(false);
         }
     }
 
+
     function specRemove(specName) {
-        const newList = listProductSpec.filter((spec) => spec.specName !==specName);
+        const newList = listProductSpec.filter((spec) => spec.specName !== specName);
 
         setListProductSpec(newList);
     }
 
-
+    //get list asset
     const [listProductAsset, setListProductAsset] = useState([]);
+    const [assetName, setassetName] = useState('');
+    const [assetPath, setassetPath] = useState('');
+    const [assetType, setassetType] = useState("image");
+    const [assetRole, setassetRole] = useState("image");
+
     const [Asset, setAsset] = useState({
         assetName: "",
         assetPath: "",
@@ -104,30 +138,31 @@ const ProductAdd = () => {
     })
 
     function assetNameChange(event) {
-        Asset.assetName = event.target.value;
+        setassetName(event.target.value);
     }
     function assetPathChange(event) {
-        Asset.assetPath = event.target.value;
+        setassetPath(event.target.value);
     }
     function assetTypeChange(event) {
-        Asset.assetType = event.target.value;
+        setassetType(event.target.value);
     }
     function assetRoleChange(event) {
-        Asset.assetRole = event.target.value;
+        setassetRole(event.target.value);
     }
 
     function assetAdd() {
-        if (Asset.assetName === "" || Asset.assetPath === "" || Asset.assetType === "" || Asset.assetRole === "")
+        if (assetName === "" || assetPath === "" || assetType === "" || assetRole === "")
             alert("Vui lòng nhập đủ thông tin!!!");
         else {
-            const newList = listProductAsset.concat({ assetName: Asset.assetName, assetPath: Asset.assetPath, assetType: Asset.assetType, assetRole: Asset.assetRole });
+            const newList = listProductAsset.concat({ assetName, assetPath, assetType, assetRole });
 
             setListProductAsset(newList);
             console.log(listProductAsset);
-            Asset.assetName = "";
-            Asset.assetPath = "";
-            Asset.assetType = "image";
-            Asset.assetRole = "icon";
+            setassetName('');
+            setassetPath('');
+            setassetType("image");
+            setassetRole("icon");
+
             setShowAsset(false);
         }
 
@@ -135,60 +170,73 @@ const ProductAdd = () => {
     }
 
     function assetRemove(assetName) {
-        const newList = listProductSpec.filter((asset) => asset.assetName !==assetName);
+        const newList = listProductAsset.filter((asset) => asset.assetName !== assetName);
 
         setListProductAsset(newList);
     }
 
     // add  
-    const [Product, setProduct] = useState({
-        productName: "",
-        productPrice: null,
-        productVersion: "",
-        productStock: null,
-        companyId: 1,
-        categoryId: 1,
-        assets: [],
-        specs: []
-    });
+    const [Product, setProduct] = useState({});
+    const [productName, setproductName] = useState('');
+    const [productPrice, setproductPrice] = useState(null);
+    const [productVersion, setproductVersion] = useState('');
+    const [productStock, setproductStock] = useState(null);
+    const [companyId, setcompanyId] = useState(1);
+    const [categoryId, setcategoryId] = useState(1);
+    const [assets, setassets] = useState([]);
+    const [specs, setspecs] = useState([]);
 
     function NameChange(event) {
-        Product.productName = event.target.value;
+        setproductName(event.target.value);
     }
 
     function categoryIdChange(event) {
-        Product.categoryId = event.target.value;
-        console.log(Product.categoryId);
+        setcategoryId(event.target.value);
+        // console.log(Product.categoryId);
     }
     function companyIdChange(event) {
-        Product.companyId = event.target.value;
+        setcompanyId(event.target.value);
     }
     function productVersionChange(event) {
-        Product.productVersion = event.target.value;
+        setproductVersion(event.target.value);
     }
 
     function productStockChange(event) {
-        Product.productStock = event.target.value;
-        console.log(Product.productStock);
+        setproductStock(event.target.value);
+        // console.log(Product.productStock);
     }
     function productPriceChange(event) {
-        Product.productPrice = event.target.value;
+        setproductPrice(event.target.value);
     }
 
     // api post
     const [submitted, setSubmitted] = useState(false);
     const [isLoaded, setLoad] = useState(false);
 
-    function addProduct() {
-
-        Product.assets = listProductAsset;
-        Product.specs = listProductSpec;
-        if (Product.productName == "" || Product.productPrice == null || Product.productVersion == "" || Product.productStock == null || Product.assets == null || Product.specs == null)
+    const addProduct = () => {
+        if (productName == "" || productPrice == '' || productVersion == "" || companyId == null || categoryId == null || productStock == '' || assets == null || specs == null)
             alert("Vui lòng nhập đủ thông tin!!!");
         else {
             setShow(true);
             setLoad(true);
-            axios.post('/api/admin/product/add', Product, {
+            // setassets(listProductAsset);
+            // setspecs(listProductSpec);
+            // setProduct({ productName, productPrice, productVersion, productStock, companyId, categoryId, listProductAsset, listProductSpec })
+            // console.log(Product);
+
+            const productnew = {
+                productName: productName,
+                productPrice: productPrice,
+                productVersion: productVersion,
+                productStock: productStock,
+                companyId: companyId,
+                categoryId: categoryId,
+                assets: listProductAsset,
+                specs: listProductSpec
+            };
+            console.log(productnew);
+
+            axios.post('/api/admin/product/add', productnew, {
                 headers: {
                     Authorization: `Bearer ${Cookies.get('authToken')}`,
                 }
@@ -207,10 +255,6 @@ const ProductAdd = () => {
 
         }
     }
-    // console.log(submitted);
-    // console.log(Product);
-
-    // popup
 
     const [showspec, setShowspec] = useState(false);
 
@@ -228,6 +272,16 @@ const ProductAdd = () => {
     // const handleShow = () => setShow(true);
     const handleContinue = () => {
         setShow(false);
+
+        setproductPrice('');
+        setproductStock('');
+        setproductVersion('');
+        setcompanyId(1);
+        setcategoryId(1);
+        setproductName('');
+        setAsset([]);
+        setSpec([]);
+
         setProduct({
             productName: "",
             productPrice: "",
@@ -277,9 +331,10 @@ const ProductAdd = () => {
                                                     Tiếp tục
                                                 </Button>
                                                 <Link to={"/admin/product"}>
-                                                    <Button variant="primary" onClick={handleClose}>
+                                                    <Button variant="primary">
                                                         Hoàn tất
-                                                    </Button></Link>
+                                                    </Button>
+                                                </Link>
                                             </Modal.Footer>
                                         </div> :
                                         <div>
@@ -301,13 +356,13 @@ const ProductAdd = () => {
                                     <Form>
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                             <Form.Label>Tên Sản Phẩm:</Form.Label>
-                                            <Form.Control type="text" placeholder="Tên sản phẩm" value={Product.productName} onChange={NameChange} />
+                                            <Form.Control type="text" placeholder="Tên sản phẩm" value={productName} onChange={NameChange} />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                             <Form.Label>Danh mục:</Form.Label>
 
-                                            <Form.Select aria-label="Default select example" value={Product.categoryId} onChange={categoryIdChange}>
+                                            <Form.Select aria-label="Default select example" value={categoryId} onChange={categoryIdChange}>
                                                 {
                                                     listCategory.map((category) => {
                                                         return (
@@ -321,7 +376,7 @@ const ProductAdd = () => {
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                             <Form.Label>Công ty:</Form.Label>
 
-                                            <Form.Select aria-label="Default select example" value={Product.companyId} onChange={companyIdChange}>
+                                            <Form.Select aria-label="Default select example" value={companyId} onChange={companyIdChange}>
                                                 {
                                                     listCompany.map((company) => {
                                                         return (
@@ -334,17 +389,17 @@ const ProductAdd = () => {
 
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                             <Form.Label>Phiên bản:</Form.Label>
-                                            <Form.Control as="textarea" rows={3} value={Product.productVersion} onChange={productVersionChange} />
+                                            <Form.Control as="textarea" rows={3} value={productVersion} onChange={productVersionChange} />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                             <Form.Label>Số lượng:</Form.Label>
-                                            <Form.Control type='number' placeholder="Số lượng" value={Product.productStock} onChange={productStockChange} />
+                                            <Form.Control type='number' placeholder="Số lượng" value={productStock} onChange={productStockChange} />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                             <Form.Label>Giá:</Form.Label>
-                                            <Form.Control type="number" placeholder="Giá" value={Product.productPrice} onChange={productPriceChange} />
+                                            <Form.Control type="number" placeholder="Giá" value={productPrice} onChange={productPriceChange} />
                                         </Form.Group>
                                     </Form>
                                 </Col>
@@ -359,6 +414,7 @@ const ProductAdd = () => {
                                                         <th>Tên thông số</th>
                                                         <th>Chi tiết thông số</th>
                                                         <th>Giá trị</th>
+                                                        <th>Nhóm</th>
                                                         <th ></th>
                                                     </tr>
                                                 </thead>
@@ -369,7 +425,16 @@ const ProductAdd = () => {
                                                                 <td>{spec.specName}</td>
                                                                 <td>{spec.specDetail}</td>
                                                                 <td>{spec.specValue}</td>
-                                                                <td> <Button variant="danger" size="sm" onClick={() =>specRemove(spec.specName)}>
+                                                                {
+                                                                    listSpecGroup.map((SpecGroup) => {
+                                                                        if (parseInt(SpecGroup.groupId) == parseInt(spec.groupId))
+                                                                            return (
+                                                                                <td>{SpecGroup.groupName}</td>
+                                                                            )
+                                                                    })
+
+                                                                }
+                                                                <td> <Button variant="danger" size="sm" onClick={() => specRemove(spec.specName)}>
                                                                     <i class="bi bi-trash"></i>
                                                                 </Button></td>
                                                             </tr>
@@ -393,17 +458,31 @@ const ProductAdd = () => {
                                                     <Form>
                                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                                             <Form.Label>Tên thông số:</Form.Label>
-                                                            <Form.Control type="text" placeholder="Tên thông số" value={spec.specName} onChange={specNameChange} />
+                                                            <Form.Control type="text" placeholder="Tên thông số" value={specName} onChange={specNameChange} />
                                                         </Form.Group>
 
                                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                                             <Form.Label>Chi tiết thông số:</Form.Label>
-                                                            <Form.Control type="text" placeholder="Chi tiết thông số" onChange={specDetailChange} value={spec.specDetail} />
+                                                            <Form.Control type="text" placeholder="Chi tiết thông số" onChange={specDetailChange} value={specDetail} />
                                                         </Form.Group>
 
                                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                                             <Form.Label>Giá trị:</Form.Label>
-                                                            <Form.Control type="text" placeholder="Giá trị" onChange={specValueChange} value={spec.specValue} />
+                                                            <Form.Control type="text" placeholder="Giá trị" onChange={specValueChange} value={specValue} />
+                                                        </Form.Group>
+
+                                                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                                            <Form.Label>Nhóm:</Form.Label>
+
+                                                            <Form.Select aria-label="Default select example" value={groupId} onChange={groupIdChange}>
+                                                                {
+                                                                    listSpecGroup.map((SpecGroup) => {
+                                                                        return (
+                                                                            <option value={SpecGroup.groupId}>{SpecGroup.groupName}</option>
+                                                                        )
+                                                                    })
+                                                                }
+                                                            </Form.Select>
                                                         </Form.Group>
 
                                                     </Form>
@@ -442,7 +521,7 @@ const ProductAdd = () => {
                                                                 <td>{Asset.assetPath}</td>
                                                                 <td>{Asset.assetType}</td>
                                                                 <td>{Asset.assetRole}</td>
-                                                                <td> <Button variant="danger" size="sm" onClick={() =>assetRemove(Asset.assetName)}>
+                                                                <td> <Button variant="danger" size="sm" onClick={() => assetRemove(Asset.assetName)}>
                                                                     <i class="bi bi-trash"></i>
                                                                 </Button></td>
                                                             </tr>
@@ -465,18 +544,18 @@ const ProductAdd = () => {
                                                     <Form>
                                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                                             <Form.Label>Tên ảnh:</Form.Label>
-                                                            <Form.Control type="email" placeholder="Tên ảnh" value={Asset.assetName} onChange={assetNameChange} />
+                                                            <Form.Control type="email" placeholder="Tên ảnh" value={assetName} onChange={assetNameChange} />
                                                         </Form.Group>
 
                                                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                                             <Form.Label>Đường dẩn:</Form.Label>
-                                                            <Form.Control as="textarea" rows={3} value={Asset.assetPath} onChange={assetPathChange} />
+                                                            <Form.Control as="textarea" rows={3} value={assetPath} onChange={assetPathChange} />
                                                         </Form.Group>
 
                                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                                             <Form.Label>Loại:</Form.Label>
 
-                                                            <Form.Select aria-label="Default select example" value={Asset.assetType} onChange={assetTypeChange}>
+                                                            <Form.Select aria-label="Default select example" value={assetType} onChange={assetTypeChange}>
                                                                 <option value='image'>image</option>
                                                                 <option value='video'>video</option>
                                                             </Form.Select>
@@ -486,7 +565,7 @@ const ProductAdd = () => {
                                                         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                                             <Form.Label>Vai trò:</Form.Label>
 
-                                                            <Form.Select aria-label="Default select example" value={Asset.assetRole} onChange={assetRoleChange}>
+                                                            <Form.Select aria-label="Default select example" value={assetRole} onChange={assetRoleChange}>
                                                                 <option value='icon'>icon</option>
                                                                 <option value='slide'>slide</option>
                                                             </Form.Select>

@@ -286,6 +286,13 @@
     font-size: x-large;
 }
 
+.spec {
+    width: 60%;
+}
+.product-rating {
+    color: rgba(255, 242, 0, 0.895);
+}
+
 /*Responsive */
 @media (max-width: 1000px){
     .product-details{
@@ -293,7 +300,7 @@
     }
 }
 
-@media (max-width: 450px){
+@media (max-width: 700px){
 
     .product-page-img .mySlides{
         height: 280px;
@@ -317,4 +324,13 @@
     .product-details .cart-btns .buy-now{
         margin-left: 0;
     }
+    .spec {
+        width: 100%;
+    }
 }
+
+/* @media (max-width: 750px) {
+    .spec {
+        width: 100%;
+    }
+} */

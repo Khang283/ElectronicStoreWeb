@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import '../Details/Details.css';
 import SoldIcon from '../../images/sold.png';
 import { useParams } from "react-router-dom";
+import CardProduct from '../Card/CardProduct';
 
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -13,7 +14,12 @@ import Cart from '../Cart/Cart';
 import Popup from 'reactjs-popup';
 import Loader from '../layout/Loader';
 import { useAlert } from 'react-alert';
-
+import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import { useSelector } from 'react-redux';
 
 const Details = (props) => {
   const alert = useAlert();
@@ -26,13 +32,13 @@ const Details = (props) => {
 
   const [change, setChange] = useState(9);
 
-  const {id} = useParams();
+  const { id } = useParams();
 
-  const [loading,setLoad] = useState(true);
+  const [loading, setLoad] = useState(true);
 
   // const [selectedColor, setSelectedColor] = useState(product.colors[0]);
 
-  const [infoTitle, setInfoTitle] = useState();
+  const [infoTitle, setInfoTitle] = useState('Cấu hình');
 
   const slideRef = useRef();
   //
@@ -40,6 +46,7 @@ const Details = (props) => {
     style: 'currency',
     currency: 'VND'
   })
+
 
   const [Product, setProduct] = useState({
     // productId: null,
@@ -61,6 +68,9 @@ const Details = (props) => {
     ProductServices.getProductById(id)
       .then(response => {
         setProduct(response.data);
+        setListAsset(response.data.assets);
+        setCompany(response.data.company);
+        setCategory(response.data.category);
         console.log(response.data);
       })
       .catch(e => {
@@ -72,7 +82,57 @@ const Details = (props) => {
   useEffect(() => {
     getProduct(params.id)
   }, [params.id]);
+
+
+  //list
+  const [listProduct, setListProduct] = useState([]);
+  const [loadingList, setLoadList] = useState(false);
+  const [company, setCompany] = useState('');
+  const [category, setCategory] = useState('');
+
+  useEffect(() => {
+    getListProduct();
+  }, [Product]);
+
+  const getListProduct = () => {
+    setLoadList(true);
+    console.log(company);
+    // console.log(`/api/v1/product/${category}?limit=8&company=${company}`);
+    axios.get(`/api/v1/product/${category}?limit=8&company=${company}`)
+      .then(res => {
+        setListProduct(res.data);
+        setLoadList(false);
+        console.log(res.data);
+      }).catch(e => {
+        console.log(e);
+      })
+  }
+  const [listReview, setListReview] = useState([]);
+  const [loadingReview, setLoadReview] = useState(false);
+  const [isRVSubmit, setRVSubmit] = useState(false);
+
+  useEffect(() => {
+    getListReview();
+  }, [Product]);
+
+  const getListReview = () => {
+    setLoadList(true);
+    // console.log(`/api/v1/product/${category}?limit=8&company=${company}`);
+    axios.get(`/api/v1/product/${params.id}/review`)
+      .then(res => {
+        setListReview(res.data);
+        setLoadReview(false);
+        setRVSubmit(true);
+        console.log(res.data);
+      }).catch(e => {
+        setRVSubmit(false);
+        setLoadReview(false);
+        console.log(e);
+      })
+  }
   //
+  console.log(listProduct);
+
   useEffect(() => {
     if (!slideRef.current) return;
     const scrollWidth = slideRef.current.scrollWidth;
@@ -86,8 +146,8 @@ const Details = (props) => {
   }
 
   function slideShow(n) {
-    if (n > Product.assets.length) { setSlideIndex(1) };
-    if (n < 1) { setSlideIndex(Product.assets.length) };
+    if (n > listAsset.length) { setSlideIndex(1) };
+    if (n < 1) { setSlideIndex(listAsset.length) };
   }
 
   function dragStart(e) {
@@ -113,24 +173,89 @@ const Details = (props) => {
     slideRef.current.scrollLeft = slideIndex > numOfThumb ? (slideIndex - 1) * width : 0;
   }, [width, slideIndex])
 
-  const handleAddToCart = ()=>{
+  const handleAddToCart = () => {
     console.log(id);
     const payload = {
-      productId : id,
+      productId: id,
     }
-    axios.post('/api/cart/add',payload,{
+    axios.post('/api/cart/add', payload, {
       headers: {
         Authorization: `Bearer ${Cookies.get('authToken')}`,
       }
-    }).then(res =>{
-      if(res.status ===200){
+    }).then(res => {
+      if (res.status === 200) {
         setLoad(false);
         alert.success("Thêm vào giỏ hàng thành công");
       }
-    }).catch(e=>{
+    }).catch(e => {
       console.log(e);
       alert.error("Đã xảy ra lỗi");
     })
+  }
+
+  const [listAsset, setListAsset] = useState([]);
+
+
+  useEffect(() => {
+    const getListAsset = () => {
+      setListAsset(listAsset.filter((item) => item.assetRole !== 'icon'));
+      console.log(listAsset);
+    }
+    getListAsset();
+  }, [Product])
+
+  // console.log(listAsset);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [reviewContent, setreviewContent] = useState('');
+  const [reviewRating, setreviewRating] = useState(0);
+
+  function reviewContentchane(event) {
+    setreviewContent(event.target.value);
+  }
+  function reviewRatingchane(event) {
+    setreviewRating(event.target.value);
+  }
+
+  // const { userid } = useParams();
+  const userState = useSelector(state => state.user);
+
+
+  function addReview() {
+    if (reviewRating == "" || reviewContent == '')
+      alert("Vui lòng nhập đủ thông tin!!!");
+    else {
+      const review = ({
+        product_id: parseInt(params.id),
+        user_id: userState.userId,
+        review_rating: parseInt(reviewRating),
+        review_content: reviewContent,
+      })
+      console.log(review);
+
+      axios.post('/api/v1/product/addreview', review)
+        .then(res => {
+          if (res.status == 200) {
+            // setSubmitted(true);
+            // console.log(res.data);
+            // setLoad(false);
+            setreviewContent('');
+            setreviewRating(0);
+
+            setShow(false);
+          }
+        })
+        .catch(e => {
+          // setLoad(false);
+          console.log(e);
+        });
+
+
+    }
   }
 
 
@@ -138,29 +263,27 @@ const Details = (props) => {
     <div className='container'>
       <React.Fragment>
         <section className='product-details'>
-          <div className='product-page-img'>
+          <div className='product-page-img' >
             {
-              Product.assets.map((image, index) => (
-                image.assetRole === "slide" ?
-                  <div key={index} className='mySlides'
-                    style={{ display: (index + 1) === slideIndex ? "block" : "none" }}>
-                    <div className='numbertext'>{index + 1} / {Product.assets.length}</div>
-                    <img src={image.assetPath} alt=""></img>
-                  </div> : <div />
+              listAsset.map((image, index) => (
+                <div key={index} className='mySlides'
+                  style={{ display: (index + 1) === slideIndex ? "block" : "none" }}>
+                  <div className='numbertext'>{index + 1} / {Product.assets.length}</div>
+                  <img src={image.assetPath} alt="" width={200} height={2}></img>
+                </div>
               ))
             }
 
-            {/* <a href="#" className='prev' onClick={() => plusSlides(-1)}>&#10094;</a>
-          <a href="#" className='next' onClick={() => plusSlides(1)}>&#10095;</a> */}
+            <a href="#" className='prev' onClick={() => plusSlides(-1)}>&#10094;</a>
+            <a href="#" className='next' onClick={() => plusSlides(1)}>&#10095;</a>
             <div className='slider-img' draggable={true} ref={slideRef}
               onDragStart={dragStart} onDragOver={dragOver} onDragEnd={dragEnd}>
               {
-                Product.assets.map((image, index) => (
-                  image.assetRole === "slide" ?
-                    <div key={index} className={`slider-box ${index + 1 === slideIndex ? 'active' : ''}`}
-                      onClick={() => setSlideIndex(index + 1)}>
-                      <img src={image.assetPath} alt=""></img>
-                    </div> : <div />
+                listAsset.map((image, index) => (
+                  <div key={index} className={`slider-box ${index + 1 === slideIndex ? 'active' : ''}`}
+                    onClick={() => setSlideIndex(index + 1)}>
+                    <img src={image.assetPath} alt=""></img>
+                  </div>
                 ))
               }
             </div>
@@ -177,21 +300,6 @@ const Details = (props) => {
               {/* ${Math.round(Product.productPrice - product.price * product.discount / 100)} <del>{product.price}$</del> */}
             </p>
 
-            {/* <p className='small-desc'>{product.desc}</p> */}
-
-            {/* <div className='product-options'>
-            <span>Colors</span>
-            {
-              product.colors.map(color => (
-                <div key={color}>
-                  <button style={{ background: color }}
-                    className={color === selectedColor ? 'active' : ''}
-                    onClick={() => setSelectedColor(color)}></button>
-                </div>
-              ))
-            }
-          </div> */}
-
             <div className='product-sold'>
 
               {/* <div className='product-page-offer'>
@@ -199,12 +307,18 @@ const Details = (props) => {
                </div> */}
 
               <div className='product-sold'>
-              <img src={SoldIcon} alt="SoldIcon" />
+                <img src={SoldIcon} alt="SoldIcon" />
                 <strong><span>Đã bán: </span> {Product.productSold}</strong>
               </div>
 
               <div className='product-sold'>
                 <strong><span>Còn lại: </span> {Product.productStock}</strong>
+              </div>
+
+              <div className='product-rating'>
+                {Array.from({ length: 5 }).map((_, idx) => (
+                  idx < Product.productRating ? <i class="bi bi-star-fill"></i> : <i class="bi bi-star"></i>
+                ))}
               </div>
 
               <div className='cart-btns'>
@@ -238,15 +352,6 @@ const Details = (props) => {
               className={`p-info-list ${'Câu hỏi thường gặp' === infoTitle ? 'active' : ''}`}>
               Câu hỏi thường gặp
             </li>
-
-            {/* {
-            product.infos.map(info => (
-              <li key={info.title} onClick={() => setInfoTitle(info.title)}
-                className={`p-info-list ${info.title === infoTitle ? 'active' : ''}`}>
-                {info.title}
-              </li>
-            ))
-          } */}
           </ul>
 
           <div key='Thông tin sản phẩm'
@@ -258,34 +363,129 @@ const Details = (props) => {
             className={`info-container ${'Cấu hình' === infoTitle ? 'active' : ''}`}>
             <div className='infotext'>Cấu hình chi tiết:</div>
             <br />
-
-            {
-              Product.specs.map(spec => (
-                <div key={spec.specDetail}>
-                  <Row xs={2} md={4} lg={6}>
-                    <Col>{spec.specDetail}: </Col>
-                    <Col>{spec.specValue}</Col>
-                  </Row></div>
-              ))}
+            <div className='spec'>
+              <Table striped bordered hover responsive="sm" size="sm" >
+                <tr>
+                  <th>Cấu hình</th>
+                  <th>Giá trị</th>
+                </tr>
+                <tbody>
+                  {
+                    Product.specs.map((spec) => (
+                      <tr key={spec.specDetail}>
+                        <td>{spec.specDetail} </td>
+                        <td>{spec.specValue}</td>
+                      </tr>
+                    ))
+                  }</tbody>
+              </Table></div>
 
           </div>
+
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Modal heading</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Label>Dánh giá:</Form.Label>
+                  <Form.Control type="number" max={5} placeholder="Tên thông số" value={reviewRating} onChange={reviewRatingchane} />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                  <Form.Label>Nội dung:</Form.Label>
+                  <Form.Control type="text" placeholder="Chi tiết thông số" onChange={reviewContentchane} value={reviewContent} />
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Đóng
+              </Button>
+              <Button variant="primary" onClick={addReview}>
+                Thêm
+              </Button>
+            </Modal.Footer>
+          </Modal>
+
           <div key='Đánh giá sản phẩm'
             className={`info-container ${'Đánh giá sản phẩm' === infoTitle ? 'active' : ''}`}>
-            <div className='infotext'>Đánh giá sản phẩm:</div>
+            <Row xs={1}>
+              <Col md={4}>
+                <div className='infotext'>Đánh giá sản phẩm:</div>
+              </Col>
+              <Col md={{ span: 4, offset: 4 }}>
+                <Button variant="success" size='lg' onClick={handleShow}>Đánh giá</Button>
+              </Col>
+            </Row>
+
+            <br />
+
+            {
+              loadingReview === 'true' ?
+                <div className="home-btn">
+                  <Loader></Loader>
+                </div> :
+                isRVSubmit === 'false' || listReview.length === 0 ?
+                  <div className="home-btn">
+                    <div className=''>
+                      <h3>Không có đánh giá</h3>
+                    </div>
+                  </div> :
+                  listReview.map((review) => {
+                    return (
+                      <div>
+                        <Row>
+                          <Col xs="auto">
+                            <div><i class="bi bi-person-circle" ></i> </div>
+                          </Col>
+                          <Col xs={1} md={2}>
+                            <h5><strong>{review.userName}</strong></h5>
+                            <div className='product-rating'>
+                              {Array.from({ length: 5 }).map((_, idx) => (
+                                idx < review.reviewRating ? <i class="bi bi-star-fill"></i> : <i class="bi bi-star"></i>
+                              ))}
+                            </div>
+                            <div>{review.reviewContent}</div>
+                            <br></br>
+                          </Col>
+                        </Row>
+                      </div>
+                    );
+                  })
+            }
           </div>
           <div key='Câu hỏi thường gặp'
             className={`info-container ${'Câu hỏi thường gặp' === infoTitle ? 'active' : ''}`}>
             Câu hỏi thường gặp
           </div>
-          {/* {
-          product.infos.map(info => (
-            <div key={info.title}
-              className={`info-container ${info.title === infoTitle ? 'active' : ''}`}>
-              {info.content}
-            </div>
-          ))
-        } */}
         </section>
+
+        <div className="container div-list">
+          <div >
+            <h2>SẢN PHẨM CÙNG HÃNG</h2>
+
+          </div>
+          {
+            loadingList === true ?
+              <div className="home-btn">
+                <Loader></Loader>
+              </div>
+              :
+              <Row xs={1} md={4} sm={2} className="g-4">
+                {listProduct?.map((product) => {
+
+                  return (
+                    parseInt(product.productId) !== parseInt(params.id) ?
+                      <Col >
+                        <CardProduct product={product}></CardProduct>
+                      </Col> : <br></br>
+                  );
+                })}
+              </Row>
+          }
+        </div>
       </React.Fragment>
     </div>
   )

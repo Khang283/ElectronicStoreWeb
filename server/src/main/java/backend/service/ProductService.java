@@ -4,6 +4,7 @@ import backend.dao.*;
 import backend.dto.ProductListDTO;
 import backend.models.Category;
 import backend.models.Company;
+import backend.models.SpecGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import backend.dto.*;
@@ -13,6 +14,8 @@ import backend.models.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import backend.dto.ModifyProductDTO;
+
+import java.util.ArrayList;
 import java.util.List;
 @Service
 public class ProductService {
@@ -81,5 +84,8 @@ public class ProductService {
 
     public List<Company> getListCompany() {
         return productDAO.getListCompany();
+    }
+    public List<SpecGroup> getListSpecGroup() {
+        return productDAO.getListSpecGroup();
     }
 }

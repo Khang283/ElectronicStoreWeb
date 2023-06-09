@@ -13,6 +13,9 @@ class ProductServices {
     countProduct (type) {
         return axios.get(`/api/v1/countproduct/${type}`)
     }
+    getProducCompany(company, limit) {
+        return axios.get(`/api/v1/product?limit=${limit}&company=${company}`)
+    }
 }
 
 export default new ProductServices();
