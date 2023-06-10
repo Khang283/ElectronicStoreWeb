@@ -4,6 +4,9 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import Loader from "../Loader/Loader";
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import Popup from "reactjs-popup";
+import OrderDetails from "../Order/OrderDetail";
 const Purchased = props => {
     const [orders,setOrders] = useState([]);
     const [loading,setLoad] = useState(true);
@@ -61,11 +64,12 @@ const Purchased = props => {
                 id: order.orderId,
                 totalPrice: order.totalPrice.toLocaleString()+" VND",
                 totalQuantity: order.totalQuantity,
-                status: "Đã thanh toán",
+                status: order.status,
                 actions: <Fragment>
-                <Link to={'/'} className="btn btn-primary py-1 px-2">
-                <i class="bi bi-eye-fill"></i>
-                </Link>
+                    <Popup modal trigger={<Button className="btn btn-primary py-1 px-2"><i class="bi bi-eye-fill"></i></Button>} >
+                        <OrderDetails order={order}/>
+                    </Popup>
+                
             </Fragment>
             })
         })

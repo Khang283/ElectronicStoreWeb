@@ -89,11 +89,8 @@ const OrderList = ({ history }) => {
                     : <p style={{ color: 'green' }}><i class="bi bi-activity"></i> {order.status}</p>,
                 actions: <Fragment>
                     &emsp;
-                    <Link to={`/admin/orders/${order.orderId}`} className="btn btn-primary py-1 px-2">
+                    <Link to={`/admin/orders/${order.orderId}`} state={{order: order}} className="btn btn-primary py-1 px-2">
                     <i class="bi bi-pencil-square"></i>
-                    </Link>&emsp;
-                    <Link to={`/admin/look_user/${order.orderId}`} className="btn btn-danger py-1 px-2">
-                        <i class="bi bi-key-fill"></i>
                     </Link>
 
                 </Fragment>

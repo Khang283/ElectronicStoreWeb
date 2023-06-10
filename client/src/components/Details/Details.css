@@ -334,3 +334,12 @@
         width: 100%;
     }
 } */
+
+.btn-favorite{
+    border-radius: 200px;
+    width: 100px;
+    height: 40px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    
+}

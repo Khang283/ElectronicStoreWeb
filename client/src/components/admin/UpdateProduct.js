@@ -18,6 +18,7 @@ import { Modal } from 'react-bootstrap';
 import ProductServices from "../../services/Product";
 import SpecModify from './SpecModify';
 import AssetModify from './AssetModify';
+
 export default function UpdateProduct() {
     let { productid } = useParams();
     const userState = useSelector(state => state.user);
@@ -81,40 +82,40 @@ export default function UpdateProduct() {
 
         })
     }
-    function deleteAsset(asseId){
+    function deleteAsset(asseId) {
         console.log(asseId);
         const assetdelete = ({
             assetId: asseId
         });
-        axios.post('/api/v1/delete/asset',assetdelete)
-        .then(res => {
-            if (res.status == 200) {
-                // setSubmitted(true);
+        axios.post('/api/v1/delete/asset', assetdelete)
+            .then(res => {
+                if (res.status == 200) {
+                    // setSubmitted(true);
+                    // setLoad(false);
+                }
+            })
+            .catch(e => {
                 // setLoad(false);
-            }
-        })
-        .catch(e => {
-            // setLoad(false);
-            console.log(e);
-        });
-     }
-     function deleteSpec(specId){
+                console.log(e);
+            });
+    }
+    function deleteSpec(specId) {
         console.log(specId);
         const specdelete = ({
             specId: specId
         });
-        axios.post('/api/v1/delete/spec',specdelete)
-        .then(res => {
-            if (res.status == 200) {
-                // setSubmitted(true);
+        axios.post('/api/v1/delete/spec', specdelete)
+            .then(res => {
+                if (res.status == 200) {
+                    // setSubmitted(true);
+                    // setLoad(false);
+                }
+            })
+            .catch(e => {
                 // setLoad(false);
-            }
-        })
-        .catch(e => {
-            // setLoad(false);
-            console.log(e);
-        });
-     }
+                console.log(e);
+            });
+    }
     function modifyProduct() {
         const prod = ({
             productId: id,
@@ -180,7 +181,7 @@ export default function UpdateProduct() {
     useEffect(() => {
         getProduct(productid);
     }, ([]));
-    useEffect(() => {});
+    useEffect(() => { });
     return (
         <div className="bg-light">
             <section className="section-content padding-y">
@@ -324,11 +325,11 @@ export default function UpdateProduct() {
                                                             <td>{spec.specDetail}</td>
                                                             <td>{spec.specValue}</td>
                                                             <td>
-                                                                
-                                                                <Popup modal trigger={<Button><i className="bi bi-pencil-square"></i></Button>}>
+
+                                                                <Popup repositionOnResize={true} closeOnEscape={true} trigger={<Button><i className="bi bi-pencil-square"></i></Button>}>
                                                                     <SpecModify spec={spec}></SpecModify>
-                                                               </Popup>
-                                                               <Button onClick={() => deleteSpec(spec.specId)} value={spec.specId} className='btn-danger'><i className="bi bi-trash"></i></Button>
+                                                                </Popup>
+                                                                <Button onClick={() => deleteSpec(spec.specId)} value={spec.specId} className='btn-danger'><i className="bi bi-trash"></i></Button>
                                                                 {/*<Popup modal trigger={<Button className='btn-danger'><i className="bi bi-trash"></i></Button>}>
                                                                     <div>
                                                                         <div className="modal fade" id="exampleModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

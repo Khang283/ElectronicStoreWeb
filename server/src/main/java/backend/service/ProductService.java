@@ -2,21 +2,20 @@ package backend.service;
 
 import backend.dao.*;
 import backend.dto.ProductListDTO;
-import backend.models.Category;
-import backend.models.Company;
-import backend.models.SpecGroup;
+import backend.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import backend.dto.*;
 import backend.dto.InsertProductDTO;
 import backend.dto.ProductListDTO;
-import backend.models.ProductDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import backend.dto.ModifyProductDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ProductService {
     @Autowired
@@ -38,7 +37,7 @@ public class ProductService {
         return productListDTOS;
     }
 
-    public GetProductByIdDTO getProductById(int productId) {
+    public GetProductByIdDTO getProductById(long productId) {
         GetProductByIdDTO product = new GetProductByIdDTO();
         product = productDAO.getProductById(productId);
 
@@ -53,7 +52,7 @@ public class ProductService {
     public boolean deleteProductById(long productId){
         return productDAO.deleteProductById(productId);
     }
-public boolean deleteSpecById(long specId) {return  productDAO.deleteSpecById(specId);}
+    public boolean deleteSpecById(long specId) {return  productDAO.deleteSpecById(specId);}
     public boolean deleteAssetById(long assetId) {return  productDAO.deleteAssetById(assetId);}
     public boolean restoreProductById(long productId){
         return productDAO.restoreProductById(productId);
@@ -94,4 +93,7 @@ public boolean deleteSpecById(long specId) {return  productDAO.deleteSpecById(sp
     public boolean modifySpec(SpecModifyDTO spec) {return productDAO.modifySpecById(spec);}
     public boolean modifyAsset(AssetModifyDTO asset) {return  productDAO.modifyAssetById(asset);}
     public boolean modifyProduct(ProductModifyDTO prod) {return productDAO.modifyProduct(prod);};
+    public Optional<Product>findProductByProductId(long productId){
+        return productDAO.findProductByProductId(productId);
+    }
 }

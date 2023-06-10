@@ -19,6 +19,8 @@ import ProductAdd from "./components/admin/ProductAdd";
 import ConfirmPayment from "./components/Checkout/ConfirmPayment";
 import OrderList from "./components/admin/OrderList";
 import UpdateProduct from "./components/admin/UpdateProduct";
+import OrderDetails from "./components/Order/OrderDetail";
+import OrderDetailAdmin from "./components/admin/OrderDetailAdmin";
 
 
 const router = createBrowserRouter([
@@ -106,6 +108,10 @@ const router = createBrowserRouter([
             {
                 path: 'admin/product/modify/:productid',
                 element: <UpdateProduct />
+            },
+            {
+                path: '/admin/orders/:orderid',
+                element: <OrderDetailAdmin />
             }
 
         ]

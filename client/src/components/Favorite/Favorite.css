@@ -9,3 +9,10 @@
 .fvr-list {
     text-align: center;
   }
+
+  .card-favorite{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    padding: auto;
+  }

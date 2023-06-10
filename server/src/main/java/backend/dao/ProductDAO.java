@@ -98,7 +98,7 @@ public class ProductDAO {
         return productDTo;
     }
 
-    public GetProductByIdDTO getProductById(int productId) {
+    public GetProductByIdDTO getProductById(long productId) {
         List<Product> products=_product.findAll().stream().collect(Collectors.toList());
         GetProductByIdDTO productDTo = new GetProductByIdDTO();
 
@@ -370,6 +370,10 @@ public boolean deleteSpecById(long specId){
     }
     public List<SpecGroup> getListSpecGroup() {
         return _specGroup.findAllSpecGroup();
+    }
+
+    public Optional<Product> findProductByProductId (long productId){
+        return _product.findById(productId);
     }
 
 }

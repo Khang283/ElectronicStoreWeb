@@ -20,6 +20,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
+import AlertTemplate from 'react-alert-template-basic';
 
 const Details = (props) => {
   const alert = useAlert();
@@ -258,6 +259,28 @@ const Details = (props) => {
     }
   }
 
+  const handleFavorite = ()=>{
+    const payload = {
+      productId: id,
+      userId: "",
+    }
+    axios.post('/api/favorite',payload,{
+      headers: {
+        Authorization: `Bearer ${Cookies.get('authToken')}`,
+      }
+    }).then(res=>{
+      if(res.status === 200){
+        alert.success("Đã thêm sản phẩm vào yêu thích");
+      }
+      else{
+        alert.info("Sản phẩm đã nằm trong yêu thích");
+      }
+    }).catch(e=>{
+      console.log(e);
+      alert.error("Đã xảy ra lỗi");
+    })
+  }
+
 
   return (
     <div className='container'>
@@ -326,6 +349,8 @@ const Details = (props) => {
                 {/* {loading ? <Loader /> : <Cart />} */}
                 {/* <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button> */}
                 {/* <a href="#" className='add-cart buy-now'>Buy Now</a> */}
+                &emsp;
+                <button className='btn-danger btn-favorite' onClick={handleFavorite}>Yêu thích</button>
               </div>
             </div>
           </div>

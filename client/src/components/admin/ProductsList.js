@@ -21,7 +21,7 @@ const ProductsList = ({ history }) => {
 
     const [productList,setProductList] = useState([])
     const [loading,setLoad] =useState(true);
-    const [selected , setSelected ] = useState();
+    const [selected , setSelected] = useState(-1);
 
     useEffect(() => {
         axios.get('/api/admin/product',{
@@ -54,29 +54,29 @@ const ProductsList = ({ history }) => {
 
     }, []);
 
-    const deleteProduct = ()=>{
+
+    const deleteProduct = (id)=>{
         const payload = {
             productId: selected
         }
-        console.log(selected);
-
-        axios.delete('/api/admin/product/delete',{
-            headers: {
-                Authorization: `Bearer ${Cookies.get('authToken')}`
-            },
-            data:{
-                productId: selected,
-            }
-        }).then(res=>{
-            if(res.status===200){
-                productList.forEach((product,index)=>{
-                    if(product.productId == selected){
-                        productList.slice(index,1);
-                    }
-                })
-                setProductList(productList);
-            }
-        })
+        console.log(selected)
+        // axios.delete('/api/admin/product/delete',{
+        //     headers: {
+        //         Authorization: `Bearer ${Cookies.get('authToken')}`
+        //     },
+        //     data:{
+        //         productId: id,
+        //     }
+        // }).then(res=>{
+        //     if(res.status===200){
+        //         productList.forEach((product,index)=>{
+        //             if(product.productId == selected){
+        //                 productList.slice(index,1);
+        //             }
+        //         })
+        //         setProductList(productList);
+        //     }
+        // })
     }
 
     const setProducts = () => {
@@ -84,7 +84,7 @@ const ProductsList = ({ history }) => {
             columns: [
                 {
                     label: 'ID',
-                    field: 'id',
+                    field: 'productId',
                     sort: 'asc'
                 },
                 {
@@ -112,7 +112,7 @@ const ProductsList = ({ history }) => {
 
         productList.forEach(product => {
             data.rows.push({
-                id: product.productId,
+                productId: product.productId,
                 name: product.productName,
                 price: `${(product.productPrice).toLocaleString()} VNĐ`,
                 stock: product.productStock,
@@ -139,7 +139,7 @@ const ProductsList = ({ history }) => {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                        <button type="button" className="btn btn-danger" onClick={deleteProduct}  data-dismiss="modal">Xóa</button>
+                                        <button type="button" className="btn btn-danger" onClick={()=>deleteProduct(product.productId)}  data-dismiss="modal">Xóa</button>
                                     </div>
                                 </div>
                             </div>
