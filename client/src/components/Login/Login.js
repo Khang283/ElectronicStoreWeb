@@ -37,13 +37,13 @@ function Login() {
                     }
                     Cookies.set('authToken',token,{expires: 1});
                     dispatch(setUser(user));
-                    alert.success("Tạo tài khoản thành công")
+                    alert.success("Đăng nhập thành công")
                     navigate('/');
                 }
             }
         }).catch(e=>{
             console.log(e);
-            alert.error("Tạo tài khoản không thành công")
+            alert.error("Đăng nhập không thành công")
         })
             
     };

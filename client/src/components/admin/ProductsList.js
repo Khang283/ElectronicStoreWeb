@@ -52,7 +52,7 @@ const ProductsList = ({ history }) => {
         //     dispatch({ type: DELETE_PRODUCT_RESET })
         // }
 
-    }, [productList]);
+    }, []);
 
     const deleteProduct = ()=>{
         const payload = {

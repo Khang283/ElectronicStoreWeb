@@ -80,7 +80,7 @@ function UpdateUser() {
             console.log(e);
         })
 
-    }, [modfify,role]);
+    }, [modfify]);
     const handleUpdate = () => {
         const userRequest = {
             id: user.userId,

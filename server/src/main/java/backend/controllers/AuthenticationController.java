@@ -9,6 +9,7 @@ import backend.service.JwtService;
 import backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,28 +43,15 @@ public class AuthenticationController {
                         .build());
     }
     @PostMapping("/signup")
-    public ResponseEntity<LoginResponseDTO> register(@RequestHeader("Authorization")String accessToken,@RequestBody SignUpRequestDTO user) {
-        String token = accessToken.substring(7);
-        String username = jwtService.extractUsername(token);
-        Optional<User> userr = userService.findUserByUsername(username);
-        LoginResponseDTO loginResponseDTO ;
-        if(user.getRole() == Role.ADMIN){
-            if(userr.get().getRole() == Role.ADMIN){
-                loginResponseDTO = userService.createdAdmin(user);
-            }
-            else{
-                return ResponseEntity.badRequest().build();
-            }
-        }
-        else{
-            loginResponseDTO = userService.createUser(user);
-        }
+    public ResponseEntity<LoginResponseDTO> register(@RequestBody SignUpRequestDTO user) {
+        LoginResponseDTO loginResponseDTO = userService.createUser(user);
         if(loginResponseDTO==null){
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(loginResponseDTO);
     }
      @PostMapping("/admin/signup")
+     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<LoginResponseDTO> adminRegister(@RequestBody SignUpRequestDTO user){
         LoginResponseDTO loginResponseDTO = userService.createdAdmin(user);
         if(loginResponseDTO == null){
