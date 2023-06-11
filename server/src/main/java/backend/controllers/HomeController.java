@@ -22,7 +22,7 @@ public class HomeController {
         if(productListDTOS.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(productListDTOS);
     }
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity<String>getDefault(){
         return ResponseEntity.status(200).body("Hello");
     }
