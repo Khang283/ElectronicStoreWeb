@@ -1,0 +1,6 @@
+opencv-python==3.4.0.14
+numpy==1.16.0
+matplotlib==2.2.3
+SciPy 
+uvicorn
+fastapi

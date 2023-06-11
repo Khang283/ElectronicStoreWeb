@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class addReviewDTO {
+public class UpdateReviewDTO {
     private String reviewContent;
     private Long reviewRating;
-    private Long userId;
-    private Long productId;
     private Long reviewId;
 }

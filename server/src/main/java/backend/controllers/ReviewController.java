@@ -1,9 +1,6 @@
 package backend.controllers;
 
-import backend.dto.GetCommentByProductIdDTO;
-import backend.dto.GetReviewDTO;
-import backend.dto.InsertProductDTO;
-import backend.dto.addReviewDTO;
+import backend.dto.*;
 import backend.service.CommentService;
 import backend.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +33,22 @@ public class ReviewController {
     public ResponseEntity<String>insertReview(@RequestBody addReviewDTO insertReviewDTO){
         if (reviewService.insertReview(insertReviewDTO)) {
             return ResponseEntity.ok("Đã thêm thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("/v1/product/updatereview")
+    public ResponseEntity<String>updateReview(@RequestBody UpdateReviewDTO updateReviewDTO){
+        if (reviewService.updateReview(updateReviewDTO)) {
+            return ResponseEntity.ok("Đã sửa thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @DeleteMapping("/v1/product/deletereview/{reviewId}")
+    public ResponseEntity<String>deleteReview(@PathVariable("reviewId") int reviewId){
+        if (reviewService.deleteReview((long) reviewId)) {
+            return ResponseEntity.ok("Đã xóa thành công");
         }
         return ResponseEntity.badRequest().build();
     }
