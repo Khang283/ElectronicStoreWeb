@@ -22,4 +22,18 @@ public interface IReview extends JpaRepository<Review,Long> {
                     "VALUES (:reviewContent, :reviewRating, :userId, :productId)", nativeQuery = true)
     void insertReview(@Param("reviewContent") String reviewContent, @Param("reviewRating") Long reviewRating,
                             @Param("userId") Long userId, @Param("productId") Long productId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE reviews\n" +
+            "SET review_content=:reviewContent, review_rating=:reviewRating\n" +
+            "WHERE review_id=:reviewId", nativeQuery = true)
+    void updateReview(@Param("reviewContent") String reviewContent, @Param("reviewRating") Long reviewRating,
+                      @Param("reviewId") Long reviewId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM reviews\n" +
+            "WHERE review_id=:reviewId", nativeQuery = true)
+    void deleteReview(@Param("reviewId") Long reviewId);
 }
