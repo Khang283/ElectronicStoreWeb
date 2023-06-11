@@ -11,15 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.lang.Long;
 public interface IProductAsset extends JpaRepository<ProductAsset, Long> {
-        @Modifying
-    @Transactional
-    @Query(value = "update product_asset, assets, product\n" +
-            "SET product_asset.asset_role = :assetRole ,assets.asset_path = :assetPath, assets.asset_name= :assetName,assets.asset_type=:assetType\n" +
-            "WHERE product.product_id = product_asset.product_id\n" +
-            "and assets.asset_id = product_asset.asset_id\n" +
-            "and product.product_id = :productId\n" +
-            "and asset.asset_id = :assetId", nativeQuery = true)
-    void modifyProductAsset(@Param("productAssetId") Long productAssetId,@Param("productId") Long productId , @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
     @Modifying
     @Transactional
     @Query(value =  "UPDATE product_asset\n" +

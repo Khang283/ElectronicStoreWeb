@@ -73,9 +73,6 @@ public boolean deleteSpecById(long specId) {return  productDAO.deleteSpecById(sp
     public boolean insertProduct(InsertProductDTO insertProductDTO) {
         return productDAO.insertProduct(insertProductDTO);
     }
-    public boolean modifyProductByID(ModifyProductDTO modProd){
-        return productDAO.modifyProductById(modProd);
-    }
 
     public List<ProductListDTO>getAdminProduct(){
         return productDAO.getAdminProduct();
