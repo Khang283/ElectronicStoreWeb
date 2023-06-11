@@ -11,18 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.lang.Long;
 public interface IProductAsset extends JpaRepository<ProductAsset, Long> {
-        @Modifying
-    @Transactional
-    @Query(value = "UPDATE product_asset \n" + 
-            "SET asset_role = :assetRole\n" +
-            "WHERE product_id = :productId AND asset_id = :assetId AND product_asset_id = :productAssetId", nativeQuery = true)
-    void modifyProductAsset(@Param("productAssetId") Long productAssetId,@Param("productId") Long productId , @Param("assetId") Long assetId, @Param("assetRole") String assetRole);
     @Modifying
     @Transactional
     @Query(value =  "UPDATE product_asset\n" +
-                    "SET product_asset.deleted = :deleted \n" +
+                    "SET product_asset.deleted = 1\n" +
                     "WHERE product_id = :productId AND asset_id = :assetId AND asset_role = :assetRole", nativeQuery = true)
-    void setDeleteAsset(@Param("productId")long productId,@Param("assetId") Long assetId, @Param("assetRole") String assetRole, @Param("deleted")boolean deleted);
+    void setDeleteAsset(@Param("productId")long productId,@Param("assetId") Long assetId, @Param("assetRole") String assetRole);
     @Query(value = "SELECT product_asset_id\n" +
             "FROM product_asset\n" +
             "WHERE product_id = :productId\n" +
@@ -46,6 +40,6 @@ public interface IProductAsset extends JpaRepository<ProductAsset, Long> {
             "FROM assets,product,product_asset\n" +
             "WHERE assets.asset_id=product_asset.asset_id\n" +
             "AND product.product_id= product_asset.product_id\n" +
-            "AND product_asset.product_id = :productId \n" ,nativeQuery = true)
+            "AND product_asset.product_id = :productId\n",nativeQuery = true)
     List<ProductAsset> getListAssetByProductId(@Param("productId") int productId);
 }
