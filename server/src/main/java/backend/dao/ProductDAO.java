@@ -194,7 +194,7 @@ public boolean deleteSpecById(long specId){
         }
     return true;
 }
-    public boolean deleteAssetById(long assetId){
+    public boolean deleteAssetById(long assetId{
         try{
             _asset.deleteAsset(assetId);
         }catch(Exception e){
@@ -315,7 +315,7 @@ public boolean deleteSpecById(long specId){
                 _productAsset.modifyProductAsset(lstt.getProductAssetId(),modProd.getProductId(),lst.getAssetId(),lst.getAssetRole());}}
                }
                 else if(lst.isDeleted() == true){
-                    _productAsset.setDeleteAsset(modProd.getProductId(), lst.getAssetId(),lst.getAssetRole(), true);
+                    _productAsset.setDeleteAsset(modProd.getProductId(), lst.getAssetId(),lst.getAssetRole());
                 }
             }
             for(ModifySpecDTO lst : modProd.getProductDetail()){

@@ -63,6 +63,27 @@ export default function UpdateProduct() {
                 console.log(e);
             });
     }
+    const getSpec = id => {
+        ProductServices.getProductById(id)
+            .then(response => {
+                
+                setSpec(response.data.specs);
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
+    const getAsset = id => {
+        ProductServices.getProductById(id)
+            .then(response => {
+                setAsset(response.data.assets);
+                console.log(response.data);
+            })
+            .catch(e => {
+                console.log(e);
+            });
+    }
     const handleClose = () => {
         setShow(false);
     }
@@ -180,9 +201,12 @@ export default function UpdateProduct() {
     useEffect(() => {
         getProduct(productid);
     }, ([]));
-    useEffect(() => {});
+    useEffect(()=> {})
+    useEffect(() => {getSpec(productid)}, ([spec]));
+    useEffect(() => {getAsset(productid)}, ([asset]));
     return (
         <div className="bg-light">
+            <MetaData title={'Sửa sản phẩm'} />
             <section className="section-content padding-y">
                 <div className="container">
 
