@@ -1,0 +1,54 @@
+product_id,product_name,product_version,product_price,company_id,category_id,product_stock,product_status,product_sales,product_rating,product_sold
+1,iPhone 14 Pro Max,128GB,27190000,1,1,500,Còn bán,0,0,0
+2,Laptop Asus TUF Gaming FX506LHB-HN188W,i5 10300H/8GB/512GB/15.6'FHD/GeForce GTX 1650 4GB/Win11,15690000,4,2,500,Còn bán,0,0,17
+3,Điện thoại di động Samsung Galaxy S21 Ultra,128GB ,10690000,2,1,500,Còn bán,0%,0,12
+7,Chuột Logitech G502 HERO,,1550000,14,5,500,Còn bán,0%,0,0
+8,Chuột Logitech G102 Lightsync,,550000,14,5,500,Còn bán,0%,0,0
+9,Chuột Logitech G402 Hyperion Fury,,999000,14,5,500,Còn bán,0%,0,0
+10,Chuột Logitech MX Master 3,,2799000,14,5,500,Còn bán,0%,0,0
+11,iPhone 13 Pro Max,128GB,19290000,1,1,500,Còn bán,10%,0,0
+12,iPhone 13 Pro ,128GB,16290000,1,1,500,Còn bán,0%,0,0
+13,iPhone 13,128GB,14000000,1,1,500,Còn bán,0%,0,0
+14,iPhone 14 Pro ,128GB,24999000,1,1,500,Còn bán,0%,0,0
+15,iPhone 14,128GB,22500000,1,1,500,Còn bán,30%,0,0
+16,ASUS Zenbook 14X OLED UM5401QA-KN209W,Win 11,18790000,4,2,500,Còn bán,0%,0,0
+17,Asus ROG Zephyrus G14,Win 10,17000000,4,2,500,Còn bán,0%,0,0
+18,Asus VivoBook S15,Win 10,20000000,4,2,500,Còn bán,0%,0,0
+19,Dell XPS 13,Win 10,26000000,3,2,500,Còn bán,0%,0,0
+20,Dell Inspiron 15,Win 10,15000000,3,2,500,Còn bán,0%,0,0
+21,Dell Latitude 7400,Win 10,32000000,3,2,500,Còn bán,0%,0,0
+22,Dell Alienware m15,Win 10,45000000,3,2,500,Còn bán,0%,0,0
+23,Dell G3 15,Win 10,21000000,3,2,500,Còn bán,0%,0,0
+24,Dell Vostro 14,Win 10,15000000,3,2,500,Còn bán,0%,0,0
+25,Dell Precision 5550,Win 10,49000000,3,2,500,Còn bán,0%,0,0
+26,Dell XPS 15,Win 10,35550000,3,2,500,Còn bán,0%,0,0
+27,Chuột Asus ROG Gladius III,,2639000,4,5,500,Còn bán,0%,0,0
+28,Chuột Asus ROG Chakram,,1790000,4,5,500,Còn bán,0%,0,0
+29,Chuột Asus ROG Pugio II,,900000,4,5,500,Còn bán,0%,0,0
+30,Chuột Asus TUF Gaming M5,,1455000,4,5,500,Còn bán,0%,0,0
+31,Chuột ASUS Cerberus,,1000000,4,5,500,Còn bán,0%,0,0
+32,Chuột ASUS ROG Strix Impact II,,500000,4,5,500,Còn bán,0%,0,0
+33,Chuột Dell Wireless Mouse-WM126,,280000,3,5,500,Còn bán,0%,0,0
+34,Chuột Dell Premier Wireless Mouse-WM527,,800000,3,5,500,Còn bán,0%,0,0
+35,Chuột Dell Alienware Elite Gaming Mouse-AW958,,1820000,3,5,500,Còn bán,5%,0,0
+36,Chuột Dell Bluetooth Mouse-WM615,,600000,3,5,500,Còn bán,0%,0,0
+37,Bàn phím Logitech G Pro Mechanical Gaming ,,2220000,15,4,500,Còn bán,0%,0,0
+38,Bàn phím Logitech MX Keys Advanced Wireless Illuminated,,1800000,15,4,500,Còn bán,0%,0,0
+39,Bàn phím Logitech K840 Mechanical,,1500000,15,4,500,Còn bán,0%,0,0
+40,Bàn phím Logitech Craft Advanced Wireless,,3888000,15,4,500,Còn bán,0%,0,0
+41,Bàn phím Razer BlackWidow Elite Mechanical Gaming,,2350000,16,4,500,Còn bán,0%,0,0
+42,Bàn phím Razer Huntsman Elite Opto-Mechanical Gaming,,3700000,16,4,500,Còn bán,0%,0,0
+43,Bàn phím Razer Ornata Chroma Gaming,,1700000,16,4,500,Còn bán,0%,0,0
+44,Bàn phím Razer Cynosa Chroma,,1100000,16,4,500,Còn bán,0%,0,0
+45,Bàn phím Corsair K95 RGB Platinum Mechanical Gaming ,,3450000,17,4,500,Còn bán,0%,0,0
+46,Bàn phím Corsair K70 RGB MK.2 Mechanical Gaming,,2320000,17,4,500,Còn bán,0%,0,0
+47,Bàn phím Corsair Strafe RGB Mechanical Gaming,,2000000,17,4,500,Còn bán,0%,0,0
+48,Bàn phím Corsair K68 Mechanical Gaming,,1799000,17,4,500,Còn bán,0%,0,0
+49,MacBook Air (M1 Chip),,22000000,1,2,500,Còn bán,0%,0,0
+50,MacBook Pro 13-inch (M1 Chip),,26780000,1,2,500,Còn bán,0%,0,0
+51,MacBook Pro 16-inch (Intel),,51000000,1,2,500,Còn bán,0%,0,0
+52,iMac 24-inch (M1 Chip),,27320000,1,2,500,Còn bán,0%,0,0
+53,Apple iPad Pro,,21190000,1,3,500,Còn bán,0%,0,0
+54,Samsung Galaxy Tab S7+,,22300000,2,3,500,Còn bán,0%,0,0
+55,Microsoft Surface Pro 7,,19990000,14,3,500,Còn bán,0%,0,0
+56,Huawei MatePad Pro,,18750000,8,3,500,Còn bán,0%,0,0

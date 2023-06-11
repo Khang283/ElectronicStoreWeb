@@ -21,8 +21,9 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import { useSelector } from 'react-redux';
 import AlertTemplate from 'react-alert-template-basic';
+import { current } from '@reduxjs/toolkit';
 
-const Details = (props) => {
+const Details = () => {
   const alert = useAlert();
 
   const [slideIndex, setSlideIndex] = useState(1);
@@ -97,8 +98,6 @@ const Details = (props) => {
 
   const getListProduct = () => {
     setLoadList(true);
-    console.log(company);
-    // console.log(`/api/v1/product/${category}?limit=8&company=${company}`);
     axios.get(`/api/v1/product/${category}?limit=8&company=${company}`)
       .then(res => {
         setListProduct(res.data);
@@ -117,11 +116,10 @@ const Details = (props) => {
   }, [Product]);
 
   const getListReview = () => {
-    setLoadList(true);
-    // console.log(`/api/v1/product/${category}?limit=8&company=${company}`);
+    setLoadReview(true);
     axios.get(`/api/v1/product/${params.id}/review`)
       .then(res => {
-        setListReview(res.data);
+        setListReview(res.data.reverse());
         setLoadReview(false);
         setRVSubmit(true);
         console.log(res.data);
@@ -131,8 +129,6 @@ const Details = (props) => {
         console.log(e);
       })
   }
-  //
-  console.log(listProduct);
 
   useEffect(() => {
     if (!slideRef.current) return;
@@ -175,7 +171,7 @@ const Details = (props) => {
   }, [width, slideIndex])
 
   const handleAddToCart = () => {
-    console.log(id);
+    // console.log(id);
     const payload = {
       productId: id,
     }
@@ -200,7 +196,7 @@ const Details = (props) => {
   useEffect(() => {
     const getListAsset = () => {
       setListAsset(listAsset.filter((item) => item.assetRole !== 'icon'));
-      console.log(listAsset);
+      // console.log(listAsset);
     }
     getListAsset();
   }, [Product])
@@ -209,55 +205,128 @@ const Details = (props) => {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    setreviewContent('');
+    setreviewRating('');
+    setReviewId(0);
+    setEdit(false);
+  };
   const handleShow = () => setShow(true);
 
   const [reviewContent, setreviewContent] = useState('');
-  const [reviewRating, setreviewRating] = useState(0);
+  const [reviewRating, setreviewRating] = useState('');
 
   function reviewContentchane(event) {
     setreviewContent(event.target.value);
   }
+
+  useEffect(() => {
+    const getreviewRating = () => {
+      if (parseInt(reviewRating) > 5 || parseInt(reviewRating) < 1)
+        setreviewRating('');
+    }
+    getreviewRating();
+  }, [reviewRating])
+
   function reviewRatingchane(event) {
     setreviewRating(event.target.value);
   }
 
-  // const { userid } = useParams();
   const userState = useSelector(state => state.user);
 
-
   function addReview() {
-    if (reviewRating == "" || reviewContent == '')
-      alert("Vui lòng nhập đủ thông tin!!!");
+    if (reviewRating === "" || reviewContent === '') {
+      window.alert("Vui lòng nhập đủ thông tin!!!");
+    }
     else {
-      const review = ({
-        productId: parseInt(params.id),
-        userId: userState.userId,
-        reviewRating: parseInt(reviewRating),
-        reviewContent: reviewContent,
-      })
-      console.log(review);
+      if (edit === false) {
+        const review = ({
+          productId: parseInt(params.id),
+          userId: userState.userId,
+          reviewRating: parseInt(reviewRating),
+          reviewContent: reviewContent,
+        })
+        // console.log(review);
+        axios.post('/api/v1/product/addreview', review)
+          .then(res => {
+            if (res.status == 200) {
+              // setSubmitted(true);
+              // console.log(res.data);
+              // setLoad(false);
+              setreviewContent('');
+              setreviewRating('');
 
-      axios.post('/api/v1/product/addreview', review)
+              getListReview();
+
+              setShow(false);
+            }
+          })
+          .catch(e => {
+            // setLoad(false);
+            console.log(e);
+          })
+      }
+      else {
+        const reviewEdit = {
+          reviewRating: parseInt(reviewRating),
+          reviewContent: reviewContent,
+          reviewId: reviewId
+        }
+
+        axios.put('/api/v1/product/updatereview', reviewEdit)
+          .then(res => {
+            if (res.status == 200) {
+              // setSubmitted(true);
+              // console.log(res.data);
+              // setLoad(false);
+              setreviewContent('');
+              setreviewRating('');
+              setReviewId(0);
+
+              getListReview();
+
+              setShow(false);
+            }
+          })
+          .catch(e => {
+            // setLoad(false);
+            console.log(e);
+          })
+      }
+    }
+
+  }
+
+  function removeReview(reviewId) {
+    const confirmDelete = window.confirm(`Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?`);
+    console.log(reviewId);
+    if (confirmDelete) {
+      const id = reviewId;
+      axios.delete('/api/v1/product/deletereview/' + id)
         .then(res => {
           if (res.status == 200) {
             // setSubmitted(true);
             // console.log(res.data);
             // setLoad(false);
-            setreviewContent('');
-            setreviewRating(0);
-
-            setShow(false);
+            getListReview();
           }
         })
         .catch(e => {
           // setLoad(false);
           console.log(e);
-        });
-
-
+        })
     }
   }
+  const [edit, setEdit] = useState(false);
+  const [reviewId, setReviewId] = useState(0);
+
+  function updateReview(review) {
+    setreviewContent(review.reviewContent);
+    setreviewRating(review.reviewRating);
+    setShow(true);
+    setEdit(true);
+    setReviewId(review.reviewId);
 
   const handleFavorite = ()=>{
     const payload = {
@@ -281,6 +350,8 @@ const Details = (props) => {
     })
   }
 
+  }
+  // console.log(listProduct);
 
   return (
     <div className='container'>
@@ -345,7 +416,7 @@ const Details = (props) => {
               </div>
 
               <div className='cart-btns'>
-              <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
+                <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button>
                 {/* {loading ? <Loader /> : <Cart />} */}
                 {/* <button className='add-cart' onClick={handleAddToCart}>Thêm vào giỏ hàng</button> */}
                 {/* <a href="#" className='add-cart buy-now'>Buy Now</a> */}
@@ -403,13 +474,19 @@ const Details = (props) => {
                       </tr>
                     ))
                   }</tbody>
-              </Table></div>
+              </Table>
+            </div>
 
           </div>
 
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Modal heading</Modal.Title>
+              {
+                edit === true ?
+                  <Modal.Title>Sửa đánh giá</Modal.Title> :
+                  <Modal.Title>Thêm đánh giá</Modal.Title>
+              }
+
             </Modal.Header>
             <Modal.Body>
               <Form>
@@ -428,8 +505,10 @@ const Details = (props) => {
               <Button variant="secondary" onClick={handleClose}>
                 Đóng
               </Button>
-              <Button variant="primary" onClick={addReview}>
-                Thêm
+              <Button variant="primary" onClick={() => addReview()}>
+                {
+                  edit === true ? 'Sửa': 'Thêm'
+                }
               </Button>
             </Modal.Footer>
           </Modal>
@@ -440,9 +519,13 @@ const Details = (props) => {
               <Col md={4}>
                 <div className='infotext'>Đánh giá sản phẩm:</div>
               </Col>
-              <Col md={{ span: 4, offset: 4 }}>
-                <Button variant="success" size='lg' onClick={handleShow}>Đánh giá</Button>
-              </Col>
+              {
+                userState.userId !== -1 ?
+                  <Col md={{ span: 4, offset: 4 }}>
+                    <Button variant="success" size='lg' onClick={handleShow}>Đánh giá</Button>
+                  </Col> : <Col></Col>
+              }
+
             </Row>
 
             <br />
@@ -458,14 +541,15 @@ const Details = (props) => {
                       <h3>Không có đánh giá</h3>
                     </div>
                   </div> :
-                  listReview.map((review) => {
+                  listReview.map((review, index) => {
+                    if (index >= 10) return (<div />);
                     return (
                       <div>
                         <Row>
                           <Col xs="auto">
                             <div><i class="bi bi-person-circle" ></i> </div>
                           </Col>
-                          <Col xs={1} md={2}>
+                          <Col xs="auto">
                             <h5><strong>{review.userName}</strong></h5>
                             <div className='product-rating'>
                               {Array.from({ length: 5 }).map((_, idx) => (
@@ -475,6 +559,22 @@ const Details = (props) => {
                             <div>{review.reviewContent}</div>
                             <br></br>
                           </Col>
+
+                          {
+                            parseInt(userState.userId) === parseInt(review.userId) ?
+                              <Col xs="auto">
+                                {/* <Button variant="danger" size="sm" onClick={() => assetRemove(Asset.assetName)}>
+                              <i class="bi bi-trash"></i>
+                            </Button> */}
+                                <Button variant="warning" size="sm" onClick={() => updateReview(review)}>
+                                  <i class="bi bi-pencil-square"></i>
+                                </Button>
+                                <Button variant="danger" size="sm" onClick={() => removeReview(review.reviewId)}>
+                                  <i class="bi bi-trash"></i>
+                                </Button>
+                              </Col> : <Col></Col>
+                          }
+
                         </Row>
                       </div>
                     );

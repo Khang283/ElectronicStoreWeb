@@ -1,9 +1,6 @@
 package backend.dao;
 
-import backend.dto.GetReviewDTO;
-import backend.dto.InsertAssetDTO;
-import backend.dto.InsertSpecDTO;
-import backend.dto.addReviewDTO;
+import backend.dto.*;
 import backend.models.Review;
 import org.hibernate.tool.schema.spi.SqlScriptException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,7 @@ public class ReviewDAO {
             reviewDTO.setReviewId(lst.getReviewId());
             reviewDTO.setLikes(lst.getLikes());
             reviewDTO.setUserId(lst.getUserId());
+            reviewDTO.setReviewId(lst.getReviewId());
             reviewDTO.setUserName(_user.getUserByID(Math.toIntExact(lst.getUserId())).getUsername());
 
             listReviewDTO.add(reviewDTO);
@@ -47,4 +45,26 @@ public class ReviewDAO {
         }
         return true;
     }
+
+    public boolean updateReview(UpdateReviewDTO review) {
+        try {
+            _review.updateReview(review.getReviewContent(), review.getReviewRating(), review.getReviewId());
+        }
+        catch(SqlScriptException e){
+            System.out.println("Error: "+e);
+        }
+        return true;
+    }
+
+    public boolean deleteReview(Long reviewId) {
+        try {
+            _review.deleteReview(reviewId);
+        }
+        catch(SqlScriptException e){
+            System.out.println("Error: "+e);
+        }
+        return true;
+    }
+
+
 }
