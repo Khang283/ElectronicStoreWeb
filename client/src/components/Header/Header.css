@@ -52,19 +52,13 @@
       visibility: visible;
       height: 100%;
     }
-    nav ul {
-      list-style: none;
-      text-align: center;
-    }
-    nav ul li {
-      display: inline-block;
-    }
     nav ul li a {
       display: block;
-      padding: 15px;
+      padding: 10px;
+      text-align: center;
       text-decoration: none;
-      color: #aaa;
-      font-weight: 800;
+      color: #F1C40F;
+      font-weight: 600;
       text-transform: uppercase;
       margin: 0 10px;
     }

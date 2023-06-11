@@ -1,16 +1,21 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { Image } from 'react-bootstrap';
 import {
     CDBSidebar,
-    CDBSidebarContent,
-    CDBSidebarFooter,
     CDBSidebarHeader,
-    CDBSidebarMenu,
     CDBSidebarMenuItem,
+    CDBSidebarContent,
+    CDBSidebarMenu,
+    CDBSidebarSubMenu,
+    CDBSidebarFooter,
+    CDBBadge,
+    CDBContainer,
+    CDBSidebarCTA,
   } from 'cdbreact';
 const Sidebar = () => {
-    return (
-        <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial'}} className="sidebar-wrapper">
+    return ( 
+        <div style={{ display: 'flex', textColor:"#fff", backgroundColor: '#333', height: '100vh', overflow: 'scroll initial'}} className="sidebar-wrapper">
             <nav id="sidebar" textColor="#fff" backgroundColor="#333">
                 <ul className="list-unstyled components">
                     <li>
