@@ -328,6 +328,7 @@ const Details = () => {
     setEdit(true);
     setReviewId(review.reviewId);
 
+  }
   const handleFavorite = ()=>{
     const payload = {
       productId: id,
@@ -350,7 +351,6 @@ const Details = () => {
     })
   }
 
-  }
   // console.log(listProduct);
 
   return (
