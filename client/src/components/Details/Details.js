@@ -71,8 +71,8 @@ const Details = () => {
       .then(response => {
         setProduct(response.data);
         setListAsset(response.data.assets);
-        setCompany(response.data.company);
-        setCategory(response.data.category);
+        // setCompany(response.data.company);
+        // setCategory(response.data.category);
         console.log(response.data);
       })
       .catch(e => {
@@ -89,8 +89,8 @@ const Details = () => {
   //list
   const [listProduct, setListProduct] = useState([]);
   const [loadingList, setLoadList] = useState(false);
-  const [company, setCompany] = useState('');
-  const [category, setCategory] = useState('');
+  // const [company, setCompany] = useState('');
+  // const [category, setCategory] = useState('');
 
   useEffect(() => {
     getListProduct();
@@ -98,7 +98,7 @@ const Details = () => {
 
   const getListProduct = () => {
     setLoadList(true);
-    axios.get(`/api/v1/product/${category}?limit=8&company=${company}`)
+    axios.get(`http://localhost:8888/search?q=${params.id}`)
       .then(res => {
         setListProduct(res.data);
         setLoadList(false);
@@ -107,6 +107,18 @@ const Details = () => {
         console.log(e);
       })
   }
+
+  // const getListProduct = () => {
+  //   setLoadList(true);
+  //   axios.get(`/api/v1/product/${category}?limit=8&company=${company}`)
+  //     .then(res => {
+  //       setListProduct(res.data);
+  //       setLoadList(false);
+  //       console.log(res.data);
+  //     }).catch(e => {
+  //       console.log(e);
+  //     })
+  // }
   const [listReview, setListReview] = useState([]);
   const [loadingReview, setLoadReview] = useState(false);
   const [isRVSubmit, setRVSubmit] = useState(false);
@@ -589,7 +601,7 @@ const Details = () => {
 
         <div className="container div-list">
           <div >
-            <h2>SẢN PHẨM CÙNG HÃNG</h2>
+            <h2>SẢN PHẨM GỢI Ý</h2>
 
           </div>
           {

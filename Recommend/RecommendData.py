@@ -12,27 +12,25 @@ def clean_text(author):
     return result
 
 # doc file
-df = pd.read_csv('data3.csv')
-    #in 5 dòng đầu file excel
-# df.head()
+df = pd.read_csv('data.csv')
 
 df = df.reset_index(drop=True)
 
 # df.corr()
 # bỏ cột không cần
 
-# df= df.drop(columns=['product_stock', 'product_rating', 'product_sales'])
+df= df.drop(columns=['productPrice', 'productIcon'])
 
 df = df.reset_index()
 df = df.drop('index',axis=1)
 
 df['category'] = df['category'].apply(clean_text)
-df['product_name'] = df['product_name'].apply(clean_text)
-df['product_version'] = df['product_version'].apply(clean_text)
+df['productName'] = df['productName'].apply(clean_text)
+df['productVersion'] = df['productVersion'].apply(clean_text)
 df['company'] = df['company'].apply(clean_text)
 
 
-df2 = df.drop(columns=['product_id'])
+df2 = df.drop(columns=['productId'])
 # df2['data'] = df['product_name']
 df2['data'] = df2[df2.columns[1:]].apply(
     lambda x: ' '.join(x.dropna().astype(str)),
@@ -50,5 +48,5 @@ new_tfidf_matrix = tf.fit_transform(df2['data'])
 
 similarities = cosine_similarity(new_tfidf_matrix)
 
-df = pd.DataFrame(similarities, columns=df['product_id'], index=df['product_id']).reset_index()
+df = pd.DataFrame(similarities, columns=df['productId'], index=df['productId']).reset_index()
 df.to_csv('indexing.csv')

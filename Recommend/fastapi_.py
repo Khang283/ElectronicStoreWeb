@@ -18,10 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# def clean_text(author):
-#     result = str(author).lower()
-#     return result
-
 @app.get("/search")
 async def search(q: str = Query(None, min_length=1)):
 
@@ -32,13 +28,27 @@ async def search(q: str = Query(None, min_length=1)):
     # search
     # q = clean_text(q)
     # product = 'điện thoại di động samsung galaxy s21 ultra'
-    recommendations = pd.DataFrame(df.nlargest(9,q)['product_id'])
-    recommendations = recommendations[recommendations['product_id']!=int(q)]
+
+    recommendations = pd.DataFrame(df.nlargest(9,q)['productId'])
+    recommendations = recommendations[recommendations['productId']!=int(q)]
     print(recommendations)
-    
-    # res = [recommendations['product_name'].to_list()]
+
+    data = pd.read_csv('data.csv')
+    data = data.fillna('')
+    data = data.to_dict('records')
+    listId = recommendations['productId'].tolist()
+
+    listPro = []
+    for pro in data:
+        if pro['productId'] in listId:
+            listPro.append(pro)
+            # print(pro)
+
+    # print(listPro)
    
-    return recommendations['product_id'].to_list()
+    return listPro
+    # res = [recommendations['product_name'].to_list()]
+    # return recommendations['productId'].to_list()
     # return {"result": res}
     
 
