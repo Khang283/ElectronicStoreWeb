@@ -19,14 +19,14 @@ df = df.reset_index(drop=True)
 # df.corr()
 # bỏ cột không cần
 
-df= df.drop(columns=['productPrice', 'productIcon'])
+df= df.drop(columns=['productPrice', 'productIcon', 'productVersion'])
 
 df = df.reset_index()
 df = df.drop('index',axis=1)
 
 df['category'] = df['category'].apply(clean_text)
 df['productName'] = df['productName'].apply(clean_text)
-df['productVersion'] = df['productVersion'].apply(clean_text)
+# df['productVersion'] = df['productVersion'].apply(clean_text)
 df['company'] = df['company'].apply(clean_text)
 
 

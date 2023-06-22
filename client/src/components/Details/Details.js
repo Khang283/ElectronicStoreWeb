@@ -224,7 +224,16 @@ const Details = () => {
     setReviewId(0);
     setEdit(false);
   };
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    const log =1;
+    listReview.map((review) => {
+      if (review.userId === userState.userId) {
+        alert.success("Bạn đã đánh giá.");
+        log = 0;
+      }
+    })
+    setShow(log);
+  };
 
   const [reviewContent, setreviewContent] = useState('');
   const [reviewRating, setreviewRating] = useState('');
@@ -272,6 +281,7 @@ const Details = () => {
               getListReview();
 
               setShow(false);
+              alert.success("Bạn đã đánh giá thành công.");
             }
           })
           .catch(e => {
@@ -322,6 +332,7 @@ const Details = () => {
             // console.log(res.data);
             // setLoad(false);
             getListReview();
+            alert.error("Xóa thành công.");
           }
         })
         .catch(e => {
