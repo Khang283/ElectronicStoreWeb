@@ -121,7 +121,7 @@ function Header() {
               </Link>
             } id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <Link to={'/laptop/hp'} className="textdropdown">HP</Link>
+                <Link to={'/laptop/asus'} className="textdropdown">Asus</Link>
               </NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu">
                 <Link to={'/laptop/dell'} className="textdropdown">Dell</Link>

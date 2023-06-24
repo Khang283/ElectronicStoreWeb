@@ -491,13 +491,13 @@ const Details = () => {
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Form.Label>Dánh giá:</Form.Label>
-                  <Form.Control type="number" max={5} placeholder="Tên thông số" value={reviewRating} onChange={reviewRatingchane} />
+                  <Form.Label>Đánh giá</Form.Label>
+                  <Form.Control type="number" max={5} placeholder="" value={reviewRating} onChange={reviewRatingchane} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                  <Form.Label>Nội dung:</Form.Label>
-                  <Form.Control type="text" placeholder="Chi tiết thông số" onChange={reviewContentchane} value={reviewContent} />
+                  <Form.Label>Nội dung</Form.Label>
+                  <Form.Control type="text" placeholder="" onChange={reviewContentchane} value={reviewContent} />
                 </Form.Group>
               </Form>
             </Modal.Body>

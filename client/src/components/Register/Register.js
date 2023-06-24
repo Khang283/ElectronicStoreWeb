@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { setUser } from '../../reducer/userReducer';
+import { useAlert } from 'react-alert';
 
 function RegistrationForm() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function RegistrationForm() {
   const [gender,setGender] = useState('');
   const [dob,setDob] = useState('');
   const dispatch = useDispatch();
+  const alert = useAlert();
   
   function validUserEmail(email){
     let validText = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gm ;
@@ -49,7 +51,7 @@ function RegistrationForm() {
 
   function handleNewAccountRequest() {
     if(!validUser()){
-      alert("Xin hãy nhập lại thông tin");
+      alert.error("Xin hãy kiểm tra lại thông tin");
       return ;
     }
     let date = new Date(dob);
