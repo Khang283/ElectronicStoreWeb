@@ -15,6 +15,6 @@ nếu không được thì chạy tường lệnh :
  # Chạy ứng dụng
 - Sau khi cài đặt cái gói phụ trợ bạn có thể chạy ứng dụng bằng lênh sau
 - taoj data:
-        python RecommentData.py
+        python RecommendData.py
 - chay api
         python fastapi_.py

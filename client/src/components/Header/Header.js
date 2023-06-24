@@ -81,6 +81,7 @@ function Header() {
           <Link to={'/'} className="nav-link">
             {/*<img src={require('../logo.png')} alt="logo" width={30} height={30}/>*/}
             <Image src="../logo.png" alt="logo.png" ></Image>
+            <Image src="../logo.png" alt="logo.png" ></Image>
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />

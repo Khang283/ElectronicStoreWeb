@@ -71,8 +71,8 @@ const Details = () => {
       .then(response => {
         setProduct(response.data);
         setListAsset(response.data.assets);
-        setCompany(response.data.company);
-        setCategory(response.data.category);
+        // setCompany(response.data.company);
+        // setCategory(response.data.category);
         console.log(response.data);
       })
       .catch(e => {
@@ -89,8 +89,8 @@ const Details = () => {
   //list
   const [listProduct, setListProduct] = useState([]);
   const [loadingList, setLoadList] = useState(false);
-  const [company, setCompany] = useState('');
-  const [category, setCategory] = useState('');
+  // const [company, setCompany] = useState('');
+  // const [category, setCategory] = useState('');
 
   useEffect(() => {
     getListProduct();
@@ -98,7 +98,7 @@ const Details = () => {
 
   const getListProduct = () => {
     setLoadList(true);
-    axios.get(`/api/v1/product/${category}?limit=8&company=${company}`)
+    axios.get(`http://localhost:8888/search?q=${params.id}`)
       .then(res => {
         setListProduct(res.data);
         setLoadList(false);
@@ -107,6 +107,18 @@ const Details = () => {
         console.log(e);
       })
   }
+
+  // const getListProduct = () => {
+  //   setLoadList(true);
+  //   axios.get(`/api/v1/product/${category}?limit=8&company=${company}`)
+  //     .then(res => {
+  //       setListProduct(res.data);
+  //       setLoadList(false);
+  //       console.log(res.data);
+  //     }).catch(e => {
+  //       console.log(e);
+  //     })
+  // }
   const [listReview, setListReview] = useState([]);
   const [loadingReview, setLoadReview] = useState(false);
   const [isRVSubmit, setRVSubmit] = useState(false);
@@ -212,7 +224,16 @@ const Details = () => {
     setReviewId(0);
     setEdit(false);
   };
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    const log =1;
+    listReview.map((review) => {
+      if (review.userId === userState.userId) {
+        alert.success("Bạn đã đánh giá.");
+        log = 0;
+      }
+    })
+    setShow(log);
+  };
 
   const [reviewContent, setreviewContent] = useState('');
   const [reviewRating, setreviewRating] = useState('');
@@ -260,6 +281,7 @@ const Details = () => {
               getListReview();
 
               setShow(false);
+              alert.success("Bạn đã đánh giá thành công.");
             }
           })
           .catch(e => {
@@ -310,6 +332,7 @@ const Details = () => {
             // console.log(res.data);
             // setLoad(false);
             getListReview();
+            alert.error("Xóa thành công.");
           }
         })
         .catch(e => {
@@ -327,6 +350,7 @@ const Details = () => {
     setShow(true);
     setEdit(true);
     setReviewId(review.reviewId);
+  }
 
   }
   const handleFavorite = ()=>{
@@ -589,7 +613,7 @@ const Details = () => {
 
         <div className="container div-list">
           <div >
-            <h2>SẢN PHẨM CÙNG HÃNG</h2>
+            <h2>SẢN PHẨM GỢI Ý</h2>
 
           </div>
           {
