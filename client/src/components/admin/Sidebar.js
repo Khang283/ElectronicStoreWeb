@@ -15,7 +15,7 @@ import {
   } from 'cdbreact';
 const Sidebar = () => {
     return ( 
-        <div style={{ display: 'flex', textColor:"#fff", backgroundColor: '#333', height: '100vh', overflow: 'scroll initial'}} className="sidebar-wrapper">
+        <div style={{ display: 'flex', textColor:"#fff" , height: '100vh', overflow: 'scroll initial'}} className="sidebar-wrapper">
             <nav id="sidebar" textColor="#fff" backgroundColor="#333">
                 <ul className="list-unstyled components">
                     <li>

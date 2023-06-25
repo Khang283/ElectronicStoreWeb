@@ -81,7 +81,6 @@ function Header() {
           <Link to={'/'} className="nav-link">
             {/*<img src={require('../logo.png')} alt="logo" width={30} height={30}/>*/}
             <Image src="../logo.png" alt="logo.png" ></Image>
-            <Image src="../logo.png" alt="logo.png" ></Image>
           </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -98,11 +97,11 @@ function Header() {
             
     </Nav> //Test thu thanh nav */}
 
-          <Nav className="me-auto col-lg-10" style={{ marginLeft: 20, marginRight: 20 }}>
-            <NavDropdown marginLeft={30} marginRight={30} className="dropdown" renderMenuOnMount={true} title={
+          <Nav className="me-auto col-lg-10 align-items-center" style={{ marginLeft: 20, marginRight: 20 }}>
+            <NavDropdown marginLeft={30} marginRight={30} className="dropdown align-items-center" renderMenuOnMount={true} title={
               <Link to={'/phone'} className="textlink">
                 Điện thoại
-                <i class="bi bi-phone"></i></Link>} id="collasible-nav-dropdown">
+                <i class="bi bi-phone"></i></Link>}>
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <Link to={'/phone/apple'} className="textdropdown">Iphone</Link>
               </NavDropdown.Item>
@@ -114,7 +113,7 @@ function Header() {
               </NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown marginLeft={30} marginRight={30} className="dropdown" renderMenuOnMount={true} title={
+            <NavDropdown marginLeft={30} marginRight={30} className="dropdown align-items-center" renderMenuOnMount={true} title={
               <Link to={'/laptop'} className="textlink">
                 <p className="text-light">
                   Laptop
@@ -122,7 +121,7 @@ function Header() {
               </Link>
             } id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <Link to={'/laptop/asus'} className="textdropdown">Asus</Link>
+                <Link to={'/laptop/hp'} className="textdropdown">HP</Link>
               </NavDropdown.Item>
               <NavDropdown.Item className=".dropdown-menu">
                 <Link to={'/laptop/dell'} className="textdropdown">Dell</Link>
@@ -132,7 +131,7 @@ function Header() {
               </NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown marginLeft={30} marginRight={30} className="dropdown" renderMenuOnMount={true} title={
+            <NavDropdown marginLeft={30} marginRight={30} className="dropdown align-items-center" renderMenuOnMount={true} title={
               <Link to={'/tablet'} className="textlink">
                 <p className="text-light" >
                   Tablet
@@ -146,11 +145,11 @@ function Header() {
               </NavDropdown.Item>
 
             </NavDropdown>
-            <NavDropdown marginLeft={30} marginRight={30} className="dropdown" renderMenuOnMount={true} title={
+            <NavDropdown marginLeft={30} marginRight={30} className="dropdown align-items-center" renderMenuOnMount={true} title={
               <Link to={'/accessories'} className="textlink">
                 <p className="text-light">
                   Phụ kiện <i class="bi bi-headphones"></i></p>
-              </Link>} id="collasible-nav-dropdown">
+              </Link>}>
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" >
                 <Link to={'/chuột'} className="textdropdown">Chuột</Link>
               </NavDropdown.Item>
@@ -160,16 +159,11 @@ function Header() {
               <NavDropdown.Item className=".dropdown-menu">
                 <Link to={'/tai nghe'} className="textdropdown">Tai nghe</Link>
               </NavDropdown.Item>
-
               </NavDropdown>
-
-
-
-            <Form style={{ width: 200, marginRight:30 }} className="d-flex col-lg-9 input-lg form-inline">
-              <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2" aria-label="Search" onChange={e => setKeyword(e.target.value)} />
-              </Form>
-            <Button style={{ width: 40, height: 40 }} className="bg-danger col-lg-1 border-0" onClick={searchClicked}><i className="bi bi-search md"></i></Button>
-            
+            <Form style={{ width: 200, marginRight:30 }} className="d-flex col-lg-9 input-lg form-inline align-items-center">
+              <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2 align-items-center" aria-label="Search" onChange={e => setKeyword(e.target.value)} />
+            </Form>
+            <Button style={{ width: 40, height: 40 }} className="bg-danger col-lg-1 border-0 align-items-center" onClick={searchClicked}><i className="bi bi-search md"></i></Button>
           </Nav>
 
 
@@ -187,7 +181,7 @@ function Header() {
         </Navbar.Collapse >
 
 
-        <Nav className="col-lg-5 me-auto">
+        <Nav className="col-lg-5 me-auto align-items-center">
           {userId == -1 ?
             <NavDropdown className="dropdown text-center text-light" renderMenuOnMount={true} title={<p className="text-light">{userId != -1 ? username : 'Tài khoản'} <i className="bi bi-person"></i></p>} id="collasible-nav-dropdown">
               <NavDropdown.Item className=".dropdown-menu" aria-labelledby="dropdownMenuButton" >

@@ -352,7 +352,6 @@ const Details = () => {
     setReviewId(review.reviewId);
   }
 
-  }
   const handleFavorite = ()=>{
     const payload = {
       productId: id,
@@ -372,8 +371,8 @@ const Details = () => {
     }).catch(e=>{
       console.log(e);
       alert.error("Đã xảy ra lỗi");
-    })
-  }
+    })}
+  
 
   // console.log(listProduct);
 
