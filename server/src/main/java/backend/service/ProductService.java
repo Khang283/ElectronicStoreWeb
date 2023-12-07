@@ -4,6 +4,9 @@ import backend.dao.*;
 import backend.dto.ProductListDTO;
 import backend.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Service;
 import backend.dto.*;
 import backend.dto.InsertProductDTO;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@EnableCaching
 public class ProductService {
     @Autowired
     private IProduct _product;
@@ -30,6 +34,7 @@ public class ProductService {
     private ProductDAO productDAO;
     @Autowired
     private ISpec _spec;
+    @Cacheable(value = "products")
     public List<ProductListDTO> getProductList(int page,String type,int limit){
         if(page<1) return null;
         int offset = page*limit - limit;
@@ -37,6 +42,7 @@ public class ProductService {
         return productListDTOS;
     }
 
+    @Cacheable(value = "product", key = "#productId")
     public GetProductByIdDTO getProductById(long productId) {
         GetProductByIdDTO product = new GetProductByIdDTO();
         product = productDAO.getProductById(productId);
