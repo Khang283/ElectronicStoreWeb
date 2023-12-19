@@ -34,6 +34,7 @@ public class ProductService {
     private ProductDAO productDAO;
     @Autowired
     private ISpec _spec;
+    
     @Cacheable(value = "products")
     public List<ProductListDTO> getProductList(int page,String type,int limit){
         if(page<1) return null;

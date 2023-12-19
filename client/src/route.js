@@ -21,6 +21,7 @@ import OrderList from "./components/admin/OrderList";
 import UpdateProduct from "./components/admin/UpdateProduct";
 import OrderDetails from "./components/Order/OrderDetail";
 import OrderDetailAdmin from "./components/admin/OrderDetailAdmin";
+import { VNPayCheckout } from "./components/VNPay/VNPayCheckout.js";
 
 
 const router = createBrowserRouter([
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
             {
                 path: '/admin/orders/:orderid',
                 element: <OrderDetailAdmin />
+            },
+            {
+                path: '/cart/checkout/vnpay',
+                element: <VNPayCheckout />,
             }
 
         ]
