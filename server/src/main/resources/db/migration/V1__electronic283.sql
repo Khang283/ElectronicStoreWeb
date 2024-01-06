@@ -15,7 +15,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `electronic283`
@@ -30,12 +30,12 @@ SET time_zone = "+00:00";
 CREATE TABLE `assets` (
   `asset_id` bigint NOT NULL,
   `asset_name` varchar(100) NOT NULL,
-  `asset_path` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `asset_path` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `asset_type` varchar(50) NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `assets`
@@ -181,7 +181,7 @@ CREATE TABLE `cart` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `cart`
@@ -223,7 +223,7 @@ CREATE TABLE `cart_item` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `cart_item`
@@ -264,7 +264,7 @@ CREATE TABLE `category` (
   `created_at` datetime DEFAULT NULL,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `category`
@@ -309,7 +309,7 @@ CREATE TABLE `comments` (
   `deleted` tinyint(1) DEFAULT '0',
   `likes` bigint DEFAULT NULL,
   `reply_to` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Triggers `comments`
@@ -335,7 +335,7 @@ CREATE TABLE `company` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `company`
@@ -382,7 +382,7 @@ CREATE TABLE `favorite` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `favorite`
@@ -423,7 +423,7 @@ CREATE TABLE `orders` (
   `deleted` tinyint(1) DEFAULT '0',
   `cart_id` bigint NOT NULL,
   `status` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `orders`
@@ -473,7 +473,7 @@ CREATE TABLE `order_item` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Triggers `order_item`
@@ -517,7 +517,7 @@ CREATE TABLE `post` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Triggers `post`
@@ -556,7 +556,7 @@ CREATE TABLE `product` (
   `created_at` datetime DEFAULT NULL,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `product`
@@ -651,7 +651,7 @@ CREATE TABLE `product_asset` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `product_asset`
@@ -816,7 +816,7 @@ CREATE TABLE `product_detail` (
   `created_at` datetime DEFAULT NULL,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `product_detail`
@@ -933,7 +933,7 @@ CREATE TABLE `reviews` (
   `created_at` datetime DEFAULT NULL,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `reviews`
@@ -978,7 +978,7 @@ CREATE TABLE `spec` (
   `created_at` datetime DEFAULT NULL,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `spec`
@@ -1060,7 +1060,7 @@ CREATE TABLE `spec_group` (
   `created_at` datetime DEFAULT NULL,
   `modified_at` datetime DEFAULT NULL,
   `deleted` tinyint(1) DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `spec_group`
@@ -1119,7 +1119,7 @@ CREATE TABLE `users` (
   `dob` datetime DEFAULT NULL,
   `role` varchar(10) DEFAULT 'USER',
   `full_name` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `users`

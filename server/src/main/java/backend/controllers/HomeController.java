@@ -27,4 +27,11 @@ public class HomeController {
         return ResponseEntity.status(200).body("Hello");
     }
 
+    @GetMapping("/v1/search")
+    public ResponseEntity<List<String>> searchProduct(@RequestParam(value = "name", defaultValue = "",required = true)String name){
+        List<String> nameList = productService.getSearchList(name);
+        if(nameList.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(nameList);
+    }
+
 }

@@ -11,16 +11,17 @@ import 'reactjs-popup/dist/index.css';
 import Checkout from '../Checkout/Checkout';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../Cart/Cart.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../Loader/Loader';
 import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';
-// import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
+import { setOrder } from '../../reducer/orderReducer';
 import {Row , Input, Box, Center, CircularProgress, Heading, Text, Image, Flex, Button, Grid, GridItem } from "@chakra-ui/react";
-import { ChevronLeftIcon, StarIcon } from "@chakra-ui/icons";
 //const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`); // nên để ở đây nhằm tránh tạo lại mỗi lần render
 
 function Cart() {
+  const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
   const [clientSecret, setClientSecret] = useState("");
@@ -31,10 +32,11 @@ function Cart() {
   const [notFound, setFound] = useState(false);
   const [isLogin, setLogin] = useState();
   const userState = useSelector(state => state.user);
-  const [receiver,setReceiver] = useState('');
+  const [receiver, setReceiver] = useState('');
   const [deliveryAddress, setDelivery] = useState('');
-  const [message,setMessage] = useState('');
-  const [orderId,setOrderId] = useState();
+  const [message, setMessage] = useState('');
+  const [orderId, setOrderId] = useState();
+  const [show, setShow] = useState(false);
   const alert = useAlert();
   const navigate = useNavigate();
   const appearance = {
@@ -120,7 +122,7 @@ function Cart() {
             const updatedCartItems = cartItems.filter(item => !item.productId == id);
             setCartItems(updatedCartItems);
           }
-        }).catch(e=>{
+        }).catch(e => {
           console.log(e);
         })
         // } else {
@@ -161,11 +163,11 @@ function Cart() {
         //console.log(res.data)
       }
     }).catch(() => {
-        setLoad(true);
-        setFound(true);
-      })
+      setLoad(true);
+      setFound(true);
+    })
 
-  }, [cartItems,userState.userId]);
+  }, [cartItems, userState.userId]);
 
   function setCart() {
     cart = {
@@ -179,34 +181,13 @@ function Cart() {
     return cart;
   }
 
-  const createPayment = () => {
-    cart = {
-      cartId,
-      userId,
-      cartItems,
-      totalPrice: totalCost,
-      totalQuantity,
-    }
-    //console.log(cart)
-
-    axios.post('/api/checkout/create-payment-intent', cart, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    }).then(res => {
-      if (res.data.secretKey) {
-        setClientSecret(res.data.secretKey);
-        //console.log(res.data.secretKey);
-      }
-    })
-  }
-
-  const checkout = ()=>{
-    if(receiver === '' || deliveryAddress === ''){
+  
+  const checkoutStripe = () => {
+    if (receiver === '' || deliveryAddress === '') {
       alert.error("Xin hãy điền đủ thông tin");
     }
-    else{
-      const payload ={
+    else {
+      const payload = {
         userId,
         cartId,
         totalPrice: totalCost,
@@ -216,49 +197,97 @@ function Cart() {
         message
 
       }
-      axios.post('/api/order',payload,{
+      axios.post('/api/order', payload, {
         headers: {
-          Authorization : `Bearer ${Cookies.get('authToken')}`,
+          Authorization: `Bearer ${Cookies.get('authToken')}`,
         }
-      }).then(res=>{
-        if(res.status === 200){
+      }).then(res => {
+        if (res.status === 200) {
           console.log(res.data);
           console.log(res.data.orderId);
           setOrderId(res.data.orderId);
-          navigate("/cart/checkout",{state: {
-            cart: setCart(),
-            order: res.data.orderId,
-          }})
+          navigate("/cart/checkout/stripe", {
+            state: {
+              cart: setCart(),
+              order: res.data.orderId,
+            }
+          })
         }
-      }).catch(e=>{
+      }).catch(e => {
         console.log(e);
       })
     }
   }
 
+  const checkoutVNPay = () => {
+    if (receiver === '' || deliveryAddress === '') {
+      alert.error("Xin hãy điền đủ thông tin");
+    }
+    else {
+      const payload = {
+        userId,
+        cartId,
+        totalPrice: totalCost,
+        totalQuantity,
+        receiver,
+        address: deliveryAddress,
+        message
+      }
+      axios.post('/api/order', payload, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('authToken')}`,
+        }
+      }).then(res => {
+        if (res.status === 200) {
+          let order = {
+            orderId: res.data.orderId,
+          }
+          console.log(res.data);
+          console.log(order);
+          Cookies.set('orderId',res.data.orderId,{expires: 1});
+          dispatch(setOrder(order));
+          navigate("/cart/checkout/vnpay", {
+            state: {
+              cart: setCart(),
+              order: res.data.orderId,
+              totalPrice: res.data.totalPrice,
+            }
+          })
+        }
+      }).catch(e => {
+        console.log(e);
+      })
+    }
+  }
+
+  const handleClose = ()=>setShow(false);
+  const handleShow = ()=>setShow(true);
+
   if (userState.userId == -1) {
     return (
-      <Center>
-                <Text fontSize="xl" mt="4">Bạn chưa đăng nhập</Text>
-            </Center>
-    )} 
-      else if (!isLoaded) {
-        return (
-            <Center>
-                <CircularProgress isIndeterminate color="green.300" />
-                <Text fontSize="xl" mt="4">Đang tải...</Text>
-            </Center>
-        )
-    } 
- else if (notFound || cartItems == null || cartItems.length <= 0) {
-        return (
-            <Center>
-                <Text fontSize="xl" mt="4">Giỏ hàng của bạn đang trống.</Text>
-            </Center>
-        )
-    } else {
-        return (
-          <div className="bg-light">
+      <div className='centerText'>
+        <h2>Bạn chưa đăng nhập</h2>
+      </div>
+    )
+  }
+  else {
+    if (!isLoaded) {
+      return (
+        <div className='centerText '>
+          <Loader />
+        </div>
+      )
+    }
+    else if (notFound || cartItems == null || cartItems.length <= 0) {
+      return (
+        <div className='centerText'>
+          <h2>Giỏ hàng của bạn đang trống.</h2>
+        </div>
+      )
+    }
+    else {
+      return (
+        <div className="bg-light">
           <section className="section-content padding-y">
             <div className="container">
               <div class="col">
@@ -290,7 +319,7 @@ function Cart() {
                               <td className="align-middle">
                                 <figure className="itemside">
                                   <div className="aside">
-                                    <img src={item.productImage} className="img-sm" width={100} height={100}/>
+                                    <img src={item.productImage} className="img-sm" width={100} height={100} />
                                   </div>
                                   <figcaption className="info">
                                     <a href="#" className="title text-dark">
@@ -358,10 +387,11 @@ function Cart() {
                           <TestCheckout cart={setCart}/>
                         </Popup> */}
                         {/* <Link to={'checkout'} state={{cart: setCart(),order: orderId}} onClick={checkout} className='text-light btn btn-primary float-md-right' >Thanh toán</Link> */}
-                        <Button colorScheme="teal" onClick={checkout}>Thanh toán</Button>
-                        <Link to={'/'}>
+                        {/* <Button className='text-light btn btn-primary float-md-right' onClick={checkout}>Thanh toán</Button> */}
+                        <Button className='text-light btn btn-primary float-md-right' onClick={handleShow}>Thanh toán</Button>
+                        <Link to={'/'} className="btn btn-light">
                           {" "}
-                          <Button><ChevronLeftIcon></ChevronLeftIcon> Tiếp tục mua hàng{" "} </Button>
+                          <i className="fa fa-chevron-left"></i> Tiếp tục mua hàng{" "}
                         </Link>
                       </div>
                     </div>
@@ -377,7 +407,7 @@ function Cart() {
                                 type="text"
                                 class="form-control"
                                 placeholder=""
-                                onChange={e=>setReceiver(e.target.value)}
+                                onChange={e => setReceiver(e.target.value)}
                               />
                             </div>
                           </div>
@@ -388,7 +418,7 @@ function Cart() {
                                 type="text"
                                 class="form-control"
                                 placeholder=""
-                                onChange={e=>setDelivery(e.target.value)}
+                                onChange={e => setDelivery(e.target.value)}
                               />
                             </div>
                           </div>
@@ -399,7 +429,7 @@ function Cart() {
                                 type="text"
                                 class="form-control"
                                 placeholder=""
-                                onChange={e=>setMessage(e.target.value)}
+                                onChange={e => setMessage(e.target.value)}
                               />
                             </div>
                           </div>
@@ -429,123 +459,24 @@ function Cart() {
               </div>
             </div>
           </section>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header>
+                        <Modal.Title>Chọn phương thức thanh toán</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Button variant='primary' onClick={checkoutVNPay}>VNPay</Button>
+              <Button variant='link' onClick={checkoutStripe}>Stripe</Button>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={handleClose}>Close</Button>
+            </Modal.Footer>
+          </Modal>
         </div>
-//             <Box bg="gray.50">
-              
-//                 <Box p={5}>
-//                     <Center>
-//                         <Heading as="h2" size="xl">Giỏ hàng</Heading>
-//                     </Center>
-//                     <Grid
-//   h='700px'
-//   templateRows='repeat(2, 1fr)'
-//   templateColumns='repeat(6, 1fr)'
-//   gap={4}
-// >
-//                     <GridItem rowSpan={2} colSpan={4}>
-//                     <Box mt={5}>
-//                         {cartItems.map((item) => (
-//                             <Box key={item.productId} p={5} shadow="md" borderWidth="1px">
-//                                 <Flex>
-//                                     <Box flex="1">
-//                                         <Link to={"/product/" + item.category + "/" + item.productId}>
-//                                             <Image src={item.productImage} alt={item.productName} boxSize="100px" />
-//                                         </Link>
-//                                     </Box>
-//                                     <Box flex="3" ml={5}>
-//                                         <Link to={"/product/" + item.category + "/" + item.productId}>
-//                                             <Text fontSize="xl">{item.productName}</Text>
-//                                         </Link>
-//                                         <Text mt={2}>Thương hiệu: {item.brand}</Text>
-//                                         <Flex mt={2}>
-//                                             <Button onClick={() => handleMinus(item.id)}>-</Button>
-//                                             <Input ml={2} mr={2} value={item.quantity} isReadOnly />
-//                                             <Button onClick={() => handlePlus(item.id)}>+</Button>
-//                                         </Flex>
-//                                         <Text mt={2}>Giá: {moneyFormat.format(item.price)}</Text>
-//                                     </Box>
-//                                     <Box flex="1">
-//                                         <Button colorScheme="red" onClick={() => handleDelete(item.productId)}>Xóa</Button>
-//                                     </Box>
-//                                 </Flex>
-//                             </Box>
-//                         ))}
-//                     </Box>
-//                     <Box mt={5}>
-//                         <Button colorScheme="teal" onClick={checkout}>Thanh toán</Button>
-//                         <Link to={'/'}>
-//                             <Button ml={2}>Tiếp tục mua hàng</Button>
-//                         </Link>
-//                     </Box>
-//                     </GridItem>
-//                      <GridItem rowSpan={2} colSpan={2}>
-//                     <div class="card mb-4">
-//                       <div class="card-body">
-//                         <form>
-//                           <div class="form-group">
-//                             <label>Người nhận *</label>
-//                             <div class="input-group">
-//                               <input
-//                                 type="text"
-//                                 class="form-control"
-//                                 placeholder=""
-//                                 onChange={e=>setReceiver(e.target.value)}
-//                               />
-//                             </div>
-//                           </div>
-//                           <div class="form-group">
-//                             <label>Địa chỉ *</label>
-//                             <div class="input-group">
-//                               <input
-//                                 type="text"
-//                                 class="form-control"
-//                                 placeholder=""
-//                                 onChange={e=>setDelivery(e.target.value)}
-//                               />
-//                             </div>
-//                           </div>
-//                           <div class="form-group">
-//                             <label>Lời nhắn</label>
-//                             <div class="input-group">
-//                               <input
-//                                 type="text"
-//                                 class="form-control"
-//                                 placeholder=""
-//                                 onChange={e=>setMessage(e.target.value)}
-//                               />
-//                             </div>
-//                           </div>
-//                         </form>
-//                       </div>
-//                     </div>
-//                     <div class="card">
-//                       <div class="card-body">
-//                         <dl class="dlist-align total-cost">
-//                           <dt>Tổng tiền:</dt>
-//                           <dd class="text-right">{moneyFormat.format(totalCost)}</dd>
-//                         </dl>
-//                         <dl class="dlist-align">
-//                           <dt>Giảm giá:</dt>
-//                           <dd class="text-right">0</dd>
-//                         </dl>
-//                         <dl class="dlist-align total">
-//                           <dt>Tổng:</dt>
-//                           <dd class="text-right  h5">
-//                             <strong>{moneyFormat.format(totalCost)}</strong>
-//                           </dd>
-//                         </dl>
-//                       </div>
-//                     </div>
-//                     </GridItem>
-//                   </Grid>
-//                 </Box>
-                
-//             </Box>
-            
-        )
+      );
     }
-  }
 
+  }
+}
 
 
 export default Cart;

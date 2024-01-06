@@ -11,7 +11,7 @@
 	<groupId>electronicstore</groupId>
 	<artifactId>electronicstore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>electronicstoreneww</name>
+	<name>electronicstore</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
@@ -121,8 +121,9 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
-				<url>jdbc:mysql://localhost:3306/electronic_test?createDatabaseIfNotExist=true</url>
-					<!--	<url>jdbc:mysql://mysqldb:3306/electronic_test?createDatabaseIfNotExist=true</url>-->
+					<url>jdbc:mysql://localhost:3306/electronic_test?createDatabaseIfNotExist=true</url>
+<!--					<url>jdbc:mysql://srv985.hstgr.io:3306/u310467552_electronictest?createDatabaseIfNotExist=true</url>-->
+<!--					<url>jdbc:mysql://mysqldb:3306/electronic_test?createDatabaseIfNotExist=true</url>-->
 					<user>root</user>
 					<password></password>
 				</configuration>
