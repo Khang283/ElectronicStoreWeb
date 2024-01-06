@@ -323,4 +323,16 @@ public boolean deleteSpecById(long specId){
         return _product.findById(productId);
     }
 
+    public List<String> searchProducts(String name){
+        int SEARCH_LIMIT = 5;
+        List<String> searchList = new ArrayList<>();
+        name = name+"%";
+        List<Product> products = _product.findProductByKeyWord(name).stream().limit(SEARCH_LIMIT).toList();
+        for(Product product:products){
+            searchList.add(product.getProductName());
+        }
+
+        return searchList;
+    }
+
 }

@@ -12,5 +12,6 @@ public class VNPayResponse {
     private String totalPrice;
     private String paymentTime;
     private String transaction;
+    private boolean updateDB;
 
 }

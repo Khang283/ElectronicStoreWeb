@@ -4,12 +4,19 @@ import Form from 'react-bootstrap/Form';
 import bankdata from './BankList.json';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 export function VNPayCheckout(props) {
     let [ordertype, setOrderType] = useState('');
-    let [amount, setAmount] = useState('');
+    const location = useLocation();
+    let totalPrice = location.state.totalPrice;
+    console.log(totalPrice);
+    totalPrice = totalPrice;
+    let [amount, setAmount] = useState(totalPrice);
     let [description, setDescription] = useState('');
     let [bank, setBank] = useState('');
+    //console.log(orderId);
 
     const sendSubmit = ()=>{
         console.log(ordertype,amount,description,bank);
@@ -30,7 +37,7 @@ export function VNPayCheckout(props) {
     return (
         <div className='col-md-5 mx-auto'>
             <h2>
-                Tạo mới đơn hàng
+                Thanh toán VNPay
             </h2>
             <div>
                 <Form>
@@ -38,14 +45,14 @@ export function VNPayCheckout(props) {
                         <Form.Label>Loại hàng hóa</Form.Label>
                         <Form.Select name='ordertype' onChange={e=>setOrderType(e.target.value)}>
                             <option value={'topup'}>Nạp tiền điện thoại</option>
-                            <option value={'billpayment'}>Thanh toán hóa đơn</option>
+                            <option value={'billpayment'} selected>Thanh toán hóa đơn</option>
                             <option value={'fashion'}>Thời trang</option>
                         </Form.Select>
                     </Form.Group>
 
                     <Form.Group className="mb-3" >
                         <Form.Label>Số tiền</Form.Label>
-                        <Form.Control type="number" placeholder="1000" id='Amount' onChange={e=>setAmount(e.target.value)}/>
+                        <Form.Control type="number" value={amount} id='Amount' onChange={e=>setAmount(e.target.value)}/>
                     </Form.Group>
                     <Form.Group className="mb-3" >
                         <Form.Label>Nội dung thanh toán</Form.Label>

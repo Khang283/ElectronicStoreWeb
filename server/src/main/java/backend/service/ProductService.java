@@ -4,9 +4,13 @@ import backend.dao.*;
 import backend.dto.ProductListDTO;
 import backend.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.redis.cache.RedisCache;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.stereotype.Service;
 import backend.dto.*;
 import backend.dto.InsertProductDTO;
@@ -34,8 +38,10 @@ public class ProductService {
     private ProductDAO productDAO;
     @Autowired
     private ISpec _spec;
+    @Autowired
+    private RedisCacheManager cacheManager;
     
-    @Cacheable(value = "products")
+    @Cacheable(value = "products", sync = true)
     public List<ProductListDTO> getProductList(int page,String type,int limit){
         if(page<1) return null;
         int offset = page*limit - limit;
@@ -43,7 +49,7 @@ public class ProductService {
         return productListDTOS;
     }
 
-    @Cacheable(value = "product", key = "#productId")
+    @Cacheable(value = "product", key = "#productId", sync = true)
     public GetProductByIdDTO getProductById(long productId) {
         GetProductByIdDTO product = new GetProductByIdDTO();
         product = productDAO.getProductById(productId);
@@ -99,5 +105,13 @@ public class ProductService {
     public boolean modifyProduct(ProductModifyDTO prod) {return productDAO.modifyProduct(prod);};
     public Optional<Product>findProductByProductId(long productId){
         return productDAO.findProductByProductId(productId);
+    }
+    @Cacheable(value = "searchList", key = "#name", sync = true)
+    public List<String> getSearchList(String name){
+        if(name.equals("")){
+            return null;
+        }
+        List<String> searchList = productDAO.searchProducts(name);
+        return searchList;
     }
 }

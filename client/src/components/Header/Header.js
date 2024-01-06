@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -14,6 +14,7 @@ import { loadUser, setUser } from "../../reducer/userReducer";
 import axios from "axios";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { debounce } from "lodash";
 /*const UserMenu = (
   <img
     src={'../user.png'}
@@ -25,6 +26,8 @@ import Col from "react-bootstrap/Col";
 function Header() {
   const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
+  const [dropDownOption, setDropDownOption] = useState([]);
+  const [visible, setVisible] = useState(false);
   let userId, username, role;
   const [keyword, setKeyword] = useState();
   const navigate = useNavigate();
@@ -71,6 +74,27 @@ function Header() {
     else {
       navigate(`/search/${keyword}`);
     }
+
+  }
+
+  const openDropDown = () => {
+    setVisible(true);
+  }
+
+  function fetchDropdownOptions(value){
+    axios.get("/api/v1/search?name=" + value)
+      .then(res => {
+        setDropDownOption(res.data);
+      }).catch(err => {
+        console.log(err);
+      });
+  }
+  const debounceDropDown = useCallback(debounce((nextValue) => fetchDropdownOptions(nextValue), 1000), [])
+  
+  const handleInputChange = (e) => {
+    let value = e.target.value;
+    setKeyword(value);
+    debounceDropDown(value)
 
   }
 
@@ -159,9 +183,16 @@ function Header() {
               <NavDropdown.Item className=".dropdown-menu">
                 <Link to={'/tai nghe'} className="textdropdown">Tai nghe</Link>
               </NavDropdown.Item>
-              </NavDropdown>
-            <Form style={{ width: 200, marginRight:30 }} className="d-flex col-lg-9 input-lg form-inline align-items-center">
-              <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2 align-items-center" aria-label="Search" onChange={e => setKeyword(e.target.value)} />
+            </NavDropdown>
+            <Form style={{ width: 200, marginRight: 30 }} className="d-flex col-lg-9 input-lg form-inline align-items-center">
+              <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2 align-items-center" aria-label="Search" onChange={e => handleInputChange(e)} onClick={openDropDown} />
+              <div>
+                {
+                  visible ? dropDownOption.map(value=>{
+                    return <div key={value} className="overflow-y-auto">{value}</div>
+                  }) : null 
+                }
+              </div>
             </Form>
             <Button style={{ width: 40, height: 40 }} className="bg-danger col-lg-1 border-0 align-items-center" onClick={searchClicked}><i className="bi bi-search md"></i></Button>
           </Nav>

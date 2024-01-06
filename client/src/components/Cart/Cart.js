@@ -11,15 +11,17 @@ import 'reactjs-popup/dist/index.css';
 import Checkout from '../Checkout/Checkout';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../Cart/Cart.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../Loader/Loader';
 import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
+import { setOrder } from '../../reducer/orderReducer';
 
 //const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`); // nên để ở đây nhằm tránh tạo lại mỗi lần render
 
 function Cart() {
+  const dispatch = useDispatch();
   const [cartItems, setCartItems] = useState([]);
   const [totalCost, setTotalCost] = useState(0);
   const [clientSecret, setClientSecret] = useState("");
@@ -30,10 +32,11 @@ function Cart() {
   const [notFound, setFound] = useState(false);
   const [isLogin, setLogin] = useState();
   const userState = useSelector(state => state.user);
-  const [receiver,setReceiver] = useState('');
+  const [receiver, setReceiver] = useState('');
   const [deliveryAddress, setDelivery] = useState('');
-  const [message,setMessage] = useState('');
-  const [orderId,setOrderId] = useState();
+  const [message, setMessage] = useState('');
+  const [orderId, setOrderId] = useState();
+  const [show, setShow] = useState(false);
   const alert = useAlert();
   const navigate = useNavigate();
   const appearance = {
@@ -119,7 +122,7 @@ function Cart() {
             const updatedCartItems = cartItems.filter(item => !item.productId == id);
             setCartItems(updatedCartItems);
           }
-        }).catch(e=>{
+        }).catch(e => {
           console.log(e);
         })
         // } else {
@@ -160,11 +163,11 @@ function Cart() {
         //console.log(res.data)
       }
     }).catch(() => {
-        setLoad(true);
-        setFound(true);
-      })
+      setLoad(true);
+      setFound(true);
+    })
 
-  }, [cartItems,userState.userId]);
+  }, [cartItems, userState.userId]);
 
   function setCart() {
     cart = {
@@ -178,34 +181,13 @@ function Cart() {
     return cart;
   }
 
-  const createPayment = () => {
-    cart = {
-      cartId,
-      userId,
-      cartItems,
-      totalPrice: totalCost,
-      totalQuantity,
-    }
-    //console.log(cart)
-
-    axios.post('/api/checkout/create-payment-intent', cart, {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('token')}`,
-      }
-    }).then(res => {
-      if (res.data.secretKey) {
-        setClientSecret(res.data.secretKey);
-        //console.log(res.data.secretKey);
-      }
-    })
-  }
-
-  const checkout = ()=>{
-    if(receiver === '' || deliveryAddress === ''){
+  
+  const checkoutStripe = () => {
+    if (receiver === '' || deliveryAddress === '') {
       alert.error("Xin hãy điền đủ thông tin");
     }
-    else{
-      const payload ={
+    else {
+      const payload = {
         userId,
         cartId,
         totalPrice: totalCost,
@@ -215,30 +197,76 @@ function Cart() {
         message
 
       }
-      axios.post('/api/order',payload,{
+      axios.post('/api/order', payload, {
         headers: {
-          Authorization : `Bearer ${Cookies.get('authToken')}`,
+          Authorization: `Bearer ${Cookies.get('authToken')}`,
         }
-      }).then(res=>{
-        if(res.status === 200){
+      }).then(res => {
+        if (res.status === 200) {
           console.log(res.data);
           console.log(res.data.orderId);
           setOrderId(res.data.orderId);
-          navigate("/cart/checkout",{state: {
-            cart: setCart(),
-            order: res.data.orderId,
-          }})
+          navigate("/cart/checkout/stripe", {
+            state: {
+              cart: setCart(),
+              order: res.data.orderId,
+            }
+          })
         }
-      }).catch(e=>{
+      }).catch(e => {
         console.log(e);
       })
     }
   }
 
+  const checkoutVNPay = () => {
+    if (receiver === '' || deliveryAddress === '') {
+      alert.error("Xin hãy điền đủ thông tin");
+    }
+    else {
+      const payload = {
+        userId,
+        cartId,
+        totalPrice: totalCost,
+        totalQuantity,
+        receiver,
+        address: deliveryAddress,
+        message
+      }
+      axios.post('/api/order', payload, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('authToken')}`,
+        }
+      }).then(res => {
+        if (res.status === 200) {
+          let order = {
+            orderId: res.data.orderId,
+          }
+          console.log(res.data);
+          console.log(order);
+          Cookies.set('orderId',res.data.orderId,{expires: 1});
+          dispatch(setOrder(order));
+          navigate("/cart/checkout/vnpay", {
+            state: {
+              cart: setCart(),
+              order: res.data.orderId,
+              totalPrice: res.data.totalPrice,
+            }
+          })
+        }
+      }).catch(e => {
+        console.log(e);
+      })
+    }
+  }
+
+  const handleClose = ()=>setShow(false);
+  const handleShow = ()=>setShow(true);
+
   if (userState.userId == -1) {
     return (
       <div className='centerText'>
-      <h2>Bạn chưa đăng nhập</h2>
+        <h2>Bạn chưa đăng nhập</h2>
       </div>
     )
   }
@@ -250,7 +278,7 @@ function Cart() {
         </div>
       )
     }
-    else if (notFound || cartItems == null || cartItems.length<=0) {
+    else if (notFound || cartItems == null || cartItems.length <= 0) {
       return (
         <div className='centerText'>
           <h2>Giỏ hàng của bạn đang trống.</h2>
@@ -291,7 +319,7 @@ function Cart() {
                               <td className="align-middle">
                                 <figure className="itemside">
                                   <div className="aside">
-                                    <img src={item.productImage} className="img-sm" width={100} height={100}/>
+                                    <img src={item.productImage} className="img-sm" width={100} height={100} />
                                   </div>
                                   <figcaption className="info">
                                     <a href="#" className="title text-dark">
@@ -361,7 +389,8 @@ function Cart() {
                           <TestCheckout cart={setCart}/>
                         </Popup> */}
                         {/* <Link to={'checkout'} state={{cart: setCart(),order: orderId}} onClick={checkout} className='text-light btn btn-primary float-md-right' >Thanh toán</Link> */}
-                        <Button className='text-light btn btn-primary float-md-right' onClick={checkout}>Thanh toán</Button>
+                        {/* <Button className='text-light btn btn-primary float-md-right' onClick={checkout}>Thanh toán</Button> */}
+                        <Button className='text-light btn btn-primary float-md-right' onClick={handleShow}>Thanh toán</Button>
                         <Link to={'/'} className="btn btn-light">
                           {" "}
                           <i className="fa fa-chevron-left"></i> Tiếp tục mua hàng{" "}
@@ -380,7 +409,7 @@ function Cart() {
                                 type="text"
                                 class="form-control"
                                 placeholder=""
-                                onChange={e=>setReceiver(e.target.value)}
+                                onChange={e => setReceiver(e.target.value)}
                               />
                             </div>
                           </div>
@@ -391,7 +420,7 @@ function Cart() {
                                 type="text"
                                 class="form-control"
                                 placeholder=""
-                                onChange={e=>setDelivery(e.target.value)}
+                                onChange={e => setDelivery(e.target.value)}
                               />
                             </div>
                           </div>
@@ -402,7 +431,7 @@ function Cart() {
                                 type="text"
                                 class="form-control"
                                 placeholder=""
-                                onChange={e=>setMessage(e.target.value)}
+                                onChange={e => setMessage(e.target.value)}
                               />
                             </div>
                           </div>
@@ -432,6 +461,18 @@ function Cart() {
               </div>
             </div>
           </section>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header>
+                        <Modal.Title>Chọn phương thức thanh toán</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Button variant='primary' onClick={checkoutVNPay}>VNPay</Button>
+              <Button variant='link' onClick={checkoutStripe}>Stripe</Button>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={handleClose}>Close</Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       );
     }

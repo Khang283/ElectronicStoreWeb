@@ -21,16 +21,16 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
     container_name: redis
 
-#  phpmyadmin:
-#    image: phpmyadmin/phpmyadmin
-#    container_name: phpmyadmin
-#    restart: always
-#    depends_on:
-#      - mysqldb
-#    ports:
-#      - "8100:80"
-#    environment:
-#      PMA_HOST: mysqldb
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - mysqldb
+    ports:
+      - "8100:80"
+    environment:
+      PMA_HOST: mysqldb
 
   app:
     build:
