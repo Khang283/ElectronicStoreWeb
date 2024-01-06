@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/api/*"
+  to = "https://electronic-store-server.onrender.com/:splat"
+  status = 200
+  force = true

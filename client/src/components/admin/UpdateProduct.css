@@ -1,0 +1,19 @@
+.div-list{
+    border-radius: 0.5rem;
+    background-color: #fff;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.center{
+    text-align: center;
+}
+td{
+    
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1; 
+    -webkit-box-orient: vertical;
+    max-width: 150px;
+  }
