@@ -24,7 +24,7 @@ import {
   useToast,
   Center,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -44,6 +44,7 @@ import { GrLogin, GrReturn, GrServices } from "react-icons/gr";
 import { loadUser, setUser } from "../../reducer/userReducer";
 import axios from "axios";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { debounce } from "lodash";
 /*const UserMenu = (
   <img
     src={'../user.png'}
@@ -63,6 +64,8 @@ function Header() {
   let userId, username, role;
   const [keyword, setKeyword] = useState();
   const navigate = useNavigate();
+  const [visible, setVisible] = useState(false);
+  const [dropDownOption, setDropDownOption] = useState([]);
 
   const { connectors, connect } = useConnect();
   const { isConnected } = useAccount();
@@ -211,7 +214,7 @@ function Header() {
           ) : (
             <Menu>
               <MenuButton
-                color="black"
+                color="blue"
                 as={Button}
                 rightIcon={<ChevronDownIcon />}
               >
@@ -225,10 +228,12 @@ function Header() {
                 <Link to={"/cart"}><MenuItem>Giỏ hàng</MenuItem></Link>
                 {
                   isConnected ?
-                    <Button variant="primary" onClick={() => disconnect()}>Disconnect Wallet</Button>
+                    <Button variant="primary" onClick={() => disconnect()}><MenuItem>Disconnect Wallet</MenuItem></Button>
                     :
                     <Button variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
-                      {connectors[1].name}
+                      <MenuItem>
+                        {connectors[1].name}
+                      </MenuItem>
                     </Button>
                 }
                 <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
@@ -616,10 +621,12 @@ function Header() {
               <Link to={"/cart"}><MenuItem>Giỏ hàng</MenuItem></Link>
               {
                 isConnected ?
-                  <Button variant="primary" onClick={() => disconnect()}>Disconnect Wallet</Button>
+                  <Button variant="primary" onClick={() => disconnect()}><MenuItem>Disconnect Wallet</MenuItem></Button>
                   :
                   <Button variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
-                    {connectors[1].name}
+                    <MenuItem>
+                      {connectors[1].name}
+                    </MenuItem>
                   </Button>
               }
               <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem
@@ -810,10 +817,12 @@ function Header() {
                       <Link to={"/cart"}><MenuItem>Giỏ hàng</MenuItem></Link>
                       {
                         isConnected ?
-                          <Button variant="primary" onClick={() => disconnect()}>Disconnect Wallet</Button>
+                          <Button variant="primary" onClick={() => disconnect()}><MenuItem>Disconnect Wallet</MenuItem></Button>
                           :
                           <Button variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
-                            {connectors[1].name}
+                            <MenuItem>
+                              {connectors[1].name}
+                            </MenuItem>
                           </Button>
                       }
                       <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>

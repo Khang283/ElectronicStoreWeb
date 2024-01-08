@@ -12,6 +12,7 @@ import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { config } from './config';
+import { ChakraProvider } from '@chakra-ui/provider';
 
 const options = {
   timeout: 5000,
@@ -30,9 +31,9 @@ root.render(
         <AlertProvider template={AlertTemplate} {...options}>
           <React.StrictMode>
             <ChakraProvider>
-        <RouterProvider router={router} />
+              <RouterProvider router={router} />
             </ChakraProvider>
-      </React.StrictMode>
+          </React.StrictMode>
         </AlertProvider>
       </Provider>
     </QueryClientProvider>
