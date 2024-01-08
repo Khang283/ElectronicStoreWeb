@@ -15,6 +15,7 @@ import axios from "axios";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { debounce } from "lodash";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 /*const UserMenu = (
   <img
     src={'../user.png'}
@@ -31,6 +32,11 @@ function Header() {
   let userId, username, role;
   const [keyword, setKeyword] = useState();
   const navigate = useNavigate();
+
+  const { connectors, connect } = useConnect();
+  const { isConnected } = useAccount();
+  const { disconnect } = useDisconnect();
+
   if (userState.isLoad == false) {
     axios.get('/api/user/me', {
       headers: {
@@ -81,7 +87,7 @@ function Header() {
     setVisible(true);
   }
 
-  function fetchDropdownOptions(value){
+  function fetchDropdownOptions(value) {
     axios.get("/api/v1/search?name=" + value)
       .then(res => {
         setDropDownOption(res.data);
@@ -90,7 +96,7 @@ function Header() {
       });
   }
   const debounceDropDown = useCallback(debounce((nextValue) => fetchDropdownOptions(nextValue), 1000), [])
-  
+
   const handleInputChange = (e) => {
     let value = e.target.value;
     setKeyword(value);
@@ -188,9 +194,9 @@ function Header() {
               <Form.Control type="search" placeholder="Nhập tên sản phẩm" className="me-2 align-items-center" aria-label="Search" onChange={e => handleInputChange(e)} onClick={openDropDown} />
               <div>
                 {
-                  visible ? dropDownOption.map(value=>{
+                  visible ? dropDownOption.map(value => {
                     return <div key={value} className="overflow-y-auto">{value}</div>
-                  }) : null 
+                  }) : null
                 }
               </div>
             </Form>
@@ -236,6 +242,16 @@ function Header() {
               </NavDropdown.Item>
               <NavDropdown.Item>
                 <Link to={'/cart'}>Giỏ hàng</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item>
+                {
+                  isConnected ?
+                    <Button variant="primary" onClick={() => disconnect()}>Disconnect Wallet</Button>
+                    :
+                    <Button variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
+                      {connectors[1].name}
+                    </Button>
+                }
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleLogout}>

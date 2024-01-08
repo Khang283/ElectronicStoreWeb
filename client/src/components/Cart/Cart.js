@@ -17,6 +17,8 @@ import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';
 import { Button, Modal } from 'react-bootstrap';
 import { setOrder } from '../../reducer/orderReducer';
+import { Connector, useConnect } from 'wagmi';
+import { CryptoCheckout } from '../Crypto/CryptoCheckout';
 
 //const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`); // nên để ở đây nhằm tránh tạo lại mỗi lần render
 
@@ -39,6 +41,9 @@ function Cart() {
   const [show, setShow] = useState(false);
   const alert = useAlert();
   const navigate = useNavigate();
+
+  const { connectors, connect } = useConnect();
+
   const appearance = {
     theme: 'stripe',
   };
@@ -181,7 +186,7 @@ function Cart() {
     return cart;
   }
 
-  
+
   const checkoutStripe = () => {
     if (receiver === '' || deliveryAddress === '') {
       alert.error("Xin hãy điền đủ thông tin");
@@ -207,6 +212,42 @@ function Cart() {
           console.log(res.data.orderId);
           setOrderId(res.data.orderId);
           navigate("/cart/checkout/stripe", {
+            state: {
+              cart: setCart(),
+              order: res.data.orderId,
+            }
+          })
+        }
+      }).catch(e => {
+        console.log(e);
+      })
+    }
+  }
+  const checkoutCrypto = () => {
+    if (receiver === '' || deliveryAddress === '') {
+      alert.error("Xin hãy điền đủ thông tin");
+    }
+    else {
+      const payload = {
+        userId,
+        cartId,
+        totalPrice: totalCost,
+        totalQuantity,
+        receiver,
+        address: deliveryAddress,
+        message
+
+      }
+      axios.post('/api/order', payload, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('authToken')}`,
+        }
+      }).then(res => {
+        if (res.status === 200) {
+          console.log(res.data);
+          console.log(res.data.orderId);
+          setOrderId(res.data.orderId);
+          navigate("/cart/checkout/crypto", {
             state: {
               cart: setCart(),
               order: res.data.orderId,
@@ -244,7 +285,7 @@ function Cart() {
           }
           console.log(res.data);
           console.log(order);
-          Cookies.set('orderId',res.data.orderId,{expires: 1});
+          Cookies.set('orderId', res.data.orderId, { expires: 1 });
           dispatch(setOrder(order));
           navigate("/cart/checkout/vnpay", {
             state: {
@@ -260,8 +301,8 @@ function Cart() {
     }
   }
 
-  const handleClose = ()=>setShow(false);
-  const handleShow = ()=>setShow(true);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   if (userState.userId == -1) {
     return (
@@ -463,11 +504,12 @@ function Cart() {
           </section>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header>
-                        <Modal.Title>Chọn phương thức thanh toán</Modal.Title>
+              <Modal.Title>Chọn phương thức thanh toán</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Button variant='primary' onClick={checkoutVNPay}>VNPay</Button>
               <Button variant='link' onClick={checkoutStripe}>Stripe</Button>
+              <Button variant='secondary' onClick={checkoutCrypto}>Crypto</Button>
             </Modal.Body>
             <Modal.Footer>
               <Button variant='secondary' onClick={handleClose}>Close</Button>

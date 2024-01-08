@@ -12,7 +12,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Danh sách các nguồn được phép gửi yêu cầu
+    allow_origins=["http://localhost:3000"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -24,10 +24,6 @@ async def search(q: str = Query(None, min_length=1)):
     #url/search?q=\
 
     df = pd.read_csv('indexing.csv')
-
-    # search
-    # q = clean_text(q)
-    # product = 'điện thoại di động samsung galaxy s21 ultra'
 
     recommendations = pd.DataFrame(df.nlargest(9,q)['productId'])
     recommendations = recommendations[recommendations['productId']!=int(q)]
