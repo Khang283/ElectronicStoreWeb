@@ -1,0 +1,135 @@
+[
+    {
+        "code": "MBAPP",
+        "name": "Ung dung MobileBanking"
+    },
+    {
+        "code": "VNPAYQR",
+        "name": "VNPAYQR"
+    },
+    {
+        "code": "VNBANK",
+        "name": "LOCAL BANK"
+    },
+    {
+        "code": "IB",
+        "name": "INTERNET BANKING"
+    },
+    {
+        "code": "ATM",
+        "name": "INTERNATIONAL CARD"
+    },
+    {
+        "code": "VISA",
+        "name": "VISA"
+    },
+    {
+        "code": "MASTERCARD",
+        "name": "MASTERCARD"
+    },
+    {
+        "code": "JCB",
+        "name": "JCB"
+    },
+    {
+        "code": "UPI",
+        "name": "UPI"
+    },
+    {
+        "code": "VIB",
+        "name": "VIB"
+    },
+    {
+        "code": "VIETCAPITALBANK",
+        "name": "VIETCAPITALBANK"
+    },
+    {
+        "code": "SCB",
+        "name": "Ngan hang SCB"
+    },
+    {
+        "code": "NCB",
+        "name": "Ngan hang NCB"
+    },
+    {
+        "code": "SACOMBANK",
+        "name": "Ngan hang SacomBank  "
+    },
+    {
+        "code": "EXIMBANK",
+        "name": "Ngan hang EximBank "
+    },
+    {
+        "code": "MSBANK",
+        "name": "Ngan hang MSBANK "
+    },
+    {
+        "code": "NAMABANK",
+        "name": "Ngan hang NamABank "
+    },
+    {
+        "code": "VNMART",
+        "name": " Vi dien tu VnMart"
+    },
+    {
+        "code": "VIETINBANK",
+        "name": "Ngan hang VCB "
+    },
+    {
+        "code": "HDBANK",
+        "name": "Ngan hang HDBank"
+    },
+    {
+        "code": "DONGABANK",
+        "name": "Ngan hang Dong A"
+    },
+    {
+        "code": "TPBANK",
+        "name": "Ngân hàng TPBank "
+    },
+    {
+        "code": "OJB",
+        "name": "Ngân hàng OceanBank"
+    },
+    {
+        "code": "BIDV",
+        "name": "Ngân hàng BIDV "
+    },
+    {
+        "code": "TECHCOMBANK",
+        "name": "Ngân hàng Techcombank "
+    },
+    {
+        "code": "VPBANK",
+        "name": "Ngan hang VPBank "
+    },
+    {
+        "code": "AGRIBANK",
+        "name": "Ngan hang Agribank "
+    },
+    {
+        "code": "MBBANK",
+        "name": "Ngan hang MBBank "
+    },
+    {
+        "code": "ACB",
+        "name": "Ngan hang ACB "
+    },
+    {
+        "code": "OCB",
+        "name": "Ngan hang OCB "
+    },
+    {
+        "code": "IVB",
+        "name": "Ngan hang IVB "
+    },
+    {
+        "code": "SHB",
+        "name": "Ngan hang SHB "
+    },
+    {
+        "code": "APPLEPAY",
+        "name": "Apple Pay "
+    }
+    
+]

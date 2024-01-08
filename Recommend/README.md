@@ -1,4 +1,4 @@
-## Cài các gói phụ trợ 
+## Cài dependencies
 - Chạy lệnh sau để cài các gói phụ trợ 
 opencv-python
 numpy
@@ -8,13 +8,13 @@ uvicorn
 fastapi
 
 - chạy: pip install -r requirements.txt
-nếu không được thì chạy tường lệnh :
+nếu không được thì chạy từng lệnh :
 
         pip install tên
         
  # Chạy ứng dụng
-- Sau khi cài đặt cái gói phụ trợ bạn có thể chạy ứng dụng bằng lênh sau
-- taoj data:
+- Sau khi cài đặt cái gói phụ trợ bạn có thể chạy ứng dụng bằng lệnh sau
+- tạo data:
         python RecommendData.py
-- chay api
+- chạy api
         python fastapi_.py

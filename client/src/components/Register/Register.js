@@ -2,10 +2,27 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { setUser } from '../../reducer/userReducer';
 import { useAlert } from 'react-alert';
-
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Text,
+  Link,
+  useColorModeValue,
+  useToast,
+  Select,
+} from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 function RegistrationForm() {
   const navigate = useNavigate();
   const [username,setUsername] = useState('');
@@ -18,7 +35,7 @@ function RegistrationForm() {
   const [dob,setDob] = useState('');
   const dispatch = useDispatch();
   const alert = useAlert();
-  
+  const [showPassword, setShowPassword] = useState(false);
   function validUserEmail(email){
     let validText = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/gm ;
     if(email.match(validText)){
@@ -91,122 +108,139 @@ function RegistrationForm() {
   }
 
   return (
-    <div className="container py-5 h-100">
-      <div className="row d-flex justify-content-center align-items-center h-100">
-        <div className="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div className="card text-dark" style={{ borderRadius: '1rem' }}>
-            <div className="card-body p-5 text-center">
-              <div className="mb-md-5 mt-md-4 pb-5">
-                <h2 className="fw-bold mb-4 text-uppercase">ĐĂNG KÝ</h2>
-                <div className="form-outline mb-4">
-                  <input
-                    type="name"
-                    name="username"
-                    className="form-control form-control-lg"
-                    id="username"
-                    placeholder="Tài khoản"
-                    onChange={e => setUsername(e.target.value)}
-                  />
-                </div>
-                <div className="text-center">
-                  <label className="form-label text-danger text_user d-none">
-                    Tên tài khoản không được để trống
-                  </label>
-                </div>
-                <div className="form-outline mb-4">
-                  <input
-                    type="email"
-                    className="form-control form-control-lg"
-                    placeholder="Email"
-                    id="userEmail"
-                    onChange={e => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="form-outline mb-4">
-                  <input
-                    type="password"
-                    id="password"
-                    className="form-control form-control-lg"
-                    placeholder="Mật khẩu"
-                    onChange={e => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="form-outline mb-4">
-                  <input
-                    type="password"
-                    className="form-control form-control-lg"
-                    id="password_retype"
-                    placeholder="Nhập lại mật khẩu"
-                    onChange={e => setPasswordRetype(e.target.value)}
-                  />
-                </div>
-                <div className="text-center">
-                  <label className="form-label text-danger d-none text_info d-none">
-                    Mật khẩu không trùng khớp
-                  </label>
-                </div>
-                <div className="form-outline mb-4">
-                  <input 
-                    placeholder='Nhập địa chỉ của bạn'
-                    type='text'
-                    id='userAddress'
-                    className="form-control form-control-lg"
-                    onChange={e => setAddress(e.target.value)}>
-                  </input>
-                </div>
-                <div className="form-outline mb-4">
-                  <input 
-                    placeholder='Nhập số điện thoại của bạn'
-                    type='tel'
-                    id='userPhone'
-                    className="form-control form-control-lg"
-                    onChange={e => setPhone(e.target.value)}>
-                  </input>
-                </div>
-                <div className="form-outline mb-4">
-                  <select name="gender" id="gender" 
-                          className='form-select form-select-lg mb-3' 
-                          onChange={e => setGender(e.target.value)}>
-                    <option selected>Chọn giới tính</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                  </select>
-                </div>
-                <div className="form-outline mb-4">
-                  <input 
-                    placeholder='Nhập ngày sinh của bạn'
-                    type='date'
-                    id='dob'
-                    className="form-control form-control-lg"
-                    onChange={e => setDob(e.target.value)}>
-                  </input>
-                </div>
-                <br />
-                <button
-                  className="btn btn-primary btn-block btn-lg"
-                  onClick={handleNewAccountRequest}
+    <Flex
+    minH={"100vh"}
+    align={"center"}
+    justify={"center"}
+    bg={useColorModeValue("gray.50", "gray.800")}
+  >
+    <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+      <Stack align={"center"}>
+        <Heading fontSize={"4xl"} textAlign={"center"}>
+          Đăng ký
+        </Heading>
+        <Text fontSize={"lg"} color={"gray.600"}>
+          để nhận được những thông tin mới nhất ✌️
+        </Text>
+      </Stack>
+      <Box
+        rounded={"lg"}
+        bg={useColorModeValue("white", "gray.700")}
+        boxShadow={"lg"}
+        p={8}
+      >
+        <Stack spacing={4}>
+          <FormControl id="username" isRequired>
+            <FormLabel>Tài khoản</FormLabel>
+            <Input
+              type="text"
+              name='username'
+              placeholder="Tên tài khoản"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="userPhone" isRequired>
+            <FormLabel>Điện thoại</FormLabel>
+            <Input
+              type="tel"
+              placeholder="Nhập số điện thoại"
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="email" isRequired>
+            <FormLabel>Địa chỉ email</FormLabel>
+            <Input
+              type="email"
+              placeholder="Nhập địa chỉ email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="userAddress" isRequired>
+            <FormLabel>Địa chỉ</FormLabel>
+            <Input
+              type="email"
+              placeholder="Nhập địa chỉ"
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="dob" isRequired>
+            <FormLabel>Ngày sinh</FormLabel>
+            <Input
+              type="date"
+              placeholder="Nhập đia chỉ"
+              onChange={(e) => setDob(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="gender" isRequired>
+            <FormLabel>Giới tính</FormLabel>
+            {/* <Input
+              type="date"
+              placeholder="Nhập đia chỉ"
+              onChange={(e) => setDob(e.target.value)}
+            /> */}
+            <Select onChange={e => setGender(e.target.value)}>
+              <option selected>Chọn giới tính</option>
+              <option value = "male">Nam</option>
+              <option value = "female">Nữ</option>
+            </Select>
+          </FormControl>
+          <FormControl id="password" isRequired>
+            <FormLabel>Mật khẩu</FormLabel>
+            <InputGroup>
+              <Input
+                type={showPassword ? "text" : "password"}
+                placeholder="Nhập vào mật khẩu"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <InputRightElement >
+                <Button
+                  variant={"ghost"}
+                  onClick={() =>
+                    setShowPassword((showPassword) => !showPassword)
+                  }
                 >
-                  Đăng ký
-                </button>
-              </div>
-              <div>
-                <p className="mb-0">
-                  Bạn đã có tài khoản?{' '}
-                  <Link to={'/login'} className="fw-bold text-decoration-none text-primary">Đăng nhập</Link>
-                </p>
-              </div>
-              <hr class="my-4"></hr>
-              <button className="btn btn-lg btn-block btn-primary" style={{ backgroundColor: '#dd4b39' }}>
-                <i className="fab fa-google"></i> Đăng ký bằng Google
-              </button>
-              <button className="btn btn-lg btn-block btn-primary mb-2" style={{ backgroundColor: '#3b5998' }}>
-                <i className="fab fa-facebook-f"></i> Đăng ký bằng Facebook
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+          <FormControl id="password_retype" isRequired>
+            <FormLabel>Nhập lại mật khẩu</FormLabel>
+            <InputGroup>
+              <Input
+                type={"password"}
+                placeholder="Nhập vào mật khẩu"
+                onChange={(e) => setPasswordRetype(e.target.value)}
+              />
+            </InputGroup>
+          </FormControl>
+          <Stack spacing={10} pt={2}>
+            <Button
+              loadingText="Submitting"
+              size="lg"
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "blue.500",
+              }}
+              onClick={handleNewAccountRequest}
+            >
+              Đăng ký
+            </Button>
+          </Stack>
+          <Stack pt={6}>
+            <Text align={"center"}>
+              Bạn đã có tài khoản?{" "}
+              <NavLink to="/login">
+                <Link color={"blue.400"}>Đăng nhập</Link>
+              </NavLink>
+            </Text>
+          </Stack>
+        </Stack>
+      </Box>
+    </Stack>
+  </Flex>
   );
 }
 

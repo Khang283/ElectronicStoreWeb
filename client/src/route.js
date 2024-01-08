@@ -21,6 +21,9 @@ import OrderList from "./components/admin/OrderList";
 import UpdateProduct from "./components/admin/UpdateProduct";
 import OrderDetails from "./components/Order/OrderDetail";
 import OrderDetailAdmin from "./components/admin/OrderDetailAdmin";
+import { VNPayCheckout } from "./components/VNPay/VNPayCheckout.js";
+import { VnPayReturn } from "./components/VnPayReturn/VnPayReturn.js";
+import { CryptoCheckout } from "./components/Crypto/CryptoCheckout.js";
 
 
 const router = createBrowserRouter([
@@ -50,7 +53,7 @@ const router = createBrowserRouter([
                 element: <Cart />,
             },
             {
-                path: '/cart/checkout',
+                path: '/cart/checkout/stripe',
                 element: <Checkout />
             },
             {
@@ -112,6 +115,18 @@ const router = createBrowserRouter([
             {
                 path: '/admin/orders/:orderid',
                 element: <OrderDetailAdmin />
+            },
+            {
+                path: '/cart/checkout/vnpay',
+                element: <VNPayCheckout />,
+            },
+            {
+                path: 'cart/checkout/vnpay/vnpay-return',
+                element: <VnPayReturn />
+            },
+            {
+                path: 'cart/checkout/crypto',
+                element: <CryptoCheckout />
             }
 
         ]

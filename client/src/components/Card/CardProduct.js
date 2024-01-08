@@ -15,7 +15,7 @@ const CardProduct = (props) => {
     return (
         <Card className='card'>
             <Link to={"/product/" + props.product.category + "/" + props.product.productId}>
-                <Card.Img className='card-img' variant="top" src={props.product.productIcon} height={230} /></Link>
+                <Card.Img className='card-img' variant="top" src={props.product.productIcon} onError={(e)=>{e.target.onerror = null; e.target.src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeyOIU0kkPJe1f_kwLcA6P-b7UIn3l3s7juw&usqp=CAU"}} height={230} /></Link>
             <Card.Body>
                 <Link to={"/product/" + props.product.category + "/" + props.product.productId}>
                     <Card.Title>{props.product.productName} - {props.product.productVersion}</Card.Title></Link>

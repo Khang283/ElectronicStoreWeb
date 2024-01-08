@@ -10,12 +10,12 @@ import Favorite from './components/Favorite/Favorite';
 
 function App() {
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="App">
       <Header/>
-      <Breadcumb />
+      {/* <Breadcumb /> */}
       {/* <Favorite/> */}
       <Outlet />
-      <SupportEngine />
+      {/* <SupportEngine /> */}
       <Footer />
     </div>
   );
