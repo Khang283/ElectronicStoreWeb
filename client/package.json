@@ -44,13 +44,14 @@
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
     "react-slideshow-image": "^4.1.1",
+    "react-use": "^17.4.2",
     "react-uuid": "^2.0.0",
     "reactjs-popup": "^2.0.5",
-    "viem": "^2.0.2",
-    "wagmi": "^2.0.3",
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.2",
     "swiper": "^8.4.5",
+    "viem": "^2.0.2",
+    "wagmi": "^2.0.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
