@@ -13,19 +13,31 @@ export function CryptoCheckout(props) {
     const { connectors, connect } = useConnect();
     const location = useLocation();
     const [isCheckout, setIsCheckout] = useState(false);
+    const [rate, setRate] = useState(1);
     let totalPrice = Math.ceil(location.state.cart.totalPrice / 24000);
     let orderId = location.state.order;
     const navigate = useNavigate();
     // let totalPrice = 200000000000000;
+    // console.log(process.env.REACT_APP_EXCHANGE_RATE_API)
     console.log(totalPrice)
 
     async function transfer() {
+        axios.get('https://api.exchangeratesapi.io/v1/latest',{
+            params:{
+                access_key: process.env.REACT_APP_EXCHANGE_RATE_API,
+                base: 'VND',
+                symbol: 'USD'
+            }
+        }).then(res=>{
+            setRate(res.data.rates.USD);
+        })
+        totalPrice = Math.ceil(totalPrice*rate);
         const data = await writeContract({
             abi,
-            address: '0x4FEAcAd497f196d47E0F1AE73695969a898AC790',
+            address: process.env.REACT_APP_ABI_CONTRACT,
             functionName: 'transfer',
             args: [
-                '0x430A55534D99EB4f17cD24880c7Dd79659F838cE',
+                process.env.REACT_APP_WALLET_ADDRESS,
                 totalPrice
             ],
 

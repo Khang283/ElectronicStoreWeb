@@ -177,7 +177,9 @@ function Header() {
             <div>
               {
                 visible ? dropDownOption.map(value => {
-                  return <div key={value} className="overflow-y-auto">{value}</div>
+                  return <div key={value.id} className="overflow-y-auto" >
+                    <Link to={'/search/product/' + value.id}>{value.name}</Link>
+                  </div>
                 }) : null
               }
             </div>
@@ -569,7 +571,9 @@ function Header() {
           <div>
             {
               visible ? dropDownOption.map(value => {
-                return <div key={value} className="overflow-y-auto">{value}</div>
+                return <div key={value.id} className="overflow-y-auto" >
+                  <Link to={'/search/product/' + value.id}>{value.name}</Link>
+                </div>
               }) : null
             }
           </div>
@@ -743,7 +747,9 @@ function Header() {
         <div>
           {
             visible ? dropDownOption.map(value => {
-              return <div key={value} className="overflow-y-auto">{value}</div>
+              return <div key={value.id} className="overflow-y-auto" >
+                <Link to={'/search/product/' + value.id}>{value.name}</Link>
+              </div>
             }) : null
           }
         </div>

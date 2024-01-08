@@ -107,11 +107,18 @@ public class ProductService {
         return productDAO.findProductByProductId(productId);
     }
     @Cacheable(value = "searchList", key = "#name", sync = true)
-    public List<String> getSearchList(String name){
+    public List<ProductSearchDTO> getSearchList(String name){
         if(name.equals("")){
             return null;
         }
-        List<String> searchList = productDAO.searchProducts(name);
-        return searchList;
+        List<Product> searchList = productDAO.searchProducts(name);
+        List<ProductSearchDTO> searchDTOS = new ArrayList<>();
+        for(Product product:searchList){
+            searchDTOS.add(ProductSearchDTO.builder()
+                            .name(product.getProductName())
+                            .id(product.getProductId())
+                    .build());
+        }
+        return searchDTOS;
     }
 }

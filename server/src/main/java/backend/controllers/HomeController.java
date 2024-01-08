@@ -1,6 +1,7 @@
 package backend.controllers;
 
 import backend.dto.ProductListDTO;
+import backend.dto.ProductSearchDTO;
 import backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +29,10 @@ public class HomeController {
     }
 
     @GetMapping("/v1/search")
-    public ResponseEntity<List<String>> searchProduct(@RequestParam(value = "name", defaultValue = "",required = true)String name){
-        List<String> nameList = productService.getSearchList(name);
-        if(nameList.isEmpty()) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(nameList);
+    public ResponseEntity<List<ProductSearchDTO>> searchProduct(@RequestParam(value = "name", defaultValue = "",required = true)String name){
+        List<ProductSearchDTO> searchList = productService.getSearchList(name);
+        if(searchList.isEmpty()) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(searchList);
     }
 
 }
