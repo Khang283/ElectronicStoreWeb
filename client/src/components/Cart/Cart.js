@@ -17,7 +17,6 @@ import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';
 import { Button, Modal } from 'react-bootstrap';
 import { setOrder } from '../../reducer/orderReducer';
-import {Row , Input, Box, Center, CircularProgress, Heading, Text, Image, Flex, Button, Grid, GridItem } from "@chakra-ui/react";
 //const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`); // nên để ở đây nhằm tránh tạo lại mỗi lần render
 
 function Cart() {
@@ -299,7 +298,7 @@ function Cart() {
                         <thead>
                           <tr className=" text-uppercase">
 
-                            <th scope="col" className="text-uppercase" width="400">
+                            <th scope="col" className="text-uppercase" width="300">
                               Sản phẩm
                             </th>
                             <th scope="col" className="text-uppercase" width="100">
@@ -360,7 +359,9 @@ function Cart() {
                               </td>
                               <td className="price align-middle">{moneyFormat.format(item.price)}</td>
                               <td class="text-right align-middle">
-                              <Button colorScheme="red" onClick={() => handleDelete(item.productId)}>Xóa</Button>
+                                <button class="btn btn-light btn-round btn_delete" onClick={() => handleDelete(item.productId)}>
+                                  <i class="bi bi-trash"></i>
+                                </button>
                               </td>
                             </tr>
                           ))}
