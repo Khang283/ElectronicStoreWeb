@@ -10,6 +10,7 @@ services:
       - MYSQL_DATABASE=electronic_test
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_PASSWORD=admin
+      - TZ=Asia/Ho_Chi_Minh
     container_name: mysqldb
 
   redis:
@@ -19,6 +20,7 @@ services:
       - "6379:6379"
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
+      - TZ=Asia/Ho_Chi_Minh
     container_name: redis
 
   phpmyadmin:
@@ -39,6 +41,8 @@ services:
     restart: on-failure
     ports:
       - "8080:8080"
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
     depends_on:
       mysqldb:
         condition: service_started
