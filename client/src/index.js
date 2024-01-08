@@ -12,7 +12,7 @@ import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import { config } from './config';
-import { ChakraProvider } from '@chakra-ui/provider';
+import { ChakraProvider } from '@chakra-ui/react';
 
 const options = {
   timeout: 5000,
