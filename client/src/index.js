@@ -29,8 +29,10 @@ root.render(
       <Provider store={store}>
         <AlertProvider template={AlertTemplate} {...options}>
           <React.StrictMode>
-            <RouterProvider router={router} />
-          </React.StrictMode>
+            <ChakraProvider>
+        <RouterProvider router={router} />
+            </ChakraProvider>
+      </React.StrictMode>
         </AlertProvider>
       </Provider>
     </QueryClientProvider>
