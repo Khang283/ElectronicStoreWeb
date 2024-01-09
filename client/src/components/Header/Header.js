@@ -24,7 +24,6 @@ import {
   useToast,
   Center,
 } from "@chakra-ui/react";
-import { useOnClickOutside } from 'react-use';
 import React, { useState, useRef, useCallback } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from 'react-bootstrap/Nav';
