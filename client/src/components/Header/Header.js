@@ -131,7 +131,10 @@ function Header() {
       });
   }
   const debounceDropDown = useCallback(debounce((nextValue) => fetchDropdownOptions(nextValue), 1000), [])
-
+  document.addEventListener('click',()=>{
+    setVisible(false);
+  },true)
+  
   const handleInputChange = (e) => {
     let value = e.target.value;
     setKeyword(value);
@@ -243,7 +246,6 @@ function Header() {
                   isConnected ?
                     <MenuItem variant="primary" onClick={() => disconnect()}>Disconnect Wallet</MenuItem>
                     :
-
                     <MenuItem variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
                       {connectors[1].name}
                     </MenuItem>
