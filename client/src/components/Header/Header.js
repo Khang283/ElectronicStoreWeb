@@ -24,6 +24,7 @@ import {
   useToast,
   Center,
 } from "@chakra-ui/react";
+import { useOnClickOutside } from 'react-use';
 import React, { useState, useRef, useCallback } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from 'react-bootstrap/Nav';
@@ -154,7 +155,7 @@ function Header() {
           gap="30px"
         >
           <Link alignSelf={"center"} to="/">
-            <Image src="pk.png" alt="logo" w="190px" h="70px" />
+            <Image src="pkhan.png" alt="logo" w="190px" h="70px" />
             {/* <Text color={"white"}>PK Electronics</Text> */}
           </Link>
           <Flex
@@ -164,6 +165,7 @@ function Header() {
             p="5px"
             m="auto"
             textAlign={"center"}
+            position="relative"
           >
             <Input
               border={"none"}
@@ -174,16 +176,26 @@ function Header() {
               onChange={e => handleInputChange(e)}
               onClick={openDropDown}
             />
-            <div>
-              {
-                visible ? dropDownOption.map(value => {
-                  return <div key={value.id} className="overflow-y-auto" >
+
+            <FcSearch fontSize={"42px"} onClick={searchClicked} />
+            <Box
+              position="absolute" // Thêm dòng này
+              width="95%" // Thêm dòng này
+              zIndex="1" // Thêm dòng này
+              backgroundColor="white" // Thêm dòng này
+              top="110%"
+              borderRadius={"2px"}
+            >
+              <div>
+                {
+                  visible ? dropDownOption.map(value => {
+                    return <div key={value.id} className="overflow-y-auto" >
                     <Link to={'/search/product/' + value.id}>{value.name}</Link>
                   </div>
-                }) : null
-              }
-            </div>
-            <FcSearch fontSize={"42px"} onClick={searchClicked} />
+                  }) : null
+                }
+              </div>
+            </Box>
           </Flex>
           {userId == -1 ? (
             <Flex cursor={"pointer"}>
@@ -230,13 +242,13 @@ function Header() {
                 <Link to={"/cart"}><MenuItem>Giỏ hàng</MenuItem></Link>
                 {
                   isConnected ?
-                    <Button variant="primary" onClick={() => disconnect()}><MenuItem>Disconnect Wallet</MenuItem></Button>
+                    <MenuItem variant="primary" onClick={() => disconnect()}>Disconnect Wallet</MenuItem>
                     :
-                    <Button variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
-                      <MenuItem>
-                        {connectors[1].name}
-                      </MenuItem>
-                    </Button>
+
+                    <MenuItem variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
+                      {connectors[1].name}
+                    </MenuItem>
+
                 }
                 <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
               </MenuList>
@@ -547,7 +559,7 @@ function Header() {
       >
         <Link to="/">
           <Box>
-            <Image src="pk.png" alt="logo" w="190px" h="70px" />
+            <Image src="pkhan.png" alt="logo" w="190px" h="70px" />
             {/* <Text color={"white"}>PK Electronics</Text> */}
           </Box>
         </Link>
@@ -723,7 +735,7 @@ function Header() {
     >
       <Link to="/">
         <Box>
-          <Image src="pk.png" alt="logo" w="120px" h="50px" />
+          <Image src="pkhan.png" alt="logo" w="120px" h="50px" />
           {/* <Text color={"white"}>PK Electronics</Text> */}
         </Box>
       </Link>
