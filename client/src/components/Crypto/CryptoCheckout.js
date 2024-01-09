@@ -31,7 +31,7 @@ export function CryptoCheckout(props) {
         }).then(res=>{
             setRate(res.data.rates.USD);
         })
-        totalPrice = Math.ceil(totalPrice*rate);
+        totalPrice = Math.ceil((totalPrice*rate)*Math.pow(10,18));
         const data = await writeContract({
             abi,
             address: process.env.REACT_APP_ABI_CONTRACT,
