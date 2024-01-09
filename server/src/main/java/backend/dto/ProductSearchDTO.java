@@ -11,4 +11,5 @@ import lombok.*;
 public class ProductSearchDTO {
     private String name;
     private String link;
+    private Long id;
 }

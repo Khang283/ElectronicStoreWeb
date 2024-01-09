@@ -418,7 +418,7 @@ const Home = props => {
 
             <br />
             <hr />
-            <ItemCard4 type={ItemDetails6} heading="GIẢM GIÁ ĐIỆN THOẠI" />
+            {/* <ItemCard4 type={ItemDetails6} heading="GIẢM GIÁ ĐIỆN THOẠI" /> */}
             <div className="container div-list">
                 <div >
                     <h2>TABLET NỔI BẬT</h2>

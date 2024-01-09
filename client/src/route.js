@@ -127,6 +127,10 @@ const router = createBrowserRouter([
             {
                 path: 'cart/checkout/crypto',
                 element: <CryptoCheckout />
+            },
+            {
+                path: 'search/product/:id',
+                element: <Details />
             }
 
         ]

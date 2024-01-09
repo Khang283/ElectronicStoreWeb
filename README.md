@@ -1,7 +1,11 @@
 # Requirements
 Java
+
 Docker, Docker Compose
+
 Nodejs, NPM
+
+Metamask
 
 
 # Run Application
