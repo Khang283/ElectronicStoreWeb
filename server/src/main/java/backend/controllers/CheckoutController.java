@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -38,12 +39,20 @@ public class CheckoutController {
     private CartService cartService;
     @PostMapping("/checkout/create-payment-intent")
     public CreatePaymentResponse createPaymentIntent(@RequestBody CartDTO cart) throws StripeException {
+        BigDecimal rate = new BigDecimal(1);
+        try{
+            rate = orderService.getExchangeRate("VND","USD");
+        }catch (RestClientException e){
+            System.out.println(e.getMessage());
+        }
         if(cart==null) return null;
         Stripe.apiKey = stripeSk;
         BigDecimal currencyScale = new BigDecimal("230");
         int scale = 4;
         MathContext context = new MathContext(5);
-        Long amount = cart.getTotalPrice().divide(currencyScale,MathContext.DECIMAL32).longValue();
+//        Long amount = cart.getTotalPrice().divide(currencyScale,MathContext.DECIMAL32).longValue();
+        Long amount = cart.getTotalPrice().multiply(rate,MathContext.DECIMAL64).longValue()*100;
+        System.out.println(amount);
         PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
                 .setAmount(amount)
                 .setCurrency("usd")
