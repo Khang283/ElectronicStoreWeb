@@ -2,14 +2,20 @@ package backend.service;
 
 import backend.dao.OrderDAO;
 import backend.dao.UserDAO;
+import backend.dto.ExchangeRateDTO;
 import backend.dto.OrderDTO;
 import backend.dto.OrderListDTO;
 import backend.dto.UpdateOrderDTO;
 import backend.models.Orders;
 import backend.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +23,10 @@ import java.util.Optional;
 
 @Service
 public class OrderService {
+    @Value("${EXCHANGE_RATE_API_KEY}")
+    private String EXCHANGE_RATE_API_KEY;
+    @Value("${EXCHANGE_RATE_URL}")
+    private String EXCHANGE_RATE_URL;
     @Autowired
     private OrderDAO orderDAO;
     @Autowired
@@ -88,5 +98,15 @@ public class OrderService {
             orderListDTOs.add(orderListDTO);
         }
         return orderListDTOs;
+    }
+
+    public BigDecimal getExchangeRate(String from, String to) throws RestClientException {
+        String ACCESS_API_KEY = EXCHANGE_RATE_API_KEY;
+        String uri = EXCHANGE_RATE_URL;
+        String endpoint = "latest";
+        String url = uri+ACCESS_API_KEY+"/"+endpoint+"/"+from;
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<ExchangeRateDTO> response = restTemplate.getForEntity(url, ExchangeRateDTO.class);
+        return response.getBody().getConversion_rates().get(to);
     }
 }

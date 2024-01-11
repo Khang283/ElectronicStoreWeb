@@ -13,25 +13,22 @@ export function CryptoCheckout(props) {
     const { connectors, connect } = useConnect();
     const location = useLocation();
     const [isCheckout, setIsCheckout] = useState(false);
-    const [rate, setRate] = useState(1);
-    let totalPrice = Math.ceil(location.state.cart.totalPrice / 24000);
+    // let totalPrice = Math.ceil(location.state.cart.totalPrice / 24000);
+    const [totalPrice, setTotalPrice] = useState();
     let orderId = location.state.order;
     const navigate = useNavigate();
     // let totalPrice = 200000000000000;
     // console.log(process.env.REACT_APP_EXCHANGE_RATE_API)
     console.log(totalPrice)
+    useEffect(() => {
+        axios.get(`https://v6.exchangerate-api.com/v6/${process.env.REACT_APP_EXCHANGE_RATE_API}/latest/VND`)
+        .then((res) => {
+            setTotalPrice(Math.ceil(location.state.cart.totalPrice * res.data.conversion_rates.USD * Math.pow(10, 18)));
+            console.log(totalPrice);
+        })
+    }, [])
 
     async function transfer() {
-        axios.get('https://api.exchangeratesapi.io/v1/latest',{
-            params:{
-                access_key: process.env.REACT_APP_EXCHANGE_RATE_API,
-                base: 'VND',
-                symbol: 'USD'
-            }
-        }).then(res=>{
-            setRate(res.data.rates.USD);
-        })
-        totalPrice = Math.ceil((totalPrice*rate)*Math.pow(10,18));
         const data = await writeContract({
             abi,
             address: process.env.REACT_APP_ABI_CONTRACT,
@@ -42,7 +39,6 @@ export function CryptoCheckout(props) {
             ],
 
         });
-
     }
     useEffect(() => {
         console.log(status)
@@ -79,7 +75,7 @@ export function CryptoCheckout(props) {
             <div className='text-center'>
                 <h2>Ví của bạn</h2>
                 <h2>{address}</h2>
-                <h3>Số tiền sẽ chuyển: {totalPrice} USD</h3>
+                <h3>Số tiền sẽ chuyển: {totalPrice/Math.pow(10, 18)} USD</h3>
                 <Button disabled={isCheckout}
                     onClick={transfer}
                 >
