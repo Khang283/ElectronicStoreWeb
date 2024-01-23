@@ -48,9 +48,6 @@ async def search(q: str = Query(None, min_length=1)):
     # return {"result": res}
     
 
-if __name__ == "__main__":
-    uvicorn.run(app, port=8888, host="localhost")
-
     
     
     

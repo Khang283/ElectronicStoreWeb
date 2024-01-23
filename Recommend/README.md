@@ -17,4 +17,4 @@ nếu không được thì chạy từng lệnh :
 - tạo data:
         python RecommendData.py
 - chạy api
-        python fastapi_.py
+        uvicorn fastapi_:app --host 0.0.0.0 --port 8888
