@@ -1,0 +1,71 @@
+#REMEMBER TO SKIP TEST IN JAVA OTHERWISE APP WILL TRY TO TEST WHEN NOT CONNECT TO OTHER SERVICES
+version: "3.8"
+services:
+  mysqldb:
+    image: "mysql:latest"
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=electronic_test
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_PASSWORD=admin
+      - TZ=Asia/Ho_Chi_Minh
+    container_name: mysqldb
+
+  redis:
+    image: "redis:7.0.5-alpine"
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - TZ=Asia/Ho_Chi_Minh
+    container_name: redis
+
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: phpmyadmin
+  #   restart: always
+  #   depends_on:
+  #     - mysqldb
+  #   ports:
+  #     - "8100:80"
+  #   environment:
+  #     PMA_HOST: mysqldb
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    depends_on:
+      mysqldb:
+        condition: service_started
+      redis:
+        condition: service_started
+    links:
+      - mysqldb
+      - redis
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_started
+      redis:
+        condition: service_started
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    links:
+      - backend
+      - redis

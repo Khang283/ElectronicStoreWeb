@@ -121,4 +121,13 @@ public class ProductService {
         }
         return searchDTOS;
     }
+    public boolean modifyProductDetail(ProductDetailDTO productDetailDTO){
+        if(productDAO.modifyProductDetail(productDetailDTO)) return true;
+        return false;
+    }
+    public boolean deleteProductDetail(ProductDetailDTO productDetailDTO){
+        if (productDAO.deleteProductDetail(productDetailDTO)) return true;
+        return false;
+    }
+
 }

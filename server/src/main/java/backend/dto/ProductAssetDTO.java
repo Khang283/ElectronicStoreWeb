@@ -9,13 +9,13 @@ import java.lang.Long;
  *
  * @author DELL
  */
-public class ModifyProductAssetDTO {
+public class ProductAssetDTO {
     private Long productId;
     private Long assetId;
     private String role;
     private Long productAssetId;
 
-    public ModifyProductAssetDTO(Long productId, Long assetId, String role, Long productAssetId) {
+    public ProductAssetDTO(Long productId, Long assetId, String role, Long productAssetId) {
         this.productId = productId;
         this.assetId = assetId;
         this.role = role;
@@ -24,7 +24,7 @@ public class ModifyProductAssetDTO {
 
    
 
-    public ModifyProductAssetDTO() {
+    public ProductAssetDTO() {
     }
 
     public Long getProductId() {

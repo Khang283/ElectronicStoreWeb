@@ -18,7 +18,7 @@ public class ModifySpecDTO {
     private Long specId;
     private boolean deleted;
     private boolean insert;
-    private List<ModifyProductDetailDTO> productDtl = new ArrayList<>();
+    private List<ProductDetailDTO> productDtl = new ArrayList<>();
 
     public ModifySpecDTO(String specName, String specDetail, String specValue, Long groupId, Long specId, boolean deleted, boolean insert) {
         this.specName = specName;
@@ -93,11 +93,11 @@ public class ModifySpecDTO {
         this.insert = insert;
     }
 
-    public List<ModifyProductDetailDTO> getProductDtl() {
+    public List<ProductDetailDTO> getProductDtl() {
         return productDtl;
     }
 
-    public void setProductDtl(List<ModifyProductDetailDTO> productDtl) {
+    public void setProductDtl(List<ProductDetailDTO> productDtl) {
         this.productDtl = productDtl;
     }
     

@@ -60,7 +60,7 @@ public interface IProduct extends JpaRepository<Product,Long> {
                     "ON spec.spec_id = product_detail.spec_id \n" +
                     "INNER JOIN spec_group\n" +
                     "ON spec.group_id = spec_group.group_id\n" +
-                    "WHERE (spec_value LIKE :keyword OR spec_detail LIKE :keyword OR spec_name LIKE :keyword )",nativeQuery = true)
+                    "WHERE (spec_detail LIKE :keyword OR spec_name LIKE :keyword )",nativeQuery = true)
     List<Product>findProductByKeyWord(@Param("keyword") String keyword);
 
     @Modifying

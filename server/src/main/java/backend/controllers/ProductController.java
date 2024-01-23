@@ -124,28 +124,28 @@ public class ProductController {
     @PostMapping("/v1/modify/spec")
     public ResponseEntity<String>modifySpec(@RequestBody SpecModifyDTO spec){
         if(productService.modifySpec(spec)){
-            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+            return ResponseEntity.ok("Sửa thuộc tính thành công");
         }
         return ResponseEntity.badRequest().build();
     }
     @PostMapping("/v1/delete/spec")
     public ResponseEntity<String>deleteSpec(@RequestBody DeleteSpecDTO spec){
         if(productService.deleteSpecById(spec.getSpecId())){
-            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+            return ResponseEntity.ok("Sửa thuộc tính thành công");
         }
         return ResponseEntity.badRequest().build();
     }
     @PostMapping("/v1/delete/asset")
     public ResponseEntity<String>deleteAsset(@RequestBody DeleteAssetDTO asset){
         if(productService.deleteAssetById(asset.getAssetId())){
-            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+            return ResponseEntity.ok("Sửa thuộc tính thành công");
         }
         return ResponseEntity.badRequest().build();
     }
     @PostMapping("/v1/modify/asset")
     public ResponseEntity<String>modifyAsset(@RequestBody AssetModifyDTO asset){
         if(productService.modifyAsset(asset)){
-            return ResponseEntity.ok("Sửa thuoc tinh thành công");
+            return ResponseEntity.ok("Sửa thuộc tính thành công");
         }
         return ResponseEntity.badRequest().build();
     }
@@ -156,5 +156,12 @@ public class ProductController {
         }
         return ResponseEntity.badRequest().build();
     }
-
+    @PutMapping("/admin/modify/detail")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<String>modifyProductDetail(@RequestBody ProductDetailDTO productDetailDTO){
+        if(productService.modifyProductDetail(productDetailDTO)){
+            return ResponseEntity.ok("Sửa thông số sản phẩm thành công");
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }

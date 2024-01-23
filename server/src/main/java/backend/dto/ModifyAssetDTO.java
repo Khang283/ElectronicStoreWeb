@@ -7,7 +7,6 @@ package backend.dto;
 import java.lang.Long;
 import java.util.List;
 import java.util.ArrayList;
-import backend.dto.ModifyProductAssetDTO;
 
 /**
  *
@@ -22,11 +21,11 @@ public class ModifyAssetDTO {
     private boolean deleted = false;
     private Long productId;
     private boolean insert = false;
-    private List<ModifyProductAssetDTO> productAsst = new ArrayList<>();; 
+    private List<ProductAssetDTO> productAsst = new ArrayList<>();;
     public ModifyAssetDTO() {
     }
 
-    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole, Long productId, List<ModifyProductAssetDTO> productAsst) {
+    public ModifyAssetDTO(Long assetId, String assetName, String assetPath, String assetType, String assetRole, Long productId, List<ProductAssetDTO> productAsst) {
         this.assetId = assetId;
         this.assetName = assetName;
         this.assetPath = assetPath;
@@ -99,11 +98,11 @@ public class ModifyAssetDTO {
         this.insert = insert;
     }
 
-    public List<ModifyProductAssetDTO> getProductAsst() {
+    public List<ProductAssetDTO> getProductAsst() {
         return productAsst;
     }
 
-    public void setProductAsst(List<ModifyProductAssetDTO> productAsst) {
+    public void setProductAsst(List<ProductAssetDTO> productAsst) {
         this.productAsst = productAsst;
     }
     
