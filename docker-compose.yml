@@ -69,3 +69,18 @@ services:
     links:
       - backend
       - redis
+
+  recommend:
+    build:
+      context: ./Recommend
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "8888:8888"
+    depends_on:
+      client:
+        condition: service_started
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    links:
+      - client
