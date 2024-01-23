@@ -9,6 +9,8 @@ import java.util.Date;
 public class ProductDetail {
     @EmbeddedId
     private ProductDetailId productDetailId;
+    @Column(name = "info")
+    private String info;
     @Column(name = "created_at")
     private Date createdAt;
     @Column(name = "modified_at")
