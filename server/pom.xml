@@ -105,6 +105,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.2</version>
+		</dependency>
 	</dependencies>
         
 	<build>
@@ -125,11 +130,11 @@
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
 				<configuration>
-<!--					<url>jdbc:mysql://localhost:3306/electronic_test?createDatabaseIfNotExist=true</url>-->
+					<url>jdbc:mysql://localhost:3306/electronic_test?createDatabaseIfNotExist=true</url>
 <!--					<url>jdbc:mysql://srv985.hstgr.io:3306/u310467552_electronictest?createDatabaseIfNotExist=true</url>-->
-					<url>jdbc:mysql://mysqldb:3306/electronic_test?createDatabaseIfNotExist=true</url>
+<!--					<url>jdbc:mysql://mysqldb:3306/electronic_test?createDatabaseIfNotExist=true</url>-->
 					<user>root</user>
-					<password>admin</password>
+					<password></password>
 				</configuration>
 			</plugin>
 		</plugins>

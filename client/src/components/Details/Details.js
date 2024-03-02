@@ -98,7 +98,7 @@ const Details = () => {
 
   const getListProduct = () => {
     setLoadList(true);
-    axios.get(`http://localhost:8888/search?q=${params.id}`)
+    axios.get(`/api/v1/recommend/search?productId=${params.id}`)
       .then(res => {
         setListProduct(res.data);
         setLoadList(false);

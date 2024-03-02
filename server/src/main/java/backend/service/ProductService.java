@@ -3,25 +3,20 @@ package backend.service;
 import backend.dao.*;
 import backend.dto.ProductListDTO;
 import backend.models.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import backend.dto.*;
 import backend.dto.InsertProductDTO;
-import backend.dto.ProductListDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import backend.dto.ModifyProductDTO;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @EnableCaching
@@ -40,6 +35,8 @@ public class ProductService {
     private ISpec _spec;
     @Autowired
     private RedisCacheManager cacheManager;
+    @Value("${RECOMMENDATION_SERVICE_URL}")
+    private String RECOMMENDATION_SERVICE_URL;
     
     @Cacheable(value = "products", sync = true)
     public List<ProductListDTO> getProductList(int page,String type,int limit){
@@ -128,6 +125,18 @@ public class ProductService {
     public boolean deleteProductDetail(ProductDetailDTO productDetailDTO){
         if (productDAO.deleteProductDetail(productDetailDTO)) return true;
         return false;
+    }
+
+    public List<RecommendProductDTO> getRecommendation(Long productId) throws RestClientException {
+        String url = RECOMMENDATION_SERVICE_URL+"search?q="+productId;
+//        Map<String,Long>params = new HashMap<>();
+//        params.put("q",productId);
+        RestTemplate template = new RestTemplate();
+        ResponseEntity<Object[]> response = template.getForEntity(url, Object[].class);
+        ModelMapper mapper = new ModelMapper();
+        List<RecommendProductDTO>list = Arrays.stream(response.getBody()).map(item->mapper.map(item,RecommendProductDTO.class)).toList();
+
+        return list;
     }
 
 }

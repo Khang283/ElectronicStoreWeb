@@ -10,9 +10,17 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 app = FastAPI()
 
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "https://localhost",
+    "http://localhost",
+    "https://lowroar.ddns.net",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  
+    allow_origins=origins,  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,7 +35,7 @@ async def search(q: str = Query(None, min_length=1)):
 
     recommendations = pd.DataFrame(df.nlargest(9,q)['productId'])
     recommendations = recommendations[recommendations['productId']!=int(q)]
-    print(recommendations)
+    # print(recommendations)
 
     data = pd.read_csv('data.csv')
     data = data.fillna('')

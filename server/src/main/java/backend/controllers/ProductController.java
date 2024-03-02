@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.sound.sampled.Port;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -163,5 +164,11 @@ public class ProductController {
             return ResponseEntity.ok("Sửa thông số sản phẩm thành công");
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/v1/recommend/search")
+    public ResponseEntity<List<RecommendProductDTO>>getRecommendation(@RequestParam Long productId){
+        if(productId <= 0) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(productService.getRecommendation(productId));
     }
 }
