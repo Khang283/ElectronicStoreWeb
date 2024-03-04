@@ -7,11 +7,13 @@ services:
     ports:
       - "3307:3306"
     environment:
-      - MYSQL_DATABASE=electronic_test
-      - MYSQL_ROOT_PASSWORD=admin
-      - MYSQL_PASSWORD=admin
-      - TZ=Asia/Ho_Chi_Minh
+      - MYSQL_DATABASE=${DATABASE_NAME}
+      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - TZ=${TIME_ZONE}
     container_name: mysqldb
+    volumes:
+      - ${DATABASE_VOLUME}:/var/lib/mysql
 
   redis:
     image: "redis:7.0.5-alpine"
@@ -20,19 +22,19 @@ services:
       - "6379:6379"
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-      - TZ=Asia/Ho_Chi_Minh
+      - TZ=${TIME_ZONE}
     container_name: redis
 
-  # phpmyadmin:
-  #   image: phpmyadmin/phpmyadmin
-  #   container_name: phpmyadmin
-  #   restart: always
-  #   depends_on:
-  #     - mysqldb
-  #   ports:
-  #     - "8100:80"
-  #   environment:
-  #     PMA_HOST: mysqldb
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    depends_on:
+      - mysqldb
+    ports:
+      - "8100:80"
+    environment:
+      PMA_HOST: mysqldb
 
   backend:
     build:
@@ -42,7 +44,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - TZ=Asia/Ho_Chi_Minh
+      - TZ=${TIME_ZONE}
     depends_on:
       mysqldb:
         condition: service_started
@@ -52,23 +54,23 @@ services:
       - mysqldb
       - redis
 
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    restart: on-failure
-    ports:
-      - "3000:80"
-    depends_on:
-      backend:
-        condition: service_started
-      redis:
-        condition: service_started
-    environment:
-      - TZ=Asia/Ho_Chi_Minh
-    links:
-      - backend
-      - redis
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #   restart: on-failure
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
+  #     redis:
+  #       condition: service_started
+  #   environment:
+  #     - TZ=${TIME_ZONE}
+  #   links:
+  #     - backend
+  #     - redis
 
   recommend:
     build:
@@ -77,10 +79,10 @@ services:
     restart: on-failure
     ports:
       - "8888:8888"
-    depends_on:
-      client:
-        condition: service_started
+    # depends_on:
+    #   client:
+    #     condition: service_started
     environment:
-      - TZ=Asia/Ho_Chi_Minh
-    links:
-      - client
+      - TZ=${TIME_ZONE}
+    # links:
+    #   - client
