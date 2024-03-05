@@ -40,6 +40,7 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    image: khang283/electronicstore-backend:latest
     restart: on-failure
     ports:
       - "8080:8080"
@@ -50,9 +51,12 @@ services:
         condition: service_started
       redis:
         condition: service_started
+      recommend:
+        condition: service_started
     links:
       - mysqldb
       - redis
+      - recommend
 
   # client:
   #   build:
@@ -76,6 +80,7 @@ services:
     build:
       context: ./Recommend
       dockerfile: Dockerfile
+    image: khang283/electronicstore-recommend:latest
     restart: on-failure
     ports:
       - "8888:8888"
