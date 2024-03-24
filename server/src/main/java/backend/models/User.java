@@ -6,6 +6,7 @@ package backend.models;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +20,7 @@ import java.util.*;
  *
  * @author DELL
  */
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

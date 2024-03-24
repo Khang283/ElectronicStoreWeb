@@ -1,0 +1,4 @@
+.mvn/.gradle-enterprise/
+.gradle/
+build/
+.env

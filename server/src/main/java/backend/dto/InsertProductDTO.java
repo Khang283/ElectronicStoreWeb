@@ -21,8 +21,8 @@ public class InsertProductDTO {
     private Long productStock;
     private BigDecimal productPrice;
 
-    private List<InsertAssetDTO> assets = new ArrayList<>();
-    private List<InsertSpecDTO> specs = new ArrayList<>();
+    private List<InsertAssetDTO> assets ;
+    private List<InsertSpecDTO> specs ;
 
 
 }
