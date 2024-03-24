@@ -1,0 +1,19 @@
+STRIPE_PUBLIC_KEY: ${STRIPE_PUBLIC_KEY}
+STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: update
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: ${DATABASE_PASSWORD}
+        url: jdbc:mysql://${DATABASE_SERVER}:${DATABASE_PORT}/${DATABASE_NAME}
+        username: ${DATABASE_USERNAME}
+    cache:
+        host: localhost
+        port: 6379
+        type: redis
+    flyway:
+        enabled: true
