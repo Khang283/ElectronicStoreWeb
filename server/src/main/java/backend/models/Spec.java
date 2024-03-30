@@ -12,7 +12,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "spec")
+@Entity
+@Table(name = "spec")
 public class Spec {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

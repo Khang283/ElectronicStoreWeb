@@ -9,7 +9,7 @@ plugins {
     id 'application'
     id "org.springframework.boot" version "3.2.4"
     id 'io.spring.dependency-management' version '1.1.4'
-    id "io.freefair.lombok" version "5.3.3.3"
+//    id "io.freefair.lombok" version "5.3.3.3"
     id "org.flywaydb.flyway" version "10.10.0"
 }
 
@@ -18,31 +18,39 @@ repositories {
     maven {
         url = uri('https://repo.maven.apache.org/maven2/')
     }
+    mavenCentral()
 }
 
 dependencies {
-    api libs.org.springframework.boot.spring.boot.starter.data.jpa
-    api libs.org.springframework.boot.spring.boot.starter.data.rest
-    api libs.org.springframework.boot.spring.boot.starter.security
-    api libs.org.springframework.boot.spring.boot.starter.web
-    api libs.org.springframework.boot.spring.boot.starter.cache
-//    api libs.org.projectlombok.lombok
-    api libs.io.jsonwebtoken.jjwt.api
-    api libs.io.jsonwebtoken.jjwt.impl
-    api libs.io.jsonwebtoken.jjwt.jackson
-    api libs.me.paulschwarz.spring.dotenv
-    api libs.com.stripe.stripe.java
-    api libs.org.apache.commons.commons.lang3
-    api libs.org.springframework.data.spring.data.redis
-    api libs.io.lettuce.lettuce.core
-    api libs.org.flywaydb.flyway.mysql
-    api libs.org.springframework.boot.spring.boot.starter.webflux
-    api libs.org.modelmapper.modelmapper
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest:3.2.4'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.2.4'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.2.4'
+    implementation 'org.springframework.boot:spring-boot-starter-cache:3.2.4'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+    implementation 'com.stripe:stripe-java:24.22.0'
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+    implementation 'org.springframework.data:spring-data-redis:3.2.4'
+    implementation 'io.lettuce:lettuce-core:6.3.2.RELEASE'
+
+    implementation 'org.flywaydb:flyway-mysql:'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:3.2.4'
+    implementation 'org.modelmapper:modelmapper:2.4.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
     runtimeOnly libs.org.springframework.boot.spring.boot.devtools
     runtimeOnly libs.com.mysql.mysql.connector.j
     testImplementation libs.org.springframework.boot.spring.boot.starter.test
-//    compileOnly 'org.projectlombok:lombok:1.18.8'
-//    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
 }
 
 group = 'electronicstore'

@@ -4,13 +4,22 @@
  */
 package backend.models;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 /**
  *
  * @author DELL
  */
-@Entity(name = "comments")
+@Entity
+@Table(name = "comments")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder(toBuilder = true)
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,94 +41,5 @@ public class Comments {
     private Long likes;
     @Column(name = "reply_to")
     private String replyTo;
-
-    public Comments() {
-    }
-
-    public Comments(Long commentId, Long userId, String commentDescription, Long productId, Date createdAt, Date modifiedAt, boolean deleted, Long likes, String replyYo) {
-        this.commentId = commentId;
-        this.userId = userId;
-        this.commentDescription = commentDescription;
-        this.productId = productId;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.deleted = deleted;
-        this.likes = likes;
-        this.replyTo = replyYo;
-    }
-
-    public Long getCommentId() {
-        return commentId;
-    }
-
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getCommentDescription() {
-        return commentDescription;
-    }
-
-    public void setCommentDescription(String commentDescription) {
-        this.commentDescription = commentDescription;
-    }
-
-    public Long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public Long getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Long likes) {
-        this.likes = likes;
-    }
-
-    public String getReplyTo() {
-        return replyTo;
-    }
-
-    public void setReplyTo(String replyTo) {
-        this.replyTo = replyTo;
-    }
-
-   
     
 }

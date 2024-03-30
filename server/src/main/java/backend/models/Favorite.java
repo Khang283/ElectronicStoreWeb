@@ -1,12 +1,11 @@
 package backend.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
 
@@ -14,7 +13,8 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "favorite")
+@Entity
+@Table(name = "favorite")
 public class Favorite {
     @EmbeddedId
     private FavoriteId favoriteId;
@@ -24,27 +24,16 @@ public class Favorite {
     private Date modified_at;
     @Column(name = "deleted")
     private boolean deleted;
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @SuperBuilder(toBuilder = true)
+    @Embeddable
     public static class FavoriteId{
         @Column(name = "user_id")
         private Long userId;
         @Column(name = "product_id")
         private Long productId;
-        public FavoriteId(){}
-        public FavoriteId(Long userId,Long productId){
-            this.userId = userId;
-            this.productId = productId;
-        }
-        public Long getProductId(){
-            return this.productId;
-        }
-        public void setProductId(Long productId){
-            this.productId = productId;
-        }
-        public Long getUserId(){
-            return this.userId;
-        }
-        public void setUserId(Long userId){
-            this.userId = userId;
-        }
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
-@Repository
 public interface IUser extends JpaRepository<User,Long> {
     @Query(value = "SELECT * FROM users WHERE username = :name",nativeQuery = true)
     Optional<User> findByUsername(@Param("name") String name);

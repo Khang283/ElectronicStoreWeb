@@ -17,7 +17,23 @@ spring:
         type: redis
     flyway:
         enabled: true
+    main:
+        allow-circular-reference: true
+
 logging:
     file:
         path: ${LOGGING_PATH}
         name: ${logging.file.path}/server.log
+
+server:
+    servlet:
+        context-path: ${CONTEXT_PATH}
+    port: ${PORT}
+
+springdoc:
+    enable-data-rest: false
+#    packages-to-scan: backend.controllers
+#    paths-to-match: /api/**
+
+
+
