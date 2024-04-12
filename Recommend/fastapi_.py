@@ -11,11 +11,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = FastAPI()
 
 origins = [
-    "http://localhost:3000",
-    "http://localhost:8080",
-    "https://localhost",
-    "http://localhost",
-    "https://lowroar.ddns.net",
+    "*"
 ]
 
 app.add_middleware(

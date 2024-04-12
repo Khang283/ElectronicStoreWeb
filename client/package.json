@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://lowroar.ddns.net:8080",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@chakra-ui/icons": "^2.0.13",

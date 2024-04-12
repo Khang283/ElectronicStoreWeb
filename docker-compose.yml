@@ -1,5 +1,10 @@
 #REMEMBER TO SKIP TEST IN JAVA OTHERWISE APP WILL TRY TO TEST WHEN NOT CONNECT TO OTHER SERVICES
 version: "3.8"
+# volumes:
+#   prometheus-data:
+#     driver: ${PROMETHEUS_VOLUME}
+#   grafana-data:
+#     driver: ${GRAFANA_VOLUME}
 services:
   mysqldb:
     image: "mysql:latest"
@@ -91,3 +96,81 @@ services:
       - TZ=${TIME_ZONE}
     # links:
     #   - client
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ${PROMETHEUS_VOLUME}/etc:/etc/prometheus
+      - ${PROMETHEUS_VOLUME}:/prometheus
+    restart: unless-stopped
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    links:
+      - mysql_exporter
+      - cadvisor
+      - node_exporter
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${GRAFANA_VOLUME}:/var/lib/grafana
+    environment:
+      - 'GF_SMTP_ENABLED=false'
+      # - 'GF_SMTP_HOST=smtp.gmail.com:587'
+      # - 'GF_SMTP_USER=${GF_SMTP_USER}'
+      # - 'GF_SMTP_PASSWORD=${GF_SMTP_PASSWORD}'
+      # - 'GF_SMTP_FROM_ADDRESS={GF_SMTP_USER}'  
+      # - 'GF_SERVER_DOMAIN=grafana.my.domain'
+      # - 'GF_SERVER_ROOT_URL=grafana.my.domain'
+    restart: unless-stopped
+  node_exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    # ports:
+    #   - 9091:9091
+    command:
+      # - ' --web.listen-address=9091'
+      - '--path.rootfs=/host'
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+  
+  cadvisor:
+    image: google/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "9092:9092"
+    command:
+      - '-port=9092'
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+  
+  mysql_exporter:
+    image: quay.io/prometheus/mysqld-exporter
+    container_name: mysql_exporter
+    command:
+     - --collect.info_schema.tablestats
+     - "--mysqld.username=${DATABASE_USER}:${DATABASE_PASSWORD}"
+     - "--mysqld.address=mysqldb:3306"
+    ports:
+      - 9104:9104
+    links:
+      - mysqldb
+    depends_on:
+      mysqldb:
+        condition: service_started
+    # environment:
+    #   - DATA_SOURCE_NAME=exporter:exporter@(mysqld:3306)/
