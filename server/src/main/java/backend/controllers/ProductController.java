@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/v1/product")
+@RequestMapping("/api")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -47,7 +47,7 @@ public class ProductController {
         return ResponseEntity.ok(productListDTOS.stream().filter(productListDTO -> productListDTO.getCompany().toUpperCase().equals(company.toUpperCase())).collect(Collectors.toList()));
     }
 
-    @GetMapping()
+    @GetMapping("/v1/product")
     public ResponseEntity<GetProductByIdDTO> getProductById(@RequestParam(name= "productId", required = false,defaultValue = "1" )int productId) {
         GetProductByIdDTO product = new GetProductByIdDTO();
         product = productService.getProductById(productId);

@@ -12,7 +12,7 @@ spring:
         username: ${DATABASE_USERNAME}
         password: ${DATABASE_PASSWORD}
     cache:
-        host: localhost
+        host: ${CACHE_HOST:localhost}
         port: 6379
         type: redis
     flyway:
@@ -26,9 +26,9 @@ logging:
         name: ${logging.file.path}/server.log
 
 server:
-    servlet:
-        context-path: ${CONTEXT_PATH}
-    port: ${PORT}
+#    servlet:
+#        context-path: ${CONTEXT_PATH}
+    port: ${PORT:8080}
 
 springdoc:
     enable-data-rest: false

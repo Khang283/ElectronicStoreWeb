@@ -1,0 +1,3 @@
+image: docker:26.0.2
+
+services: docker:26.0.2-dind

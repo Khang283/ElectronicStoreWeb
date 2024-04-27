@@ -1,5 +1,6 @@
 package backend.config;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,16 @@ public class ApiExceptionHandler {
                 .build();
     }
 
-
+    @ExceptionHandler(JwtException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionResponse handleJwtException(Exception e, HttpServletRequest request){
+        log.error(e.getMessage());
+        return ExceptionResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .type(HttpStatus.BAD_REQUEST.name())
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .build();
+    }
 }

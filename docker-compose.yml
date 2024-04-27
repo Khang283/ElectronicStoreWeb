@@ -51,6 +51,10 @@ services:
       - "8080:8080"
     environment:
       - TZ=${TIME_ZONE}
+    env_file:
+      - ${SERVER_VOLUME}/.env
+    volumes:
+      - ${SERVER_VOLUME}/logs:/logs
     depends_on:
       mysqldb:
         condition: service_started
@@ -102,6 +106,7 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
+    user: '0'  #SAME AS GRAFANA
     volumes:
       - ${PROMETHEUS_VOLUME}/etc:/etc/prometheus
       - ${PROMETHEUS_VOLUME}:/prometheus
@@ -118,8 +123,10 @@ services:
     container_name: grafana
     ports:
       - "3000:3000"
+    # user: 1000:1000  #USE id -u command to find your userid and replace it to make sure you have permission to volumes
+    user: '0' # USE THIS IF YOU ARE ROOT
     volumes:
-      - ${GRAFANA_VOLUME}:/var/lib/grafana
+      - ${GRAFANA_VOLUME}:/var/lib/grafana 
     environment:
       - 'GF_SMTP_ENABLED=false'
       # - 'GF_SMTP_HOST=smtp.gmail.com:587'
@@ -130,7 +137,7 @@ services:
       # - 'GF_SERVER_ROOT_URL=grafana.my.domain'
     restart: unless-stopped
   node_exporter:
-    image: quay.io/prometheus/node-exporter:latest
+    image: quay.io/prometheus/node-exporter:v1.7.0
     container_name: node_exporter
     # ports:
     #   - 9091:9091
@@ -174,3 +181,13 @@ services:
         condition: service_started
     # environment:
     #   - DATA_SOURCE_NAME=exporter:exporter@(mysqld:3306)/
+
+  portainer:
+    image: portainer/portainer-ce:2.19.5
+    container_name: portainer
+    ports:
+      - 9443:9443
+    volumes:
+      - ${PORTAINER_VOLUME}:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
