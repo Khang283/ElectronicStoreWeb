@@ -1,0 +1,39 @@
+STRIPE_PUBLIC_KEY: ${STRIPE_PUBLIC_KEY}
+STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: update
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://${DATABASE_SERVER}:${DATABASE_PORT}/${DATABASE_NAME}
+        username: ${DATABASE_USERNAME}
+        password: ${DATABASE_PASSWORD}
+    cache:
+        host: ${CACHE_HOST:localhost}
+        port: 6379
+        type: redis
+    flyway:
+        enabled: true
+    main:
+        allow-circular-reference: true
+
+logging:
+    file:
+        path: ${LOGGING_PATH}
+        name: ${logging.file.path}/server.log
+
+server:
+#    servlet:
+#        context-path: ${CONTEXT_PATH}
+    port: ${PORT:8080}
+
+springdoc:
+    enable-data-rest: false
+#    packages-to-scan: backend.controllers
+#    paths-to-match: /api/**
+
+
+

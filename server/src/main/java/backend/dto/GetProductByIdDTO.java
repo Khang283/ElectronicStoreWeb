@@ -28,6 +28,6 @@ public class GetProductByIdDTO {
     private String category;
     private Long categoryId;
     private Long companyId;
-    private List<GetAssetDTO> assets = new ArrayList<>();
-    private List<GetSpecDTO> specs= new ArrayList<>();
+    private List<GetAssetDTO> assets ;
+    private List<GetSpecDTO> specs ;
 }

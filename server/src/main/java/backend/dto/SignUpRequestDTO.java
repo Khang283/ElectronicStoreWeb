@@ -20,5 +20,6 @@ public class SignUpRequestDTO {
     private String userPhone;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dob;
+    @Builder.Default
     private Role role = Role.USER;
 }

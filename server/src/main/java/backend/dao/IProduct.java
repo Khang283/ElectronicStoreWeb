@@ -16,11 +16,11 @@ import java.math.BigDecimal;
 import java.lang.Long;
 import java.util.List;
 public interface IProduct extends JpaRepository<Product,Long> {
-    @Query(value =  "SELECT *\n" +
-                    "FROM product\n" +
-                    "WHERE product.product_id = FALSE"
-                    , nativeQuery = true)
-    List<Product>findAllProduct();
+//    @Query(value =  "SELECT *\n" +
+//                    "FROM product\n" +
+//                    "WHERE product.product_id = FALSE"
+//                    , nativeQuery = true)
+//    List<Product>findAllProduct();
 //    @Modifying
 //    @Transactional
 //    @Query(value = "INSERT INTO product (product_name,product_price) " +
