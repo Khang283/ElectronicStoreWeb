@@ -24,13 +24,13 @@ import {
   useToast,
   Center,
 } from "@chakra-ui/react";
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import Container from "react-bootstrap/Container";
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import '../Header/Header.css';
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Form from "react-bootstrap/Form";
+import "../Header/Header.css";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { FcSearch } from "react-icons/fc";
 import { BsFillCartFill } from "react-icons/bs";
@@ -70,13 +70,32 @@ function Header() {
   const { connectors, connect } = useConnect();
   const { isConnected } = useAccount();
   const { disconnect } = useDisconnect();
+  const isMetaMaskInstalled = false;
+
+  useEffect(() => {
+    window.addEventListener("load", function () {
+      if (window.ethereum) {
+        isMetaMaskInstalled = true;
+        console.log("Ethereum support is available");
+        if (window.ethereum.isMetaMask) {
+          console.log("MetaMask is active");
+        } else {
+          console.log("MetaMask is not available");
+        }
+      } else {
+        isMetaMaskInstalled = false;
+        console.log("Ethereum support is not found");
+      }
+    });
+  }, []);
 
   if (userState.isLoad == false) {
-    axios.get('/api/user/me', {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('authToken')}`,
-      }
-    })
+    axios
+      .get("/api/user/me", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("authToken")}`,
+        },
+      })
       .then((res) => {
         if (res.status === 200) {
           const user = {
@@ -87,7 +106,7 @@ function Header() {
           dispatch(setUser(user));
         }
       })
-      .catch(e => {
+      .catch((e) => {
         console.log(e);
       });
   }
@@ -97,50 +116,56 @@ function Header() {
 
   const handleLogout = () => {
     console.log("logout");
-    Cookies.remove('authToken');
+    Cookies.remove("authToken");
     const user = {
       userId: -1,
-      username: '',
-      role: 'USER',
+      username: "",
+      role: "USER",
       isLoad: false,
     };
     dispatch(setUser(user));
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   const searchClicked = () => {
-    if (keyword == '') {
+    if (keyword == "") {
       return null;
-    }
-    else {
+    } else {
       navigate(`/search/${keyword}`);
     }
-
-  }
+  };
 
   const openDropDown = () => {
     setVisible(true);
-  }
+  };
 
   function fetchDropdownOptions(value) {
-    axios.get("/api/v1/search?name=" + value)
-      .then(res => {
+    axios
+      .get("/api/v1/search?name=" + value)
+      .then((res) => {
         setDropDownOption(res.data);
-      }).catch(err => {
+      })
+      .catch((err) => {
         console.log(err);
       });
   }
-  const debounceDropDown = useCallback(debounce((nextValue) => fetchDropdownOptions(nextValue), 1000), [])
-  document.addEventListener('click',()=>{
-    setVisible(false);
-  },true)
-  
+  const debounceDropDown = useCallback(
+    debounce((nextValue) => fetchDropdownOptions(nextValue), 1000),
+    [],
+  );
+  document.addEventListener(
+    "click",
+    () => {
+      setVisible(false);
+    },
+    true,
+  );
+
   const handleInputChange = (e) => {
     let value = e.target.value;
     setKeyword(value);
-    debounceDropDown(value)
-
-  }
+    debounceDropDown(value);
+  };
 
   if (isLargerThan1100)
     return (
@@ -175,7 +200,7 @@ function Header() {
               borderRadius="full"
               fontWeight="bold"
               placeholder="Nhập thông tin sản phẩm"
-              onChange={e => handleInputChange(e)}
+              onChange={(e) => handleInputChange(e)}
               onClick={openDropDown}
             />
 
@@ -189,19 +214,22 @@ function Header() {
               borderRadius={"2px"}
             >
               <div>
-                {
-                  visible ? dropDownOption.map(value => {
-                    return <div key={value.id} className="overflow-y-auto" >
-                    <Link to={'/search/product/' + value.id}>{value.name}</Link>
-                  </div>
-                  }) : null
-                }
+                {visible
+                  ? dropDownOption.map((value) => {
+                      return (
+                        <div key={value.id} className="overflow-y-auto">
+                          <Link to={"/search/product/" + value.id}>
+                            {value.name}
+                          </Link>
+                        </div>
+                      );
+                    })
+                  : null}
               </div>
             </Box>
           </Flex>
           {userId == -1 ? (
             <Flex cursor={"pointer"}>
-
               <Link to="/login">
                 <Heading
                   cursor={"pointer"}
@@ -237,20 +265,34 @@ function Header() {
                 Chào {username}
               </MenuButton>
               <MenuList>
-                {role == 'ADMIN' ? (
-                  <Link to={"/admin/product"}><MenuItem>Admin </MenuItem></Link>
+                {role == "ADMIN" ? (
+                  <Link to={"/admin/product"}>
+                    <MenuItem>Admin </MenuItem>
+                  </Link>
                 ) : null}
-                <Link to={"/account"}><MenuItem>Tài khoản </MenuItem></Link>
-                <Link to={"/cart"}><MenuItem>Giỏ hàng</MenuItem></Link>
-                {
-                  isConnected ?
-                    <MenuItem variant="primary" onClick={() => disconnect()}>Disconnect Wallet</MenuItem>
-                    :
-                    <MenuItem variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
+                <Link to={"/account"}>
+                  <MenuItem>Tài khoản </MenuItem>
+                </Link>
+                <Link to={"/cart"}>
+                  <MenuItem>Giỏ hàng</MenuItem>
+                </Link>
+                {isMetaMaskInstalled ? (
+                  isConnected ? (
+                    <MenuItem variant="primary" onClick={() => disconnect()}>
+                      Disconnect Wallet
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      variant="primary"
+                      key={connectors[1].uid}
+                      onClick={() => connect({ connector: connectors[1] })}
+                    >
                       {connectors[1].name}
                     </MenuItem>
-
-                }
+                  )
+                ) : (
+                  <MenuItem variant="primary">Metamask not install</MenuItem>
+                )}
                 <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
               </MenuList>
             </Menu>
@@ -310,9 +352,7 @@ function Header() {
                         cursor: "pointer",
                       }}
                     >
-                      <Link to={'/phone/apple'}>
-                        iPhone
-                      </Link>
+                      <Link to={"/phone/apple"}>iPhone</Link>
                     </Text>
                     <Text
                       _hover={{
@@ -320,9 +360,9 @@ function Header() {
 
                         cursor: "pointer",
                       }}
-                    > <Link to='phone/samsung'>
-                        Samsung
-                      </Link>
+                    >
+                      {" "}
+                      <Link to="phone/samsung">Samsung</Link>
                     </Text>
                     <Text
                       _hover={{
@@ -330,15 +370,14 @@ function Header() {
 
                         cursor: "pointer",
                       }}
-                    > <Link to='/phone/oppo'>
-                        Oppo
-                      </Link>
+                    >
+                      {" "}
+                      <Link to="/phone/oppo">Oppo</Link>
                     </Text>
                   </Box>
                 </Grid>
               </Link>
             </MenuList>
-
           </Menu>
           <Menu>
             <MenuButton
@@ -383,9 +422,7 @@ function Header() {
                         cursor: "pointer",
                       }}
                     >
-                      <Link to={'/chuột'}>
-                        Chuột
-                      </Link>
+                      <Link to={"/chuột"}>Chuột</Link>
                     </Text>
                     <Text
                       _hover={{
@@ -393,9 +430,9 @@ function Header() {
 
                         cursor: "pointer",
                       }}
-                    > <Link to='bàn phím'>
-                        Bàn Phím
-                      </Link>
+                    >
+                      {" "}
+                      <Link to="bàn phím">Bàn Phím</Link>
                     </Text>
                     <Text
                       _hover={{
@@ -403,9 +440,9 @@ function Header() {
 
                         cursor: "pointer",
                       }}
-                    > <Link to='tai nghe'>
-                        Tai nghe
-                      </Link>
+                    >
+                      {" "}
+                      <Link to="tai nghe">Tai nghe</Link>
                     </Text>
                   </Box>
                 </Grid>
@@ -455,9 +492,7 @@ function Header() {
                         cursor: "pointer",
                       }}
                     >
-                      <Link to={'/laptop/hp'}>
-                        HP
-                      </Link>
+                      <Link to={"/laptop/hp"}>HP</Link>
                     </Text>
                     <Text
                       _hover={{
@@ -465,9 +500,9 @@ function Header() {
 
                         cursor: "pointer",
                       }}
-                    > <Link to='laptop/dell'>
-                        Dell
-                      </Link>
+                    >
+                      {" "}
+                      <Link to="laptop/dell">Dell</Link>
                     </Text>
                     <Text
                       _hover={{
@@ -475,9 +510,9 @@ function Header() {
 
                         cursor: "pointer",
                       }}
-                    > <Link to='/laptop/msi'>
-                        MSI
-                      </Link>
+                    >
+                      {" "}
+                      <Link to="/laptop/msi">MSI</Link>
                     </Text>
                   </Box>
                 </Grid>
@@ -526,9 +561,7 @@ function Header() {
                         cursor: "pointer",
                       }}
                     >
-                      <Link to={'/tablet/apple'}>
-                        Samsung
-                      </Link>
+                      <Link to={"/tablet/apple"}>Samsung</Link>
                     </Text>
                     <Text
                       _hover={{
@@ -536,9 +569,9 @@ function Header() {
 
                         cursor: "pointer",
                       }}
-                    > <Link to='tablet/apple'>
-                        iPad
-                      </Link>
+                    >
+                      {" "}
+                      <Link to="tablet/apple">iPad</Link>
                     </Text>
                   </Box>
                 </Grid>
@@ -547,7 +580,200 @@ function Header() {
           </Menu>
         </Flex>
       </Box>
-    ); else if (isLargerThan750px) return (<Box>
+    );
+  else if (isLargerThan750px)
+    return (
+      <Box>
+        <Flex
+          w="100%"
+          justifyContent="space-around"
+          alignItems={"center"}
+          m="auto"
+          bg="black"
+          p="20px"
+          px="2%"
+          gap="10px"
+        >
+          <Link to="/">
+            <Box>
+              <Image src="pkhan.png" alt="logo" w="190px" h="70px" />
+              {/* <Text color={"white"}>PK Electronics</Text> */}
+            </Box>
+          </Link>
+          <Flex
+            bg="white"
+            borderRadius={"20px"}
+            w="400px"
+            p="5px"
+            m="auto"
+            textAlign={"center"}
+          >
+            <Input
+              border={"none"}
+              fontSize={"15px"}
+              borderRadius="full"
+              fontWeight="bold"
+              placeholder="Nhập thông tin sản phẩm"
+              onChange={(e) => handleInputChange(e)}
+              onClick={openDropDown}
+            />
+            <div>
+              {visible
+                ? dropDownOption.map((value) => {
+                    return (
+                      <div key={value.id} className="overflow-y-auto">
+                        <Link to={"/search/product/" + value.id}>
+                          {value.name}
+                        </Link>
+                      </div>
+                    );
+                  })
+                : null}
+            </div>
+            <FcSearch fontSize={"42px"} onClick={searchClicked} />
+          </Flex>
+          {userId == -1 ? (
+            <Flex cursor={"pointer"}>
+              <Box>
+                <Link to="/login">
+                  <Heading
+                    cursor={"pointer"}
+                    fontSize={"17px"}
+                    padding={"5px"}
+                    color="white"
+                    _hover={{ bg: "red", textDecoration: "underline" }}
+                  >
+                    Đăng nhập
+                  </Heading>
+                </Link>
+              </Box>
+              <Box>
+                <Link to="/registry">
+                  <Heading
+                    cursor={"pointer"}
+                    fontSize={"17px"}
+                    padding={"5px"}
+                    color="white"
+                    _hover={{ bg: "red", textDecoration: "underline" }}
+                  >
+                    Đăng ký
+                  </Heading>
+                </Link>
+              </Box>
+            </Flex>
+          ) : (
+            <Menu>
+              <MenuButton
+                color="black"
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+              >
+                Hi {username}
+              </MenuButton>
+              <MenuList>
+                {role == "ADMIN" ? (
+                  <Link to={"/admin/product"}>
+                    <MenuItem>Admin </MenuItem>
+                  </Link>
+                ) : null}
+                <Link to={"/account"}>
+                  <MenuItem>Tài khoản </MenuItem>
+                </Link>
+                <Link to={"/cart"}>
+                  <MenuItem>Giỏ hàng</MenuItem>
+                </Link>
+                {isConnected ? (
+                  <Button variant="primary" onClick={() => disconnect()}>
+                    <MenuItem>Disconnect Wallet</MenuItem>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="primary"
+                    key={connectors[1].uid}
+                    onClick={() => connect({ connector: connectors[1] })}
+                  >
+                    <MenuItem>{connectors[1].name}</MenuItem>
+                  </Button>
+                )}
+                <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
+              </MenuList>
+            </Menu>
+          )}
+          <Box mx="20px">
+            <Box ref={btnRef} colorScheme="teal" onClick={onOpen}>
+              <GiHamburgerMenu fontSize={"55px"} />
+            </Box>
+            <Drawer
+              isOpen={isOpen}
+              placement="right"
+              onClose={onClose}
+              finalFocusRef={btnRef}
+            >
+              <DrawerOverlay />
+              <DrawerContent bg="teal.300">
+                <DrawerCloseButton />
+                <DrawerHeader fontSize={"22px"} fontWeight="bold">
+                  Chọn danh mục
+                </DrawerHeader>
+
+                <DrawerBody>
+                  <VStack
+                    justifyContent={"space-around"}
+                    alignContent="center"
+                    gap="25px"
+                    m="auto"
+                    p="auto"
+                  >
+                    <Link to="phone">
+                      <Heading
+                        cursor={"pointer"}
+                        fontSize={"17px"}
+                        color="white"
+                        _hover={{ bg: "red", textDecoration: "underline" }}
+                      >
+                        Điện thoại
+                      </Heading>
+                    </Link>
+                    <Link to="tablet">
+                      <Heading
+                        cursor={"pointer"}
+                        fontSize={"17px"}
+                        color="white"
+                        _hover={{ bg: "red", textDecoration: "underline" }}
+                      >
+                        Tablet
+                      </Heading>
+                    </Link>
+                    <Link to="accessories">
+                      <Heading
+                        cursor={"pointer"}
+                        fontSize={"17px"}
+                        color="white"
+                        _hover={{ bg: "red", textDecoration: "underline" }}
+                      >
+                        Phụ kiện
+                      </Heading>
+                    </Link>
+                    <Link to="laptop">
+                      <Heading
+                        cursor={"pointer"}
+                        fontSize={"17px"}
+                        color="white"
+                        _hover={{ bg: "red", textDecoration: "underline" }}
+                      >
+                        Laptop
+                      </Heading>
+                    </Link>
+                  </VStack>
+                </DrawerBody>
+              </DrawerContent>
+            </Drawer>
+          </Box>
+        </Flex>
+      </Box>
+    );
+  else if (islesserThan740px)
+    return (
       <Flex
         w="100%"
         justifyContent="space-around"
@@ -560,7 +786,7 @@ function Header() {
       >
         <Link to="/">
           <Box>
-            <Image src="pkhan.png" alt="logo" w="190px" h="70px" />
+            <Image src="pkhan.png" alt="logo" w="120px" h="50px" />
             {/* <Text color={"white"}>PK Electronics</Text> */}
           </Box>
         </Link>
@@ -577,80 +803,25 @@ function Header() {
             fontSize={"15px"}
             borderRadius="full"
             fontWeight="bold"
-            placeholder="Nhập thông tin sản phẩm"
-            onChange={e => handleInputChange(e)}
+            placeholder="Nhập thông tin sản phẩm "
             onClick={openDropDown}
+            onChange={(e) => handleInputChange(e)}
           />
           <div>
-            {
-              visible ? dropDownOption.map(value => {
-                return <div key={value.id} className="overflow-y-auto" >
-                  <Link to={'/search/product/' + value.id}>{value.name}</Link>
-                </div>
-              }) : null
-            }
+            {visible
+              ? dropDownOption.map((value) => {
+                  return (
+                    <div key={value.id} className="overflow-y-auto">
+                      <Link to={"/search/product/" + value.id}>
+                        {value.name}
+                      </Link>
+                    </div>
+                  );
+                })
+              : null}
           </div>
-          <FcSearch fontSize={"42px"} onClick={searchClicked} />
+          <FcSearch fontSize={"42px"} />
         </Flex>
-        {userId == -1 ? (
-          <Flex cursor={"pointer"}>
-            <Box>
-              <Link to="/login">
-                <Heading
-                  cursor={"pointer"}
-                  fontSize={"17px"}
-                  padding={"5px"}
-                  color="white"
-                  _hover={{ bg: "red", textDecoration: "underline" }}
-                >
-                  Đăng nhập
-                </Heading>
-              </Link>
-            </Box>
-            <Box>
-              <Link to="/registry">
-                <Heading
-                  cursor={"pointer"}
-                  fontSize={"17px"}
-                  padding={"5px"}
-                  color="white"
-                  _hover={{ bg: "red", textDecoration: "underline" }}
-                >
-                  Đăng ký
-                </Heading>
-              </Link>
-            </Box>
-          </Flex>
-        ) : (
-          <Menu>
-            <MenuButton
-              color="black"
-              as={Button}
-              rightIcon={<ChevronDownIcon />}
-            >
-              Hi {username}
-            </MenuButton>
-            <MenuList>
-              {role == 'ADMIN' ? (
-                <Link to={"/admin/product"}><MenuItem>Admin </MenuItem></Link>
-              ) : null}
-              <Link to={"/account"}><MenuItem>Tài khoản </MenuItem></Link>
-              <Link to={"/cart"}><MenuItem>Giỏ hàng</MenuItem></Link>
-              {
-                isConnected ?
-                  <Button variant="primary" onClick={() => disconnect()}><MenuItem>Disconnect Wallet</MenuItem></Button>
-                  :
-                  <Button variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
-                    <MenuItem>
-                      {connectors[1].name}
-                    </MenuItem>
-                  </Button>
-              }
-              <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem
-              >
-            </MenuList>
-          </Menu>
-        )}
         <Box mx="20px">
           <Box ref={btnRef} colorScheme="teal" onClick={onOpen}>
             <GiHamburgerMenu fontSize={"55px"} />
@@ -662,11 +833,8 @@ function Header() {
             finalFocusRef={btnRef}
           >
             <DrawerOverlay />
-            <DrawerContent bg="teal.300">
+            <DrawerContent bg="red.300">
               <DrawerCloseButton />
-              <DrawerHeader fontSize={"22px"} fontWeight="bold">
-                Chọn danh mục
-              </DrawerHeader>
 
               <DrawerBody>
                 <VStack
@@ -676,6 +844,85 @@ function Header() {
                   m="auto"
                   p="auto"
                 >
+                  {userId == -1 ? (
+                    <Flex cursor={"pointer"}>
+                      <Box>
+                        <Link to="/login">
+                          <Heading
+                            cursor={"pointer"}
+                            fontSize={"17px"}
+                            padding={"5px"}
+                            color="white"
+                            _hover={{ bg: "red", textDecoration: "underline" }}
+                          >
+                            Đăng nhập
+                          </Heading>
+                        </Link>
+                      </Box>
+                      <Box>
+                        <Link to="/registry">
+                          <Heading
+                            cursor={"pointer"}
+                            fontSize={"17px"}
+                            padding={"5px"}
+                            color="white"
+                            _hover={{ bg: "red", textDecoration: "underline" }}
+                          >
+                            Đăng ký
+                          </Heading>
+                        </Link>
+                      </Box>
+                    </Flex>
+                  ) : (
+                    <Menu>
+                      <MenuButton
+                        color="black"
+                        as={Button}
+                        rightIcon={<ChevronDownIcon />}
+                      >
+                        Hi {username}
+                      </MenuButton>
+                      <MenuList>
+                        {role == "ADMIN" ? (
+                          <Link to={"/admin/product"}>
+                            <MenuItem>Admin </MenuItem>
+                          </Link>
+                        ) : null}
+                        <Link to={"/account"}>
+                          <MenuItem>Tài khoản </MenuItem>
+                        </Link>
+                        <Link to={"/cart"}>
+                          <MenuItem>Giỏ hàng</MenuItem>
+                        </Link>
+                        {isConnected ? (
+                          <Button
+                            variant="primary"
+                            onClick={() => disconnect()}
+                          >
+                            <MenuItem>Disconnect Wallet</MenuItem>
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="primary"
+                            key={connectors[1].uid}
+                            onClick={() =>
+                              connect({ connector: connectors[1] })
+                            }
+                          >
+                            <MenuItem>{connectors[1].name}</MenuItem>
+                          </Button>
+                        )}
+                        <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
+                      </MenuList>
+                    </Menu>
+                  )}
+
+                  <DrawerHeader fontSize={"22px"} fontWeight="bold">
+                    <Divider color={"black"} />
+                    Danh mục sản phẩm
+                    <Divider color={"black"} />
+                  </DrawerHeader>
+
                   <Link to="phone">
                     <Heading
                       cursor={"pointer"}
@@ -703,7 +950,7 @@ function Header() {
                       color="white"
                       _hover={{ bg: "red", textDecoration: "underline" }}
                     >
-                      Phụ kiện
+                      Phụ kiện điện tử
                     </Heading>
                   </Link>
                   <Link to="laptop">
@@ -722,186 +969,7 @@ function Header() {
           </Drawer>
         </Box>
       </Flex>
-
-
-    </Box>); else if (islesserThan740px) return (<Flex
-      w="100%"
-      justifyContent="space-around"
-      alignItems={"center"}
-      m="auto"
-      bg="black"
-      p="20px"
-      px="2%"
-      gap="10px"
-    >
-      <Link to="/">
-        <Box>
-          <Image src="pkhan.png" alt="logo" w="120px" h="50px" />
-          {/* <Text color={"white"}>PK Electronics</Text> */}
-        </Box>
-      </Link>
-      <Flex
-        bg="white"
-        borderRadius={"20px"}
-        w="400px"
-        p="5px"
-        m="auto"
-        textAlign={"center"}
-      >
-        <Input
-          border={"none"}
-          fontSize={"15px"}
-          borderRadius="full"
-          fontWeight="bold"
-          placeholder="Nhập thông tin sản phẩm "
-          onClick={openDropDown}
-          onChange={(e) => handleInputChange(e)}
-        />
-        <div>
-          {
-            visible ? dropDownOption.map(value => {
-              return <div key={value.id} className="overflow-y-auto" >
-                <Link to={'/search/product/' + value.id}>{value.name}</Link>
-              </div>
-            }) : null
-          }
-        </div>
-        <FcSearch fontSize={"42px"} />
-      </Flex>
-      <Box mx="20px">
-        <Box ref={btnRef} colorScheme="teal" onClick={onOpen}>
-          <GiHamburgerMenu fontSize={"55px"} />
-        </Box>
-        <Drawer
-          isOpen={isOpen}
-          placement="right"
-          onClose={onClose}
-          finalFocusRef={btnRef}
-        >
-          <DrawerOverlay />
-          <DrawerContent bg="red.300">
-            <DrawerCloseButton />
-
-            <DrawerBody>
-              <VStack
-                justifyContent={"space-around"}
-                alignContent="center"
-                gap="25px"
-                m="auto"
-                p="auto"
-              >
-                {userId == -1 ? (
-                  <Flex cursor={"pointer"}>
-                    <Box>
-                      <Link to="/login">
-                        <Heading
-                          cursor={"pointer"}
-                          fontSize={"17px"}
-                          padding={"5px"}
-                          color="white"
-                          _hover={{ bg: "red", textDecoration: "underline" }}
-                        >
-                          Đăng nhập
-                        </Heading>
-                      </Link>
-                    </Box>
-                    <Box>
-                      <Link to="/registry">
-                        <Heading
-                          cursor={"pointer"}
-                          fontSize={"17px"}
-                          padding={"5px"}
-                          color="white"
-                          _hover={{ bg: "red", textDecoration: "underline" }}
-                        >
-                          Đăng ký
-                        </Heading>
-                      </Link>
-                    </Box>
-                  </Flex>
-                ) : (
-                  <Menu>
-                    <MenuButton
-                      color="black"
-                      as={Button}
-                      rightIcon={<ChevronDownIcon />}
-                    >
-                      Hi {username}
-                    </MenuButton>
-                    <MenuList>
-                      {role == 'ADMIN' ? (
-                        <Link to={"/admin/product"}><MenuItem>Admin </MenuItem></Link>
-                      ) : null}
-                      <Link to={"/account"}><MenuItem>Tài khoản </MenuItem></Link>
-                      <Link to={"/cart"}><MenuItem>Giỏ hàng</MenuItem></Link>
-                      {
-                        isConnected ?
-                          <Button variant="primary" onClick={() => disconnect()}><MenuItem>Disconnect Wallet</MenuItem></Button>
-                          :
-                          <Button variant='primary' key={connectors[1].uid} onClick={() => connect({ connector: connectors[1] })}>
-                            <MenuItem>
-                              {connectors[1].name}
-                            </MenuItem>
-                          </Button>
-                      }
-                      <MenuItem onClick={handleLogout}>Đăng xuất</MenuItem>
-                    </MenuList>
-                  </Menu>
-                )}
-
-                <DrawerHeader fontSize={"22px"} fontWeight="bold">
-                  <Divider color={"black"} />
-                  Danh mục sản phẩm
-                  <Divider color={"black"} />
-                </DrawerHeader>
-
-                <Link to="phone">
-                  <Heading
-                    cursor={"pointer"}
-                    fontSize={"17px"}
-                    color="white"
-                    _hover={{ bg: "red", textDecoration: "underline" }}
-                  >
-                    Điện thoại
-                  </Heading>
-                </Link>
-                <Link to="tablet">
-                  <Heading
-                    cursor={"pointer"}
-                    fontSize={"17px"}
-                    color="white"
-                    _hover={{ bg: "red", textDecoration: "underline" }}
-                  >
-                    Tablet
-                  </Heading>
-                </Link>
-                <Link to="accessories">
-                  <Heading
-                    cursor={"pointer"}
-                    fontSize={"17px"}
-                    color="white"
-                    _hover={{ bg: "red", textDecoration: "underline" }}
-                  >
-                    Phụ kiện điện tử
-                  </Heading>
-                </Link>
-                <Link to="laptop">
-                  <Heading
-                    cursor={"pointer"}
-                    fontSize={"17px"}
-                    color="white"
-                    _hover={{ bg: "red", textDecoration: "underline" }}
-                  >
-                    Laptop
-                  </Heading>
-                </Link>
-              </VStack>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      </Box>
-    </Flex>
-    )
+    );
 }
 
 export default Header;
