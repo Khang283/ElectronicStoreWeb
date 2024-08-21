@@ -21,27 +21,18 @@ import {
   VStack,
   MenuItem,
   Button,
-  useToast,
-  Center,
 } from "@chakra-ui/react";
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Form from "react-bootstrap/Form";
+import React, { useState, useCallback, useEffect } from "react";
 import "../Header/Header.css";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { FcSearch } from "react-icons/fc";
-import { BsFillCartFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 // import Button from "react-bootstrap/Button";
 import { useDispatch, useSelector } from "react-redux";
 // import { FormGroup, Image } from "react-bootstrap";
 import Cookies from "js-cookie";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { GrLogin, GrReturn, GrServices } from "react-icons/gr";
-import { loadUser, setUser } from "../../reducer/userReducer";
+import { setUser } from "../../reducer/userReducer";
 import axios from "axios";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { debounce } from "lodash";
@@ -70,20 +61,20 @@ function Header() {
   const { connectors, connect } = useConnect();
   const { isConnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const isMetaMaskInstalled = false;
+  const [isMetaMaskInstalled, setIsMetaMaskInstalled] = useState(false);
 
   useEffect(() => {
     window.addEventListener("load", function () {
       if (window.ethereum) {
-        isMetaMaskInstalled = true;
         console.log("Ethereum support is available");
         if (window.ethereum.isMetaMask) {
+          setIsMetaMaskInstalled(true);
           console.log("MetaMask is active");
         } else {
           console.log("MetaMask is not available");
         }
       } else {
-        isMetaMaskInstalled = false;
+        setIsMetaMaskInstalled(false);
         console.log("Ethereum support is not found");
       }
     });

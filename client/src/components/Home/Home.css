@@ -18,8 +18,8 @@
 }
 
 .cate-item {
-  border-right: 1px solid rgba(0, 0, 0, .05);
-  border-bottom: 1px solid rgba(0, 0, 0, .05);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   text-align: center;
   padding: 15px;
 }
@@ -29,14 +29,14 @@
 }
 
 .cate-img {
-  margin-bottom: 10px;
+  /*padding: 10px;*/
+  text-align: center;
+  margin: auto;
+  display: flex;
+  justify-content: center;
 }
 
-.card-img {
-  padding: 10px;
-}
-
-.card a{
+.card a {
   text-decoration: none;
   color: black;
 }
